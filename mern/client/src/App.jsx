@@ -1,27 +1,63 @@
-import './App.css'
+import React, { useState } from "react";
+import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Header from "./components/Header.jsx"
-import WebgiViewer from "./components/WebGIViewer.jsx";
-import {ViewerApp} from "https://dist.pixotronics.com/webgi/runtime/bundle-0.10.4.mjs";
+import Header from "./components/Header.jsx";
+import WebgiViewer from "./components/WebgiViewer.jsx";
 import Jumbotron from "./components/Jumbotron.jsx";
 import PitchSection from "./components/PitchSection.jsx";
 import PreviewSection from "./components/PreviewSection.jsx";
-
+import MaterialMenu from "./components/MaterialMenu.jsx";
 
 function App() {
+    // State to hold the currently selected variation and the list of available variations.
+    const [currentVariation, setCurrentVariation] = useState();
+    const [variations, setVariations] = useState([]);
+
+    // (Optional) Callback for when a user selects a variation via a menu.
+    const handleSelectVariation = (variation, index) => {
+        console.log("User selected variation:", variation, index);
+        // Here you could trigger an API call or update state as needed.
+    };
 
     return (
         <>
-            <Header/>
+            <Header />
             <div className="mt-0 my-1">
-                <hr className="line"/>
+                <hr className="line" />
             </div>
-            <Jumbotron/>
-            <WebgiViewer/>
-            <PitchSection/>
-            <PreviewSection/>
+            <Jumbotron />
+            {/* Pass the callbacks into your viewer component */}
+            <WebgiViewer
+                onVariationChange={setCurrentVariation}
+                setVariations={setVariations}
+            />
+            <PitchSection />
+            <PreviewSection />
+            {/* Render the MaterialMenu if you have variations */}
+            <div className="variation-menu p-3">
+                {variations && variations.length > 0 ? (
+                    <MaterialMenu
+                        variations={variations}
+                        onSelectVariation={handleSelectVariation}
+                    />
+                ) : (
+                    <p>No variations available</p>
+                )}
+            </div>
+
+            {/* Simple UI to show the current variation */}
+            <div className="variation-info p-3">
+                {currentVariation ? (
+                    <div>
+                        <h2>Current Variation</h2>
+                        <pre>{JSON.stringify(currentVariation, null, 2)}</pre>
+                    </div>
+                ) : (
+                    <p>No variation selected yet</p>
+                )}
+            </div>
         </>
-    )
+    );
 }
 
-export default App
+export default App;
