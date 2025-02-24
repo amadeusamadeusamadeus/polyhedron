@@ -1,16 +1,18 @@
 // src/components/WebgiViewer.jsx
-import React, { useRef, useEffect } from "react";
+import React, {useRef, useEffect} from "react";
 import {
     ViewerApp,
     AssetManagerPlugin,
     addBasePlugins,
     FileTransferPlugin,
     CanvasSnipperPlugin,
-    TonemapPlugin, MaterialConfiguratorPlugin,
+    TonemapPlugin,
+    MaterialConfiguratorPlugin
 } from "webgi";
-import { CustomMaterialConfiguratorPlugin } from "../plugins/CustomMaterialConfiguratorPlugin";
+import config from "bootstrap/js/src/util/config.js";
+// import { CustomMaterialConfiguratorPlugin } from "../plugins/CustomMaterialConfiguratorPlugin";
 
-export default function WebgiViewer({ onVariationChange, setVariations }) {
+export default function WebgiViewer({onVariationChange, setVariations, setConfig}) {
     const canvasRef = useRef(null);
 
     useEffect(() => {
@@ -18,7 +20,7 @@ export default function WebgiViewer({ onVariationChange, setVariations }) {
             if (!canvasRef.current) return;
 
             // Initialize the viewer.
-            const viewer = new ViewerApp({ canvas: canvasRef.current });
+            const viewer = new ViewerApp({canvas: canvasRef.current});
 
             // Add essential plugins.
             await viewer.addPlugin(AssetManagerPlugin);
@@ -27,7 +29,7 @@ export default function WebgiViewer({ onVariationChange, setVariations }) {
             await viewer.addPlugin(CanvasSnipperPlugin);
 
             // Add our custom Material Configurator Plugin.
-            const configPlugin = await viewer.addPlugin(CustomMaterialConfiguratorPlugin);
+            const configPlugin = await viewer.addPlugin(MaterialConfiguratorPlugin);
 
             // Disable the default UI so only our custom menu is used.
             // viewer.getPlugin(MaterialConfiguratorPlugin).uiConfig.hidden = true;
@@ -43,18 +45,17 @@ export default function WebgiViewer({ onVariationChange, setVariations }) {
             // Load your GLB model that includes material configuration data.
             await viewer.load("D20Test.glb");
 
-            // After loading, update available variations.
+            console.log("Available variations:", configPlugin.variations);
             setVariations(configPlugin.variations);
-
-            // Optional: Additional viewer configuration.
-            viewer.getPlugin(TonemapPlugin).config.clipBackground = true;
+            setConfig(configPlugin);
         }
+
         setupViewer();
-    }, [onVariationChange, setVariations]);
+    }, [onVariationChange, setVariations, setConfig]);
 
     return (
-        <div id="webgi-canvas-container" style={{ width: "100%", height: "600px" }}>
-            <canvas id="webgi-canvas" ref={canvasRef} style={{ width: "100%", height: "100%" }} />
+        <div id="webgi-canvas-container" style={{width: "100%", height: "600px"}}>
+            <canvas id="webgi-canvas" ref={canvasRef} style={{width: "100%", height: "100%"}}/>
         </div>
     );
 }

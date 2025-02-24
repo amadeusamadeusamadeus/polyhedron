@@ -7,8 +7,21 @@ export class CustomMaterialConfiguratorPlugin extends MaterialConfiguratorPlugin
 
     constructor() {
         super();
+        this.uiConfig.hidden = true; // Hide the default UI.
         // A callback you can assign from your React component to listen for variation changes.
-        this.onVariationChange = null;
+        this.onVariationChange = (selectedVariation) => {
+            console.log("Custom plugin variation changed:", selectedVariation);
+        }
+    }
+
+    onAdded(viewer) {
+        console.log("onAdded")
+        let elements = document.getElementsByClassName("materialButton")
+        for (let element of elements) {
+            console.log("materialButtons")
+            console.log(element)
+        }
+        return super.onAdded(viewer);
     }
 
     // This function is automatically called when an object is loaded with material variations.
@@ -21,31 +34,37 @@ export class CustomMaterialConfiguratorPlugin extends MaterialConfiguratorPlugin
             console.log("Variation title:", variation.title);
 
             variation.materials.forEach(material => {
-                let image;
-                if (!variation.preview.startsWith("generate:")) {
-                    // Use the provided preview or fallback to a default color.
-                    const pp = material[variation.preview] || "#ff00ff";
-                    image = pp.image || pp;
-                } else {
-                    // Generate a small snapshot of the material preview based on some shape.
-                    const shape = variation.preview.split(":")[1];
-                    image = this._previewGenerator.generate(material, shape);
+                    let image;
+                    if (!variation.preview.startsWith("generate:")) {
+                        // Use the provided preview or fallback to a default color.
+                        const pp = material[variation.preview] || "#ff00ff";
+                        image = pp.image || pp;
+                    } else {
+                        // Generate a small snapshot of the material preview based on some shape.
+                        const shape = variation.preview.split(":")[1];
+                        image = this._previewGenerator.generate(material, shape);
+                    }
+                    // Callback to apply the variation when clicked.
+                    const onClick = () => {
+                        this.applyVariation(variation, material.uuid);
+                    };
+                    //     .forEach(el => {
+                    //     el.addEventListener("click", (event) => {
+                    //         console.log("Button clicked");
+                    //     });
+                    // })
+
+                    // Log the UI data for this material variation.
+                    console.log(this.variations)
+                    console.log({
+                        uid: material.uuid,
+                        color: material.color,
+                        material: material,
+                        image,
+                        onClick
+                    });
                 }
-                // Callback to apply the variation when clicked.
-                const onClick = () => {
-                    this.applyVariation(variation, material.uuid);
-                };
-                // Log the UI data for this material variation.
-                console.log(this.variations)
-                console.log({
-                    uid: material.uuid,
-                    color: material.color,
-                    material: material,
-                    image,
-                    onClick
-                });
-            }
-        );
+            );
 
         }
         return true;

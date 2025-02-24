@@ -2,6 +2,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Offcanvas from 'react-bootstrap/Offcanvas';
+import Login from './Login.jsx';
 
 
 function OffcanvasBar() {
@@ -25,9 +26,11 @@ function OffcanvasBar() {
                             </Offcanvas.Header>
                             <Offcanvas.Body>
                                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                                    <Nav.Link href="#action1">Settings</Nav.Link>
-                                    <Nav.Link href="#action2">Orders</Nav.Link>
-                                    <Nav.Link href="#action3">Logout</Nav.Link>
+                                    <Login />
+                                    <Nav.Link href="#action1">Sign up!</Nav.Link>
+                                    {/*<Nav.Link href="#action1">Settings</Nav.Link>*/}
+                                    {/*<Nav.Link href="#action2">Orders</Nav.Link>*/}
+                                    {/*<Nav.Link href="#action3">Logout</Nav.Link>*/}
                                 </Nav>
                             </Offcanvas.Body>
                         </Navbar.Offcanvas>

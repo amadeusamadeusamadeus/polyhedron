@@ -1,14 +1,22 @@
 // src/components/MaterialMenu.jsx
 import React from "react";
 
-export default function MaterialMenu({ variations, onSelectVariation }) {
+export default function MaterialMenu({ variations, config, onSelectVariation }) {
+
+    async function evaluateClick(uuid, config) {
+        console.log("Click", config)
+        await config.applyVariation(config.variations[0], uuid);
+    }
+
     return (
         <div className="material-menu">
             {variations.map((variation) => (
                 <div key={variation.title} className="variation-group">
                     <h3>{variation.title}</h3>
                     <div className="variation-options" style={{ display: "flex", flexWrap: "wrap" }}>
-                        {variation.materials.map((material, index) => {
+                        {variation.materials.map(material => {
+                            console.log("Material Menu");
+                            console.log(material)
                             let preview;
                             if (!variation.preview.startsWith("generate:")) {
                                 const pp = material[variation.preview] || "#ff00ff";
@@ -21,9 +29,9 @@ export default function MaterialMenu({ variations, onSelectVariation }) {
                             return (
                                 <button
                                     key={material.uuid}
-                                    onClick={() => onSelectVariation(variation, index)}
+                                    onClick={() => evaluateClick(material.uuid, config)} // onSelectVariation(variation, index)
                                     style={{
-                                        backgroundImage: `url(${preview})`,
+                                        backgroundImage: `url(${material.userData.icon})`,
                                         width: "50px",
                                         height: "50px",
                                         backgroundSize: "cover",
