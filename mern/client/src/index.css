@@ -1,0 +1,220 @@
+#root {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+    --primary-bg-color: #ffffff;
+    --secondary-bg-color: #000000;
+}
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "SF Pro Display", SF Pro Icons, Helvetica Neue, Helvetica, Arial,
+    sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #000;
+    color: #f5f5f7;
+}
+
+.border-black {
+    color: var(--secondary-bg-color);
+}
+
+.line {
+    color: var(--secondary-bg-color);
+    opacity: 1;
+}
+.navbar-toggler {
+    border: none !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    opacity: 1;
+    color: #000000 !important;
+}
+
+.navbar-toggler:focus,
+.navbar-toggler:active {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.customContextGrid {
+    opacity: 0;
+}
+
+.text-button {
+    font: inherit;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    color: #ffc404;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000; /* Make sure it’s on top of other elements */
+    background-color: #e4ddd4;
+    border-radius: 6px;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    padding: 1rem;
+    width: 80%;
+    height: 80%;
+    max-width: 40rem;
+}
+
+.modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.55);
+}
+
+.cart-item-actions button:hover,
+.cart-item-actions button:active {
+    background-color: #1d1a16;
+    color: #ffab04;
+}
+.cart-item-actions button {
+    cursor: pointer;
+    font-size: 1rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    border: none;
+    background-color: #312c1d;
+    color: #ffc404;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cart-item-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.cart-item p {
+    margin: 0;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.5rem 0;
+}
+
+.cart-total {
+    display: flex;
+    justify-content: flex-end;
+    margin: 2rem 0;
+    font-size: 1.15rem;
+    font-weight: bold;
+    color: #46443c;
+}
+.cart h2 {
+    margin: 1rem 0;
+}
+
+.cart ul {
+    list-style: none;
+    margin: 0.5rem 0;
+    padding: 0;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.modal-actions .text-button {
+    color: #1d1a16;
+}
+
+.modal-actions .text-button:hover,
+.modal-actions .text-button:active {
+    color: #312c1d;
+}
+
+dialog:not([open]) {
+    display: none;
+}
+
+#modal:empty {
+    display: none;
+}
+
+#modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* so it doesn't block clicks when empty */
+}
+
+
+
+
+
+
+/*#webgi-canvas {*/
+/*  width: 100%;*/
+/*  height: 100%;*/
+/*  background: transparent;*/
+/*}*/
+
+/*#webgi-canvas-container {*/
+/*  width: 100vw;*/
+/*  height: 100vh;*/
+/*  position: fixed;*/
+/*  display: flex;*/
+/*  justify-content: flex-end;*/
+/*  flex-direction: column;*/
+/*  align-items: center;*/
+/*  top: 0;*/
+/*  pointer-events: none;*/
+/*  min-height: 831px;*/
+/*  background: transparent;*/
+/*}*/
+
+/*#webgi-canvas-container .button {*/
+/*  background: #0071e3;*/
+/*  color: #fff;*/
+/*  cursor: pointer;*/
+/*  text-align: center;*/
+/*  white-space: nowrap;*/
+/*  font-size: 17px;*/
+/*  font-weight: 400;*/
+/*  min-width: 28px;*/
+/*  padding: 8px 16px;*/
+/*  border-radius: 980px;*/
+/*  position: absolute;*/
+/*  top: 30px;*/
+/*  border: none;*/
+/*  z-index: 1;*/
+/*  transition-duration: 0.3s;*/
+/*}*/
+
+/*.jumbotron-section.wrapper {*/
+/*  margin-left: auto;*/
+/*  margin-right: auto;*/
+/*  max-width: 980px;*/
+/*  width: 100%;*/
+/*  box-sizing: border-box;*/
+/*  height: calc(100vh - 40px);*/
+/*  display: flex;*/
+/*  align-items: center;*/
+/*  flex-direction: column;*/
+/*  padding-top: 60px;*/
+/*  position: relative;*/
+/*  z-index: 1;*/
+/*  !*min-height: 831px;*!*/
+/*}*/

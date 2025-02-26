@@ -45,6 +45,8 @@ export default function WebgiViewer({onVariationChange, setVariations, setConfig
             // Load your GLB model that includes material configuration data.
             await viewer.load("D20Test.glb");
 
+            //TODO: Create an object or JSON from this to use throughout the app
+
             console.log("Available variations:", configPlugin.variations);
             setVariations(configPlugin.variations);
             setConfig(configPlugin);

@@ -1,0 +1,36 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; /* Make sure it appears above other elements */
+}
+
+.modal-container {
+    background: #ffffff;
+    padding: 1rem;
+    border-radius: 6px;
+    max-width: 40rem;
+    width: 80%;
+    max-height: 80%;
+    overflow-y: auto; /* Allow scrolling if content overflows */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    animation: fade-slide-up 0.3s ease-out forwards;
+}
+
+/* Optional keyframes for the animation */
+@keyframes fade-slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

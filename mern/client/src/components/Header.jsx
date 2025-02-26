@@ -3,17 +3,36 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Login from './Login.jsx';
-
+import Button from "./UI/Button.jsx"
+import {useContext} from 'react';
+import CartContext from "../store/CartContext.jsx";
+import UserProgressContext from "../store/UserProgressContext.jsx";
+import userProgressContext from "../store/UserProgressContext.jsx";
 
 function OffcanvasBar() {
+    const cartCtx = useContext(CartContext);
+    const userProgressCtx =  useContext(UserProgressContext);
+
+    const totalCartItems = cartCtx.items.reduce((totalNumberOfItems, item)=>{
+        return totalNumberOfItems + item.quantity;
+    }, 0);
+
+    function handleShowCart() {
+        userProgressCtx.showCart();
+    }
 
     return (
         <>
             {[false].map((expand) => (
-                <Navbar key={expand} expand={expand} className="bg-white mb-1">
+                <Navbar key={expand} expand={expand} className="main-header bg-white mb-1">
                     <Container fluid>
-                        <Navbar.Brand href="#" className="fs-3">Polyhedron</Navbar.Brand>
-                        <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`}/>
+                        <Navbar.Brand href="#" className="title fs-3">Polyhedron</Navbar.Brand>
+                        {/*<div>*/}
+                            <Navbar.Brand as={Button} onClick={handleShowCart} textOnly={true} href="#" className="fs-3">
+                                {/*Cart ({totalCartItems})*/}
+                            </Navbar.Brand>
+                            <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`}/>
+                        {/*</div>*/}
                         <Navbar.Offcanvas
                             id={`offcanvasNavbar-expand-${expand}`}
                             aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
@@ -26,7 +45,7 @@ function OffcanvasBar() {
                             </Offcanvas.Header>
                             <Offcanvas.Body>
                                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                                    <Login />
+                                    <Login/>
                                     <Nav.Link href="#action1">Sign up!</Nav.Link>
                                     {/*<Nav.Link href="#action1">Settings</Nav.Link>*/}
                                     {/*<Nav.Link href="#action2">Orders</Nav.Link>*/}
@@ -35,8 +54,11 @@ function OffcanvasBar() {
                             </Offcanvas.Body>
                         </Navbar.Offcanvas>
                     </Container>
+
                 </Navbar>
+
             ))}
+            <Button onClick={handleShowCart}>  Cart ({totalCartItems})</Button>
         </>
     );
 }
