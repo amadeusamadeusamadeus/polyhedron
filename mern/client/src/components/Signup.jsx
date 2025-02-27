@@ -4,6 +4,7 @@ import {useState} from "react";
 export default function Signup() {
 
     const [passwordsAreNotEqual, setPasswordsAreNotEqual] = useState(false);
+    const [didEdit, setDidEdit] = useState(false);
 
     const [enteredValues, setEnteredValues] = useState({
         email: "",
@@ -78,6 +79,7 @@ export default function Signup() {
                         value={enteredValues.password}
                         required
                         minLength={6}
+                        autoComplete="current-password"
                     />
                 </div>
 
@@ -90,6 +92,7 @@ export default function Signup() {
                         onBlur={()=> handleInputBlur("confirmPassword")}
                         onChange={(event) => handleInputChange("confirmPassword", event.target.value)}
                         value={enteredValues.confirmPassword}
+                        autoComplete="current-password"
                         required
                     />
                     <div className="control-error">{passwordsAreNotEqual && <p>Passwords must match.</p>}</div>

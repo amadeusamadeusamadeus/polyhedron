@@ -39,7 +39,7 @@ router.post("/", async (req, res) => {
         };
         let collection = await db.collection("records");
         let result = await collection.insertOne(newDocument);
-        res.send(result).status(204);
+        res.send(result).status(201);
     } catch (err) {
         console.error(err);
         res.status(500).send("Error adding record");

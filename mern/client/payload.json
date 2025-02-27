@@ -1,0 +1,13 @@
+{
+  "order": {
+    "items": [
+      {
+        "name": "Test item",
+        "quantity": 1
+      }
+    ],
+    "customer": {
+      "email": "test@example.com"
+    }
+  }
+}

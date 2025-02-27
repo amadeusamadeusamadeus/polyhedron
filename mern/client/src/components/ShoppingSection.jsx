@@ -1,19 +1,18 @@
-import React, {useContext} from "react";
+// src/components/ShoppingSection.jsx
+import React, { useContext } from "react";
 import MaterialMenu from "./MaterialMenu";
 import Button from "./UI/Button.jsx";
 import CartContext from "../store/CartContext.jsx";
-//TODO: create a proper object for the order, so you can add it to the cart instead of just the material name
 
 export default function ShoppingSection({
                                             variations,
                                             config,
                                             onSelectVariation,
-                                            selectedMaterial, // changed prop name here
+                                            selectedMaterial,
                                         }) {
     const cartContext = useContext(CartContext);
 
     function handleAddItemToCart() {
-        // Only add the item if it exists, otherwise do nothing or show a warning.
         if (selectedMaterial) {
             cartContext.addItem(selectedMaterial);
         } else {
@@ -41,7 +40,12 @@ export default function ShoppingSection({
                 </p>
             </div>
             <div>
-                <p>€ 49,99</p>
+                <p>
+                    Price:{" "}
+                    {selectedMaterial && selectedMaterial.price !== undefined
+                        ? `$${selectedMaterial.price}`
+                        : "None"}
+                </p>
                 <Button onClick={handleAddItemToCart}>Add to Cart</Button>
             </div>
         </div>

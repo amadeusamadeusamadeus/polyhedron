@@ -1,3 +1,4 @@
+// src/components/Cart.jsx
 import Modal from "./UI/Modal.jsx";
 import { useContext, useEffect } from "react";
 import CartContext from "../store/CartContext.jsx";
@@ -13,22 +14,18 @@ export default function Cart() {
         console.log("User progress changed to:", userProgressCtx.progress);
     }, [userProgressCtx.progress]);
 
-    //TODO: ADD PRICES quantity*price
-
     const cartTotal = cartCtx.items.reduce(
         (totalPrice, item) => totalPrice + item.quantity,
         0
     );
 
-    function handleGoToCheckout (){
+    function handleGoToCheckout() {
         userProgressCtx.showCheckout();
     }
 
-    function handleCloseCart () {
+    function handleCloseCart() {
         userProgressCtx.hideCart();
     }
-
-
 
     return (
         <Modal
@@ -39,15 +36,23 @@ export default function Cart() {
             <h2>Your Cart</h2>
             <ul>
                 {cartCtx.items.map((item) => (
-                    <CartItem key={item.id} name={item.name} quantity={item.quantity} onIncrease={()=> cartCtx.addItem(item)} onDecrease={()=>cartCtx.removeItem(item.id)} />
+                    <CartItem
+                        key={item.uuid} // use uuid here for uniqueness
+                        name={item.name}
+                        quantity={item.quantity}
+                        onIncrease={() => cartCtx.addItem(item)}
+                        onDecrease={() => cartCtx.removeItem(item.uuid)}
+                    />
                 ))}
             </ul>
             <p className="cart-total">{cartTotal}</p>
             <p className="modal-actions">
-                <Button onClick={handleCloseCart} textOnly>Close</Button>
+                <Button onClick={handleCloseCart} textOnly>
+                    Close
+                </Button>
                 {cartCtx.items.length > 0 && (
-                    <Button onClick={handleGoToCheckout} >Go to Checkout</Button>)}
-
+                    <Button onClick={handleGoToCheckout}>Go to Checkout</Button>
+                )}
             </p>
         </Modal>
     );

@@ -1,26 +1,49 @@
 // src/components/WebgiViewer.jsx
-import React, {useRef, useEffect} from "react";
+import React, { useRef, useEffect } from "react";
 import {
     ViewerApp,
     AssetManagerPlugin,
     addBasePlugins,
     FileTransferPlugin,
     CanvasSnipperPlugin,
-    TonemapPlugin,
     MaterialConfiguratorPlugin
 } from "webgi";
-import config from "bootstrap/js/src/util/config.js";
-// import { CustomMaterialConfiguratorPlugin } from "../plugins/CustomMaterialConfiguratorPlugin";
 
-export default function WebgiViewer({onVariationChange, setVariations, setConfig}) {
+export default function WebgiViewer({ modelUrl, onVariationChange, setVariations, setConfig }) {
     const canvasRef = useRef(null);
+    const viewerRef = useRef(null);
+
+    // Custom function to determine price for a material.
+    const getPriceForMaterial = (material) => {
+        let price = 0;
+        if (material.name.includes("metal")) {
+            price = 99.99;
+        } else {
+            price = 199.99;
+        }
+        return price;
+    };
+
+    // Update the variations to include price in each material.
+    const updateVariationsWithPrice = (configPlugin) => {
+        const updatedVariations = configPlugin.variations.map((variation) => ({
+            ...variation,
+            materials: variation.materials.map((material) => ({
+                ...material,
+                price: getPriceForMaterial(material)
+            }))
+        }));
+        console.log("Available variations with price:", updatedVariations);
+        setVariations(updatedVariations);
+    };
 
     useEffect(() => {
         async function setupViewer() {
             if (!canvasRef.current) return;
 
             // Initialize the viewer.
-            const viewer = new ViewerApp({canvas: canvasRef.current});
+            const viewer = new ViewerApp({ canvas: canvasRef.current });
+            viewerRef.current = viewer;
 
             // Add essential plugins.
             await viewer.addPlugin(AssetManagerPlugin);
@@ -28,13 +51,8 @@ export default function WebgiViewer({onVariationChange, setVariations, setConfig
             await viewer.addPlugin(FileTransferPlugin);
             await viewer.addPlugin(CanvasSnipperPlugin);
 
-            // Add our custom Material Configurator Plugin.
+            // Add Material Configurator Plugin.
             const configPlugin = await viewer.addPlugin(MaterialConfiguratorPlugin);
-
-            // Disable the default UI so only our custom menu is used.
-            // viewer.getPlugin(MaterialConfiguratorPlugin).uiConfig.hidden = true;
-
-            // Set up the callback to track variation changes.
             configPlugin.onVariationChange = (selectedVariation) => {
                 console.log("Variation changed:", selectedVariation);
                 if (onVariationChange) {
@@ -42,22 +60,22 @@ export default function WebgiViewer({onVariationChange, setVariations, setConfig
                 }
             };
 
-            // Load your GLB model that includes material configuration data.
-            await viewer.load("D20Test.glb");
+            // Load the model using the provided modelUrl.
+            await viewer.load(modelUrl);
 
-            //TODO: Create an object or JSON from this to use throughout the app
+            // console.log(configPlugin);
 
-            console.log("Available variations:", configPlugin.variations);
-            setVariations(configPlugin.variations);
+            // Update variations to include price information.
+            updateVariationsWithPrice(configPlugin);
             setConfig(configPlugin);
         }
 
         setupViewer();
-    }, [onVariationChange, setVariations, setConfig]);
+    }, [onVariationChange, setVariations, setConfig, modelUrl]); // Re-run when modelUrl changes
 
     return (
-        <div id="webgi-canvas-container" style={{width: "100%", height: "600px"}}>
-            <canvas id="webgi-canvas" ref={canvasRef} style={{width: "100%", height: "100%"}}/>
+        <div id="webgi-canvas-container" style={{ width: "100%", height: "600px" }}>
+            <canvas id="webgi-canvas" ref={canvasRef} style={{ width: "100%", height: "100%" }} />
         </div>
     );
 }

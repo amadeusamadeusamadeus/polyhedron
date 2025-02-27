@@ -27,6 +27,7 @@ function OffcanvasBar() {
                 <Navbar key={expand} expand={expand} className="main-header bg-white mb-1">
                     <Container fluid>
                         <Navbar.Brand href="#" className="title fs-3">Polyhedron</Navbar.Brand>
+                        <Button textOnly onClick={handleShowCart}>  Cart ({totalCartItems})</Button>
                         {/*<div>*/}
                             <Navbar.Brand as={Button} onClick={handleShowCart} textOnly={true} href="#" className="fs-3">
                                 {/*Cart ({totalCartItems})*/}
@@ -58,7 +59,7 @@ function OffcanvasBar() {
                 </Navbar>
 
             ))}
-            <Button onClick={handleShowCart}>  Cart ({totalCartItems})</Button>
+
         </>
     );
 }

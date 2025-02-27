@@ -1,0 +1,85 @@
+/* App.css */
+
+/* Modal styles – used by your custom modal component */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000; /* Make sure it’s on top of other elements */
+    background-color: #e4ddd4;
+    border-radius: 6px;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    padding: 1rem;
+    width: 80%;
+    height: 80%;
+    max-width: 40rem;
+}
+.modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.55);
+}
+
+/* Cart component styles */
+.cart-item-actions button:hover,
+.cart-item-actions button:active {
+    background-color: #1d1a16;
+    color: #ffab04;
+}
+.cart-item-actions button {
+    cursor: pointer;
+    font-size: 1rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    border: none;
+    background-color: #312c1d;
+    color: #ffc404;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.cart-item-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+.cart-item p {
+    margin: 0;
+}
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.5rem 0;
+}
+.cart-total {
+    display: flex;
+    justify-content: flex-end;
+    margin: 2rem 0;
+    font-size: 1.15rem;
+    font-weight: bold;
+    color: #46443c;
+}
+.cart h2 {
+    margin: 1rem 0;
+}
+.cart ul {
+    list-style: none;
+    margin: 0.5rem 0;
+    padding: 0;
+}
+
+/* Modal actions styling */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+.modal-actions .text-button {
+    color: #1d1a16;
+}
+.modal-actions .text-button:hover,
+.modal-actions .text-button:active {
+    color: #bf0707;
+}
