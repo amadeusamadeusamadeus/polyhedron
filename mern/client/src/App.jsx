@@ -41,7 +41,7 @@ function App() {
                 </div>
                 <Jumbotron />
                 {/* Render ShapeMenu so user can switch 3D shapes */}
-                <ShapeMenu onShapeChange={handleShapeChange} />
+
                 {/* Pass the current modelUrl to WebgiViewer */}
                 <WebgiViewer
                     modelUrl={modelUrl}
@@ -57,6 +57,7 @@ function App() {
                     onSelectVariation={handleSelectVariation}
                     selectedMaterial={selectedMaterial}
                 />
+                <ShapeMenu onShapeChange={handleShapeChange} />
                 <Cart />
                 <Checkout />
             </CartContextProvider>

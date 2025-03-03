@@ -6,7 +6,6 @@ export default function MaterialMenu({ variations, config, onSelectVariation }) 
     async function evaluateClick(material, config) {
         console.log("Click", config);
         console.log("Material", material);
-        // Pass the full material object to onSelectVariation
         onSelectVariation(material);
         if (config && config.variations && material.uuid) {
             await config.applyVariation(config.variations[0], material.uuid);
@@ -17,14 +16,13 @@ export default function MaterialMenu({ variations, config, onSelectVariation }) 
         <div className="material-menu">
             {variations.map((variation) => (
                 <div key={variation.title} className="variation-group">
-                    <h3>{variation.title}</h3>
+                    {/*<h3>{variation.title}</h3>*/}
                     <div className="variation-options" style={{ display: "flex", flexWrap: "wrap" }}>
                         {variation.materials.map((material) => {
-                            // Check for material.userData and material.userData.icon before using them.
                             const iconUrl =
                                 material && material.userData && material.userData.icon
                                     ? material.userData.icon
-                                    : ""; // Fallback to an empty string or a placeholder URL
+                                    : "";//
                             return (
                                 <Button
                                     key={material.uuid}

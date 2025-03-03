@@ -7,6 +7,7 @@ import {
     FileTransferPlugin,
     CanvasSnipperPlugin,
     MaterialConfiguratorPlugin
+
 } from "webgi";
 
 export default function WebgiViewer({ modelUrl, onVariationChange, setVariations, setConfig }) {
@@ -14,6 +15,7 @@ export default function WebgiViewer({ modelUrl, onVariationChange, setVariations
     const viewerRef = useRef(null);
 
     // Custom function to determine price for a material.
+    //TODO: Retrieve product data from database
     const getPriceForMaterial = (material) => {
         let price = 0;
         if (material.name.includes("metal")) {

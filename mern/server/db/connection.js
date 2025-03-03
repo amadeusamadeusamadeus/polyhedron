@@ -21,6 +21,6 @@ try {
     console.error(err);
 }
 
-let db = client.db("orders");
+let db = client.db("polyhedron");
 
 export default db;

@@ -15,7 +15,7 @@ export default function Cart() {
     }, [userProgressCtx.progress]);
 
     const cartTotal = cartCtx.items.reduce(
-        (totalPrice, item) => totalPrice + item.quantity,
+        (totalPrice, item) => totalPrice + item.quantity * item.price,
         0
     );
 
@@ -37,7 +37,7 @@ export default function Cart() {
             <ul>
                 {cartCtx.items.map((item) => (
                     <CartItem
-                        key={item.uuid} // use uuid here for uniqueness
+                        key={item.uuid} //using UUID for uniqueness
                         name={item.name}
                         quantity={item.quantity}
                         onIncrease={() => cartCtx.addItem(item)}
@@ -45,7 +45,7 @@ export default function Cart() {
                     />
                 ))}
             </ul>
-            <p className="cart-total">{cartTotal}</p>
+            <p className="cart-total">Total : {cartTotal}</p>
             <p className="modal-actions">
                 <Button onClick={handleCloseCart} textOnly>
                     Close
