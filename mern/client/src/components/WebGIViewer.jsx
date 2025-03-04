@@ -7,54 +7,74 @@ import {
     FileTransferPlugin,
     CanvasSnipperPlugin,
     MaterialConfiguratorPlugin
-
 } from "webgi";
+import { ensureMaterialInDb } from "../api/materialService";
 
-export default function WebgiViewer({ modelUrl, onVariationChange, setVariations, setConfig }) {
+export default function WebgiViewer({
+                                        modelUrl,
+                                        onVariationChange,
+                                        setVariations,
+                                        setConfig,
+                                        dbMaterials,
+                                        dbShape,
+                                        setDbMaterials
+                                    }) {
     const canvasRef = useRef(null);
     const viewerRef = useRef(null);
+    const configRef = useRef(null);
 
-    // Custom function to determine price for a material.
-    //TODO: Retrieve product data from database
-    const getPriceForMaterial = (material) => {
-        let price = 0;
-        if (material.name.includes("metal")) {
-            price = 99.99;
-        } else {
-            price = 199.99;
-        }
-        return price;
-    };
-
-    // Update the variations to include price in each material.
-    const updateVariationsWithPrice = (configPlugin) => {
-        const updatedVariations = configPlugin.variations.map((variation) => ({
-            ...variation,
-            materials: variation.materials.map((material) => ({
-                ...material,
-                price: getPriceForMaterial(material)
-            }))
-        }));
-        console.log("Available variations with price:", updatedVariations);
+    // Merge the variation data from the .glb with DB pricing info.
+    const updateVariations = async (configPlugin) => {
+        const updatedVariations = await Promise.all(
+            configPlugin.variations.map(async (variation) => {
+                const newMaterials = await Promise.all(
+                    variation.materials.map(async (material) => {
+                        const glbId = material.uuid && material.uuid.toString();
+                        let matchingDbMaterial = dbMaterials.find(dbMat => dbMat.uuid === glbId);
+                        if (!matchingDbMaterial) {
+                            // If missing, ensure the material is created in DB.
+                            matchingDbMaterial = await ensureMaterialInDb(material);
+                            if (matchingDbMaterial) {
+                                setDbMaterials(prev => [...prev, matchingDbMaterial]);
+                            }
+                        }
+                        if (matchingDbMaterial && dbShape) {
+                            material.price = Number(dbShape.basePrice) + Number(matchingDbMaterial.priceModifier);
+                        } else {
+                            material.price = null;
+                            console.warn(
+                                "Price not set for material:",
+                                material.uuid,
+                                "dbShape:",
+                                dbShape,
+                                "matchingDbMaterial:",
+                                matchingDbMaterial
+                            );
+                        }
+                        return material;
+                    })
+                );
+                return { ...variation, materials: newMaterials };
+            })
+        );
+        console.log("Merged variations with pricing:", updatedVariations);
         setVariations(updatedVariations);
     };
 
+    // Initial viewer setup.
     useEffect(() => {
         async function setupViewer() {
             if (!canvasRef.current) return;
-
-            // Initialize the viewer.
             const viewer = new ViewerApp({ canvas: canvasRef.current });
             viewerRef.current = viewer;
 
-            // Add essential plugins.
             await viewer.addPlugin(AssetManagerPlugin);
             await addBasePlugins(viewer);
             await viewer.addPlugin(FileTransferPlugin);
             await viewer.addPlugin(CanvasSnipperPlugin);
 
-            // Add Material Configurator Plugin.
             const configPlugin = await viewer.addPlugin(MaterialConfiguratorPlugin);
+            configRef.current = configPlugin;
             configPlugin.onVariationChange = (selectedVariation) => {
                 console.log("Variation changed:", selectedVariation);
                 if (onVariationChange) {
@@ -62,18 +82,20 @@ export default function WebgiViewer({ modelUrl, onVariationChange, setVariations
                 }
             };
 
-            // Load the model using the provided modelUrl.
             await viewer.load(modelUrl);
-
-            // console.log(configPlugin);
-
-            // Update variations to include price information.
-            updateVariationsWithPrice(configPlugin);
+            await updateVariations(configPlugin);
             setConfig(configPlugin);
         }
-
         setupViewer();
-    }, [onVariationChange, setVariations, setConfig, modelUrl]); // Re-run when modelUrl changes
+    }, [onVariationChange, setVariations, setConfig, modelUrl]);
+
+    // Re-run merge when dbShape or dbMaterials change.
+    useEffect(() => {
+        console.log("Re-running merge with dbShape:", dbShape, "and dbMaterials:", dbMaterials);
+        if (configRef.current && dbShape && dbMaterials.length > 0) {
+            updateVariations(configRef.current);
+        }
+    }, [dbShape, dbMaterials]);
 
     return (
         <div id="webgi-canvas-container" style={{ width: "100%", height: "600px" }}>

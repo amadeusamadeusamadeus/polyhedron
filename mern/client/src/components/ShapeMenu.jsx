@@ -2,18 +2,16 @@
 import React from "react";
 import Button from "./UI/Button.jsx";
 
-const availableShapes = [
-    { label: "D4", url: "d4.glb" },
-    { label: "D20", url: "D20Test.glb" },
-    // Add more shapes as needed.
-];
-
-export default function ShapeMenu({ onShapeChange }) {
+export default function ShapeMenu({ shapes, onShapeChange }) {
     return (
         <div className="shape-menu">
-            {availableShapes.map((shape) => (
-                <Button key={shape.url} onClick={() => onShapeChange(shape.url)}>
-                    {shape.label}
+            {shapes.map((shape) => (
+                <Button
+                    key={shape._id}
+                    onClick={() => onShapeChange(shape)}
+                    style={{ margin: "0.5rem" }}
+                >
+                    {shape.name}
                 </Button>
             ))}
         </div>

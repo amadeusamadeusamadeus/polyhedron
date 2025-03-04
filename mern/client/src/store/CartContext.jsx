@@ -3,6 +3,7 @@ import { createContext, useReducer } from "react";
 
 const CartContext = createContext({
     items: [],
+    totalSum: 0,
     addItem: (item) => {},
     removeItem: (id) => {},
 });
@@ -60,8 +61,15 @@ export function CartContextProvider({ children }) {
         dispatchCartAction({ type: "REMOVE_ITEM", id });
     }
 
+    // Compute the total sum from individual item prices and quantities.
+    const totalSum = cart.items.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+    );
+
     const cartContext = {
         items: cart.items,
+        totalSum,
         addItem,
         removeItem,
     };

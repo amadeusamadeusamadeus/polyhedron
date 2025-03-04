@@ -37,7 +37,7 @@ export default function Cart() {
             <ul>
                 {cartCtx.items.map((item) => (
                     <CartItem
-                        key={item.uuid} //using UUID for uniqueness
+                        key={item.uuid} // using UUID for uniqueness
                         name={item.name}
                         quantity={item.quantity}
                         onIncrease={() => cartCtx.addItem(item)}

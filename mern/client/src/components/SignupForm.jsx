@@ -1,7 +1,8 @@
 import {useState} from "react";
 
+//TODO: back to main on cancel
 
-export default function Signup() {
+export default function SignupForm() {
 
     const [passwordsAreNotEqual, setPasswordsAreNotEqual] = useState(false);
     const [didEdit, setDidEdit] = useState(false);
@@ -178,6 +179,10 @@ export default function Signup() {
             </div>
 
             <p className="form-actions">
+
+                <button type="button" className="button button-flat">
+                    Cancel
+                </button>
                 <button type="reset" className="button button-flat">
                     Reset
                 </button>

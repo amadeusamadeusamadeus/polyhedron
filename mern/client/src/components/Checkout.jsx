@@ -1,12 +1,12 @@
 // src/components/Checkout.jsx
-import React, { useContext } from "react";
+import React, {useContext} from "react";
 import Modal from "./UI/Modal.jsx";
 import cartContext from "../store/CartContext.jsx";
 import Button from "./UI/Button.jsx";
 import UserProgressContext from "../store/UserProgressContext.jsx";
 import Input from "./Input.jsx";
-import { useInput } from "../hooks/useInput.js";
-import { isEmail, isNotEmpty } from "../utility/validation.js";
+import {useInput} from "../hooks/useInput.js";
+import {isEmail, isNotEmpty} from "../utility/validation.js";
 
 export default function Checkout() {
     const cartCtx = useContext(cartContext);
@@ -112,7 +112,14 @@ export default function Checkout() {
             body: JSON.stringify({
                 order: {
                     items: cartCtx.items,
+                    //TODO: to cherry pick certain attributes
+
+                    // items: cartCtx.items.map((item) => new {
+                    //     name: item.name,
+                    //     uuid: item.uuid
+                    // }),
                     customer: customerData,
+                    status: "Ordered",
                 },
             }),
         })

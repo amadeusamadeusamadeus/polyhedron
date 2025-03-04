@@ -2,38 +2,24 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import Login from './Login.jsx';
+import LoginForm from './LoginForm.jsx';
 import Button from "./UI/Button.jsx"
 import {useContext} from 'react';
 import CartContext from "../store/CartContext.jsx";
 import UserProgressContext from "../store/UserProgressContext.jsx";
-import userProgressContext from "../store/UserProgressContext.jsx";
+import { NavLink } from "react-router-dom";
 
 function OffcanvasBar() {
-    const cartCtx = useContext(CartContext);
-    const userProgressCtx =  useContext(UserProgressContext);
-
-    const totalCartItems = cartCtx.items.reduce((totalNumberOfItems, item)=>{
-        return totalNumberOfItems + item.quantity;
-    }, 0);
-
-    function handleShowCart() {
-        userProgressCtx.showCart();
-    }
 
     return (
         <>
             {[false].map((expand) => (
                 <Navbar key={expand} expand={expand} className="main-header bg-white mb-1">
                     <Container fluid>
-                        <Navbar.Brand href="#" className="title fs-3">Polyhedron</Navbar.Brand>
-                        <Button textOnly onClick={handleShowCart}>  Cart ({totalCartItems})</Button>
-                        {/*<div>*/}
-                            <Navbar.Brand as={Button} onClick={handleShowCart} textOnly={true} href="#" className="fs-3">
-                                {/*Cart ({totalCartItems})*/}
-                            </Navbar.Brand>
+                        <Navbar.Brand as={NavLink} to="/" className="title fs-3">
+                            Polyhedron
+                        </Navbar.Brand>
                             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`}/>
-                        {/*</div>*/}
                         <Navbar.Offcanvas
                             id={`offcanvasNavbar-expand-${expand}`}
                             aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
@@ -46,11 +32,12 @@ function OffcanvasBar() {
                             </Offcanvas.Header>
                             <Offcanvas.Body>
                                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                                    <Login/>
-                                    <Nav.Link href="#action1">Sign up!</Nav.Link>
-                                    {/*<Nav.Link href="#action1">Settings</Nav.Link>*/}
-                                    {/*<Nav.Link href="#action2">Orders</Nav.Link>*/}
-                                    {/*<Nav.Link href="#action3">Logout</Nav.Link>*/}
+                                    <LoginForm/>
+                                    <NavLink to="/">Home</NavLink>
+                                    <NavLink to="/signup">Sign up</NavLink>
+                                    <NavLink to="/orders">Orders</NavLink>
+                                    <NavLink to="/settings">Settings</NavLink>
+                                    <NavLink to="/settings">Logout</NavLink>
                                 </Nav>
                             </Offcanvas.Body>
                         </Navbar.Offcanvas>

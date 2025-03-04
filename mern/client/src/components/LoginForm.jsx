@@ -2,7 +2,7 @@ import Input from "./Input";
 import { isEmail, isNotEmpty, hasMinLength } from "../utility/validation.js";
 import { useInput } from "../hooks/useInput.js";
 
-export default function Login() {
+export default function LoginForm() {
 
     const {
         value: emailValue,

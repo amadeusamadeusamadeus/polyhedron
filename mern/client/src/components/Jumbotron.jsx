@@ -1,5 +1,7 @@
 import React from 'react';
 
+//TODO: make the sections more compact by letting them be created dynamically in one component with {...props} spreads
+
 export default function Jumbotron () {
 
     const handleStartNow = () => {
