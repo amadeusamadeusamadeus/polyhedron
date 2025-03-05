@@ -16,7 +16,7 @@ export default function MaterialMenu({ variations, config, onMaterialSelect }) {
             }
         }
     }
-
+//TODO: set the default material to something
     return (
         <div className="material-menu">
             {variations.map((variation) => (

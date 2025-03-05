@@ -6,6 +6,8 @@ import Button from "./UI/Button.jsx";
 import UserProgressContext from "../store/UserProgressContext.jsx";
 import CartItem from "./CartItem.jsx";
 
+//TODO: create an X button to close
+
 export default function Cart() {
     const cartCtx = useContext(CartContext);
     const userProgressCtx = useContext(UserProgressContext);
@@ -38,14 +40,16 @@ export default function Cart() {
                 {cartCtx.items.map((item) => (
                     <CartItem
                         key={item.uuid} // using UUID for uniqueness
+                        shapeName={item.shapeName}  // new: shape name added to the cart item
                         name={item.name}
                         quantity={item.quantity}
+                        price={item.price}
                         onIncrease={() => cartCtx.addItem(item)}
                         onDecrease={() => cartCtx.removeItem(item.uuid)}
                     />
                 ))}
             </ul>
-            <p className="cart-total">Total : {cartTotal}</p>
+            <p className="cart-total">Total : {cartTotal.toFixed(2)}</p>
             <p className="modal-actions">
                 <Button onClick={handleCloseCart} textOnly>
                     Close

@@ -1,5 +1,5 @@
 // src/components/ShoppingSection.jsx
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import MaterialMenu from "./MaterialMenu";
 import Button from "./UI/Button.jsx";
 import CartContext from "../store/CartContext.jsx";
@@ -11,26 +11,31 @@ export default function ShoppingSection({
                                             config,
                                             onSelectVariation,
                                             selectedMaterial,
+                                            selectedShape  // new prop: the currently selected shape
                                         }) {
     const cartContext = useContext(CartContext);
-
-    const cartCtx = useContext(CartContext);
     const userProgressCtx = useContext(UserProgressContext);
 
-    const totalCartItems = cartCtx.items.reduce((totalNumberOfItems, item) => {
-        return totalNumberOfItems + item.quantity;
-    }, 0);
+    // Calculate total items in cart.
+    const totalCartItems = cartContext.items.reduce(
+        (total, item) => total + item.quantity,
+        0
+    );
 
     function handleShowCart() {
         userProgressCtx.showCart();
     }
 
-
     function handleAddItemToCart() {
-        if (selectedMaterial) {
-            cartContext.addItem(selectedMaterial);
+        if (selectedMaterial && selectedShape) {
+            // Create a new cart item that includes the shape name.
+            const newItem = {
+                ...selectedMaterial,
+                shapeName: selectedShape.name,  // e.g. "D20"
+            };
+            cartContext.addItem(newItem);
         } else {
-            console.log("No material selected to add to cart.");
+            console.log("No material or shape selected to add to cart.");
         }
     }
 
@@ -62,14 +67,19 @@ export default function ShoppingSection({
                 </p>
             </div>
             <div>
-
-            </div>
-            <div>
                 <Button onClick={handleAddItemToCart}>Add to Cart</Button>
-                <Button textOnly onClick={handleShowCart}> Cart ({totalCartItems})</Button>
-                <Navbar.Brand as={Button} onClick={handleShowCart} textOnly={true} href="#" className="fs-3">
+                <Button textOnly onClick={handleShowCart}>
+                    Cart ({totalCartItems})
+                </Button>
+                <Navbar.Brand
+                    as={Button}
+                    onClick={handleShowCart}
+                    textOnly={true}
+                    href="#"
+                    className="fs-3"
+                >
+                    {/* Optionally, you can place a label or icon here */}
                 </Navbar.Brand>
-
             </div>
         </div>
     );

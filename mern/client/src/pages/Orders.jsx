@@ -1,20 +1,32 @@
+// src/pages/Orders.jsx
+import React, { useContext, useEffect, useState } from "react";
+import { Accordion, Spinner, Alert } from "react-bootstrap";
+import { AuthContext } from "../store/AuthContext.jsx";
 
-//TODO: create pull request and display orders in a nice way
-
+//TODO: Proper error messages for whether user isn't signed in or they might not have orders yet
 //TODO: fix proper formatting and data integrity once established
 
-import React, { useEffect, useState } from "react";
-import { Accordion, Spinner, Alert } from "react-bootstrap";
-
 export default function Orders() {
+    const { token, isAuthenticated } = useContext(AuthContext);
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         async function fetchOrders() {
+            // If not authenticated, display an error.
+            if (!isAuthenticated) {
+                setError("You are not authenticated. Please log in to view your orders.");
+                setLoading(false);
+                return;
+            }
             try {
-                const response = await fetch("http://localhost:5050/orders");
+                const response = await fetch("http://localhost:5050/orders", {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
                 if (!response.ok) {
                     throw new Error("Failed to fetch orders");
                 }
@@ -27,11 +39,11 @@ export default function Orders() {
             }
         }
         fetchOrders();
-    }, []);
+    }, [token, isAuthenticated]);
 
     if (loading) {
         return (
-            <div className="d-flex justify-content-center align-items-center" style={{height:"80vh"}}>
+            <div className="d-flex justify-content-center align-items-center" style={{ height: "80vh" }}>
                 <Spinner animation="border" variant="primary" />
             </div>
         );

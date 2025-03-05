@@ -25,7 +25,7 @@ export default function Home() {
     const [selectedShape, setSelectedShape] = useState(null);
     const [selectedMaterial, setSelectedMaterial] = useState(null);
 
-    // Fetch shapes and materials on mount
+    // Fetch shapes and materials on mount.
     useEffect(() => {
         async function fetchProductData() {
             try {
@@ -77,6 +77,7 @@ export default function Home() {
                 config={config}
                 onSelectVariation={handleSelectVariation}
                 selectedMaterial={selectedMaterial}
+                selectedShape={selectedShape}  // Pass the currently selected shape.
             />
             <Cart />
             <Checkout />

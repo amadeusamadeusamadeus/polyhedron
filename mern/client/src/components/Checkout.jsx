@@ -7,6 +7,9 @@ import UserProgressContext from "../store/UserProgressContext.jsx";
 import Input from "./Input.jsx";
 import {useInput} from "../hooks/useInput.js";
 import {isEmail, isNotEmpty} from "../utility/validation.js";
+import {getAuthToken} from "../utility/auth.js";
+
+//TODO: add a date/time created to the orderData
 
 export default function Checkout() {
     const cartCtx = useContext(cartContext);
@@ -104,10 +107,13 @@ export default function Checkout() {
             city: cityValue,
         };
 
+        const token = getAuthToken();
+
         fetch("http://localhost:5050/orders", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
             },
             body: JSON.stringify({
                 order: {

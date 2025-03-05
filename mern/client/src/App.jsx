@@ -1,35 +1,50 @@
 // src/App.jsx
 import React from "react";
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {CartContextProvider} from "./store/CartContext.jsx";
 import {UserProgressContextProvider} from "./store/UserProgressContext.jsx";
+import {AuthContextProvider} from "./store/AuthContext.jsx";
 import RootLayout from "./pages/Root.jsx";
 import Home from "./pages/Home.jsx";
 import Signup from "./pages/Signup.jsx";
 import Orders from "./pages/Orders.jsx";
 import UserSettings from "./pages/UserSettings.jsx";
+import AdminSignupForm from "./components/AdminSignupForm.jsx";
+import AdminDashboard from "./pages/AdminDashboard.jsx";
+import {action as LogoutAction} from "./pages/Logout.js";
+import RequireAdmin from "./components/RequireAdmin.jsx";
 
-//TODO: connect Polyhedron logo/button with home, make a back button under polyhedron with an arrow also going to home when not on the main page and a home menu point in the offcanvas menu
 
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <RootLayout/>,
+        children: [
+            {index: true, element: <Home/>},
+            {path: "orders", element: <Orders/>},
+            {path: "signup", element: <Signup/>},
+            {path: "settings", element: <UserSettings/>},
+            {path: "adminSignup", element: <AdminSignupForm/>},
+            {
+                path: "admin-dashboard", element:
+                    <RequireAdmin>
+                        <AdminDashboard/>
+                    </RequireAdmin>
+            },
+            {path: "logout", action: LogoutAction},
+        ],
+    },
+]);
 
 function App() {
     return (
-        <UserProgressContextProvider>
-            <CartContextProvider>
-                <Router>
-                    <Routes>
-                        <Route path="/" element={<RootLayout/>}>
-                            <Route index element={<Home/>}/>
-                            <Route path="orders" element={<Orders/>}/>
-                            <Route path="signup" element={<Signup/>}/>
-                            <Route path="settings" element={<UserSettings/>}/>
-                            {/*<Route path="" element={<SignupForm />} />*/}
-                            {/*<Route path="about" element={<AboutPage />} />*/}
-                        </Route>
-                    </Routes>
-                </Router>
-            </CartContextProvider>
-        </UserProgressContextProvider>
+        <AuthContextProvider>
+            <UserProgressContextProvider>
+                <CartContextProvider>
+                    <RouterProvider router={router}/>
+                </CartContextProvider>
+            </UserProgressContextProvider>
+        </AuthContextProvider>
     );
 }
 

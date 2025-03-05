@@ -1,47 +1,47 @@
-const { sign, verify } = require('jsonwebtoken');
-const { compare } = require('bcryptjs');
-const { NotAuthError } = require('./errors');
+// server/util/auth.js
+import pkg from "jsonwebtoken";
+const { sign, verify } = pkg;
+import { compare } from "bcryptjs";
 
+// Your secret key from environment variables.
 const KEY = process.env.KEY;
 
-function createJSONToken(email) {
-    return sign({ email }, KEY, { expiresIn: '1h' });
+// Create a JSON Web Token that includes user data.
+export function createJSONToken(user) {
+    return sign({ email: user.email, id: user._id, role: user.role }, KEY, {
+        expiresIn: "1h"
+    });
 }
 
-function validateJSONToken(token) {
+// Validate a JSON Web Token.
+export function validateJSONToken(token) {
     return verify(token, KEY);
 }
 
-function isValidPassword(password, storedPassword) {
-    return compare(password, storedPassword);
+// Validate a plaintext password against a hashed password.
+export async function isValidPassword(plaintextPassword, hashedPassword) {
+    return await compare(plaintextPassword, hashedPassword);
 }
 
-function checkAuthMiddleware(req, res, next) {
-    if (req.method === 'OPTIONS') {
-        return next();
-    }
+// Authentication middleware to check the token.
+export function checkAuth(req, res, next) {
+    if (req.method === "OPTIONS") return next();
     if (!req.headers.authorization) {
-        console.log('NOT AUTH. AUTH HEADER MISSING.');
-        return next(new NotAuthError('Not authenticated.'));
+        console.log("NOT AUTH. AUTH HEADER MISSING.");
+        return res.status(401).json({ error: "Not authenticated." });
     }
-    const authFragments = req.headers.authorization.split(' ');
-
+    const authFragments = req.headers.authorization.split(" ");
     if (authFragments.length !== 2) {
-        console.log('NOT AUTH. AUTH HEADER INVALID.');
-        return next(new NotAuthError('Not authenticated.'));
+        console.log("NOT AUTH. AUTH HEADER INVALID.");
+        return res.status(401).json({ error: "Not authenticated." });
     }
-    const authToken = authFragments[1];
+    const token = authFragments[1];
     try {
-        const validatedToken = validateJSONToken(authToken);
-        req.token = validatedToken;
+        const validated = validateJSONToken(token);
+        req.token = validated;
     } catch (error) {
-        console.log('NOT AUTH. TOKEN INVALID.');
-        return next(new NotAuthError('Not authenticated.'));
+        console.log("NOT AUTH. TOKEN INVALID.");
+        return res.status(401).json({ error: "Not authenticated." });
     }
     next();
 }
-
-exports.createJSONToken = createJSONToken;
-exports.validateJSONToken = validateJSONToken;
-exports.isValidPassword = isValidPassword;
-exports.checkAuth = checkAuthMiddleware;
