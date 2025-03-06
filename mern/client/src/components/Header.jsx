@@ -64,6 +64,7 @@ function Header() {
                                             <NavLink to="/">Home</NavLink>
                                             <NavLink to="/orders">Orders</NavLink>
                                             <NavLink to="/settings">Settings</NavLink>
+                                            <NavLink to="/cart">View Cart</NavLink>
                                             <AdminDashboardLink/>
                                             <Button className="nav-link active" onClick={handleLogout}>
                                                 Logout

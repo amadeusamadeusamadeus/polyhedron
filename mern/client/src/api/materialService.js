@@ -9,7 +9,7 @@ export const ensureMaterialInDb = async (material) => {
             body: JSON.stringify({
                 uuid: material.uuid,
                 name: material.userData?.name || "Placeholder Material",
-                priceModifier: 0, // Set a default placeholder value; adjust if needed
+                priceModifier: 10,
                 icon: material.userData?.icon || ""
             })
         });

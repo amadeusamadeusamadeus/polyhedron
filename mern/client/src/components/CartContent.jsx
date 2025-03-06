@@ -1,0 +1,52 @@
+// src/components/CartContent.jsx
+import React, { useContext, useEffect } from "react";
+import CartContext from "../store/CartContext.jsx";
+import CartItem from "./CartItem.jsx";
+import Button from "./UI/Button.jsx";
+
+export default function CartContent({ onClose, onCheckout, showActions = true }) {
+    const cartCtx = useContext(CartContext);
+
+    useEffect(() => {
+        console.log("CartPage items:", cartCtx.items);
+    }, [cartCtx.items]);
+
+    const cartTotal = cartCtx.items.reduce(
+        (total, item) => total + (item.quantity * (item.price || 0)),
+        0
+    );
+
+    return (
+        <div className="cart-content">
+            <h2>Your Cart</h2>
+            {cartCtx.items.length === 0 ? (
+                <p>Your cart is empty.</p>
+            ) : (
+                <>
+                <ul>
+                    {cartCtx.items.map((item) => (
+                        <CartItem
+                            key={item.uuid}
+                            shapeName={item.shapeName}
+                            name={item.name}
+                            quantity={item.quantity}
+                            price={item.price}
+                            onIncrease={() => cartCtx.addItem(item)}
+                            onDecrease={() => cartCtx.removeItem(item.uuid)}
+                        />
+                    ))}
+                </ul>
+                <p className="cart-total">Total: {cartTotal.toFixed(2)}</p>
+                </>
+            )}
+            {showActions && (
+                <div className="cart-actions">
+                    {onClose && <Button onClick={onClose} textOnly>Close</Button>}
+                    {cartCtx.items.length > 0 && onCheckout && (
+                        <Button onClick={onCheckout}>Go to Checkout</Button>
+                    )}
+                </div>
+            )}
+        </div>
+    );
+}

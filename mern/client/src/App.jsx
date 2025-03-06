@@ -13,6 +13,8 @@ import AdminSignupForm from "./components/AdminSignupForm.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
 import {action as LogoutAction} from "./pages/Logout.js";
 import RequireAdmin from "./components/RequireAdmin.jsx";
+import CartPage from "./pages/CartPage.jsx";
+import CheckoutPage from "./pages/CheckoutPage.jsx";
 
 
 const router = createBrowserRouter([
@@ -25,6 +27,8 @@ const router = createBrowserRouter([
             {path: "signup", element: <Signup/>},
             {path: "settings", element: <UserSettings/>},
             {path: "adminSignup", element: <AdminSignupForm/>},
+            { path: "cart", element: <CartPage /> },
+            { path: "checkout", element: <CheckoutPage /> },
             {
                 path: "admin-dashboard", element:
                     <RequireAdmin>

@@ -31,7 +31,6 @@ router.post("/", async (req, res, next) => {
             return res.status(400).json({ error: "Email and password are required." });
         }
 
-        // Fetch the user from the "users" collection using the provided email.
         const user = await db.collection("users").findOne({ email });
         if (!user) {
             // No user found.

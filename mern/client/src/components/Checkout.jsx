@@ -1,83 +1,147 @@
 // src/components/Checkout.jsx
-import React, {useContext} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Modal from "./UI/Modal.jsx";
 import cartContext from "../store/CartContext.jsx";
 import Button from "./UI/Button.jsx";
 import UserProgressContext from "../store/UserProgressContext.jsx";
 import Input from "./Input.jsx";
-import {useInput} from "../hooks/useInput.js";
-import {isEmail, isNotEmpty} from "../utility/validation.js";
-import {getAuthToken} from "../utility/auth.js";
+import { useInput } from "../hooks/useInput.js";
+import { isEmail, isNotEmpty } from "../utility/validation.js";
+import { getAuthToken } from "../utility/auth.js";
+import { AuthContext } from "../store/AuthContext.jsx";
 
-//TODO: add a date/time created to the orderData
-
-export default function Checkout() {
+export default function Checkout({ isModal = true, onClose = () => {} }) {
     const cartCtx = useContext(cartContext);
     const userProgressCtx = useContext(UserProgressContext);
+    const authCtx = useContext(AuthContext);
+    const [profileData, setProfileData] = useState(null);
+    const [loadingProfile, setLoadingProfile] = useState(false);
+
     const cartTotal = cartCtx.items.reduce(
-        (totalPrice, item) => totalPrice + item.quantity,
+        (total, item) => total + (item.quantity * (item.price || 0)),
         0
     );
 
-    // Set up useInput for each field
+    useEffect(() => {
+        if (authCtx.isAuthenticated && authCtx.user?.id) {
+            setLoadingProfile(true);
+            fetch(`http://localhost:5050/users/profile/${authCtx.user.id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${authCtx.token}`,
+                },
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("Failed to fetch profile data");
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    setProfileData(data);
+                    setLoadingProfile(false);
+                })
+                .catch((error) => {
+                    console.error("Error fetching profile data:", error);
+                    setLoadingProfile(false);
+                });
+        }
+    }, [authCtx.isAuthenticated, authCtx.user, authCtx.token]);
+
+
+    const defaultEmail = profileData?.email || "";
+    const defaultFirstName = profileData?.firstName || "";
+    const defaultLastName = profileData?.lastName || "";
+    const defaultStreet = profileData?.address?.street || "";
+    const defaultStreetNumber = profileData?.address?.streetNumber || "";
+    const defaultPostalCode = profileData?.address?.postalCode || "";
+    const defaultCity = profileData?.address?.city || "";
+
+    // Customer fields
     const {
         value: emailValue,
         handleInputChange: handleEmailChange,
         handleInputBlur: handleEmailBlur,
         hasError: emailHasError,
-        reset: resetEmail,
-    } = useInput("", (value) => isEmail(value) && isNotEmpty(value));
+        reset: resetEmailField,
+    } = useInput(defaultEmail, (value) => isEmail(value) && isNotEmpty(value));
 
     const {
         value: firstNameValue,
         handleInputChange: handleFirstNameChange,
         handleInputBlur: handleFirstNameBlur,
         hasError: firstNameHasError,
-        reset: resetFirstName,
-    } = useInput("", isNotEmpty);
+        reset: resetFirstNameField,
+    } = useInput(defaultFirstName, isNotEmpty);
 
     const {
         value: lastNameValue,
         handleInputChange: handleLastNameChange,
         handleInputBlur: handleLastNameBlur,
         hasError: lastNameHasError,
-        reset: resetLastName,
-    } = useInput("", isNotEmpty);
+        reset: resetLastNameField,
+    } = useInput(defaultLastName, isNotEmpty);
 
     const {
         value: streetValue,
         handleInputChange: handleStreetChange,
         handleInputBlur: handleStreetBlur,
         hasError: streetHasError,
-        reset: resetStreet,
-    } = useInput("", isNotEmpty);
+        reset: resetStreetField,
+    } = useInput(defaultStreet, isNotEmpty);
 
     const {
         value: streetNumberValue,
         handleInputChange: handleStreetNumberChange,
         handleInputBlur: handleStreetNumberBlur,
         hasError: streetNumberHasError,
-        reset: resetStreetNumber,
-    } = useInput("", isNotEmpty);
+        reset: resetStreetNumberField,
+    } = useInput(defaultStreetNumber, isNotEmpty);
 
     const {
         value: postalCodeValue,
         handleInputChange: handlePostalCodeChange,
         handleInputBlur: handlePostalCodeBlur,
         hasError: postalCodeHasError,
-        reset: resetPostalCode,
-    } = useInput("", isNotEmpty);
+        reset: resetPostalCodeField,
+    } = useInput(defaultPostalCode, isNotEmpty);
 
     const {
         value: cityValue,
         handleInputChange: handleCityChange,
         handleInputBlur: handleCityBlur,
         hasError: cityHasError,
-        reset: resetCity,
-    } = useInput("", isNotEmpty);
+        reset: resetCityField,
+    } = useInput(defaultCity, isNotEmpty);
+
+    // Payment fields (start empty)
+    const {
+        value: cardNumber,
+        handleInputChange: handleCardNumberChange,
+        handleInputBlur: handleCardNumberBlur,
+        hasError: cardNumberHasError,
+        reset: resetCardNumber,
+    } = useInput("", (value) => value.trim() !== "");
+
+    const {
+        value: expiryDate,
+        handleInputChange: handleExpiryDateChange,
+        handleInputBlur: handleExpiryDateBlur,
+        hasError: expiryDateHasError,
+        reset: resetExpiryDate,
+    } = useInput("", (value) => value.trim() !== "");
+
+    const {
+        value: securityCode,
+        handleInputChange: handleSecurityCodeChange,
+        handleInputBlur: handleSecurityCodeBlur,
+        hasError: securityCodeHasError,
+        reset: resetSecurityCode,
+    } = useInput("", (value) => value.trim() !== "");
 
     function handleClose() {
-        userProgressCtx.hideCheckout();
+        if (isModal) userProgressCtx.hideCheckout();
     }
 
     function handleSubmit(event) {
@@ -90,22 +154,40 @@ export default function Checkout() {
             streetHasError ||
             streetNumberHasError ||
             postalCodeHasError ||
-            cityHasError
+            cityHasError ||
+            cardNumberHasError ||
+            expiryDateHasError ||
+            securityCodeHasError
         ) {
             console.error("Validation error in one or more fields.");
             return;
         }
 
-        // Build the customer data object
+        // Structure customer data including address and payment details.
         const customerData = {
             email: emailValue,
             firstName: firstNameValue,
             lastName: lastNameValue,
-            street: streetValue,
-            streetNumber: streetNumberValue,
-            postalCode: postalCodeValue,
-            city: cityValue,
+            address: {
+                street: streetValue,
+                streetNumber: streetNumberValue,
+                postalCode: postalCodeValue,
+                city: cityValue,
+            },
+            payment: {
+                cardNumber,
+                expiryDate,
+                securityCode,
+            },
         };
+
+        // Structure items data.
+        const itemsData = cartCtx.items.map((item) => ({
+            shape: item.shapeName,
+            material: item.name,
+            unitPrice: item.price,
+            quantity: item.quantity,
+        }));
 
         const token = getAuthToken();
 
@@ -113,19 +195,15 @@ export default function Checkout() {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${token}`,
             },
             body: JSON.stringify({
                 order: {
-                    items: cartCtx.items,
-                    //TODO: to cherry pick certain attributes
-
-                    // items: cartCtx.items.map((item) => new {
-                    //     name: item.name,
-                    //     uuid: item.uuid
-                    // }),
                     customer: customerData,
+                    items: itemsData,
                     status: "Ordered",
+                    totalPrice: parseFloat((cartTotal).toFixed(2)),
+                    createdAt: new Date().toISOString(),
                 },
             }),
         })
@@ -137,25 +215,35 @@ export default function Checkout() {
             })
             .then((data) => {
                 console.log("Order created:", data);
-                resetEmail();
-                resetFirstName();
-                resetLastName();
-                resetStreet();
-                resetStreetNumber();
-                resetPostalCode();
-                resetCity();
-                userProgressCtx.hideCheckout();
+                resetEmailField();
+                resetFirstNameField();
+                resetLastNameField();
+                resetStreetField();
+                resetStreetNumberField();
+                resetPostalCodeField();
+                resetCityField();
+                resetCardNumber();
+                resetExpiryDate();
+                resetSecurityCode();
+                cartCtx.clearCart();
+                if (isModal) userProgressCtx.hideCheckout();
             })
             .catch((error) => {
                 console.error("There was a problem with the fetch operation:", error);
             });
     }
 
-    return (
-        <Modal open={userProgressCtx.progress === "checkout"}>
-            <form onSubmit={handleSubmit}>
-                <h2>Checkout</h2>
-                <p>Total Amount: {cartTotal}</p>
+    // If profile is loading, show a loading indicator.
+    if (authCtx.isAuthenticated && loadingProfile) {
+        return <p>Loading profile...</p>;
+    }
+
+    const content = (
+        <form onSubmit={handleSubmit}>
+            <h2>Checkout</h2>
+            <p>Total Amount: {cartTotal}</p>
+            <fieldset>
+                <legend>Customer Information</legend>
                 <div className="control">
                     <label htmlFor="email">Email</label>
                     <Input
@@ -253,13 +341,65 @@ export default function Checkout() {
                         />
                     </div>
                 </div>
-                <p className="modal-actions">
+            </fieldset>
+            <fieldset>
+                <legend>Payment Details</legend>
+                <div className="control">
+                    <label htmlFor="card-number">Card Number</label>
+                    <Input
+                        id="card-number"
+                        type="text"
+                        name="card-number"
+                        onBlur={handleCardNumberBlur}
+                        onChange={handleCardNumberChange}
+                        value={cardNumber}
+                        error={cardNumberHasError && "Please enter your card number."}
+                        required
+                    />
+                </div>
+                <div className="control-row">
+                    <div className="control">
+                        <label htmlFor="expiry-date">Expiry Date</label>
+                        <Input
+                            id="expiry-date"
+                            type="text"
+                            name="expiry-date"
+                            onBlur={handleExpiryDateBlur}
+                            onChange={handleExpiryDateChange}
+                            value={expiryDate}
+                            error={expiryDateHasError && "Please enter the expiry date."}
+                            required
+                        />
+                    </div>
+                    <div className="control">
+                        <label htmlFor="security-code">Security Code</label>
+                        <Input
+                            id="security-code"
+                            type="text"
+                            name="security-code"
+                            onBlur={handleSecurityCodeBlur}
+                            onChange={handleSecurityCodeChange}
+                            value={securityCode}
+                            error={securityCodeHasError && "Please enter the security code."}
+                            required
+                        />
+                    </div>
+                </div>
+            </fieldset>
+            <p className="modal-actions">
+                {isModal && (
                     <Button textOnly type="button" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button>Submit Order</Button>
-                </p>
-            </form>
-        </Modal>
+                )}
+                <Button type="submit">Submit Order</Button>
+            </p>
+        </form>
+    );
+
+    return isModal ? (
+        <Modal open={userProgressCtx.progress === "checkout"}>{content}</Modal>
+    ) : (
+        <div className="checkout-page-container">{content}</div>
     );
 }

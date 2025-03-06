@@ -71,15 +71,15 @@ export default function ShoppingSection({
                 <Button textOnly onClick={handleShowCart}>
                     Cart ({totalCartItems})
                 </Button>
-                <Navbar.Brand
-                    as={Button}
-                    onClick={handleShowCart}
-                    textOnly={true}
-                    href="#"
-                    className="fs-3"
-                >
-                    {/* Optionally, you can place a label or icon here */}
-                </Navbar.Brand>
+                {/*<Navbar.Brand*/}
+                {/*    as={Button}*/}
+                {/*    onClick={handleShowCart}*/}
+                {/*    textOnly={true}*/}
+                {/*    href="#"*/}
+                {/*    className="fs-3"*/}
+                {/*>*/}
+                {/*    /!* Optionally, you can place a label or icon here *!/*/}
+                {/*</Navbar.Brand>*/}
             </div>
         </div>
     );

@@ -20,7 +20,7 @@
     background-color: rgba(0, 0, 0, 0.55);
 }
 
-/* Cart component styles */
+/* Cart_old component styles */
 .cart-item-actions button:hover,
 .cart-item-actions button:active {
     background-color: #1d1a16;

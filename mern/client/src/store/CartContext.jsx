@@ -6,11 +6,11 @@ const CartContext = createContext({
     totalSum: 0,
     addItem: (item) => {},
     removeItem: (id) => {},
+    clearCart: () => {},
 });
 
 function cartReducer(state, action) {
     if (action.type === "ADD_ITEM") {
-        // Use uuid for comparison.
         const existingCartItemIndex = state.items.findIndex(
             (item) => item.uuid === action.item.uuid
         );
@@ -47,6 +47,11 @@ function cartReducer(state, action) {
         }
         return { ...state, items: updatedItems };
     }
+
+    if (action.type === "CLEAR_CART") {
+        return { ...state, items: [] };
+    }
+
     return state;
 }
 
@@ -61,6 +66,10 @@ export function CartContextProvider({ children }) {
         dispatchCartAction({ type: "REMOVE_ITEM", id });
     }
 
+    function clearCart() {
+        dispatchCartAction({ type: "CLEAR_CART" });
+    }
+
     // Compute the total sum from individual item prices and quantities.
     const totalSum = cart.items.reduce(
         (total, item) => total + item.price * item.quantity,
@@ -72,9 +81,10 @@ export function CartContextProvider({ children }) {
         totalSum,
         addItem,
         removeItem,
+        clearCart,
     };
 
-    console.log("Cart", cartContext);
+    console.log("CartPage items", cartContext);
 
     return (
         <CartContext.Provider value={cartContext}>

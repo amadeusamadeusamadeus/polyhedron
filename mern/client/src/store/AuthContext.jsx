@@ -36,9 +36,15 @@ export function AuthContextProvider({ children }) {
         localStorage.removeItem("user");
     };
 
+    const contextValue = {
+        token,
+        user,
+        login,
+        logout,
+        isAuthenticated: !!token,
+    };
+
     return (
-        <AuthContext.Provider value={{ token, user, login, logout, isAuthenticated: !!token }}>
-            {children}
-        </AuthContext.Provider>
+        <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
     );
 }

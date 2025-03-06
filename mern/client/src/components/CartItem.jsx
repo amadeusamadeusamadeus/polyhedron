@@ -12,7 +12,7 @@ export default function CartItem({
     return (
         <li className="cart-item">
             <p>
-                {shapeName} Material: {name} – Quantity: {quantity} – Price: $
+                {shapeName} Material: {name} – Quantity: {quantity} – Price:
                 {price.toFixed(2)}
             </p>
             <p className="cart-item-actions">

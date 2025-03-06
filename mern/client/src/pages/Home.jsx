@@ -7,8 +7,8 @@ import WebgiViewer from "../components/WebgiViewer.jsx";
 import PitchSection from "../components/PitchSection.jsx";
 import PreviewSection from "../components/PreviewSection.jsx";
 import ShoppingSection from "../components/ShoppingSection.jsx";
-import Cart from "../components/Cart.jsx";
 import Checkout from "../components/Checkout.jsx";
+import CartModal from "../components/CartModal.jsx";
 
 export default function Home() {
     // 3D viewer & configuration state
@@ -25,7 +25,7 @@ export default function Home() {
     const [selectedShape, setSelectedShape] = useState(null);
     const [selectedMaterial, setSelectedMaterial] = useState(null);
 
-    // Fetch shapes and materials on mount.
+
     useEffect(() => {
         async function fetchProductData() {
             try {
@@ -77,9 +77,9 @@ export default function Home() {
                 config={config}
                 onSelectVariation={handleSelectVariation}
                 selectedMaterial={selectedMaterial}
-                selectedShape={selectedShape}  // Pass the currently selected shape.
+                selectedShape={selectedShape}
             />
-            <Cart />
+            <CartModal />
             <Checkout />
         </>
     );

@@ -3,9 +3,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { Accordion, Spinner, Alert } from "react-bootstrap";
 import { AuthContext } from "../store/AuthContext.jsx";
 
-//TODO: Proper error messages for whether user isn't signed in or they might not have orders yet
-//TODO: fix proper formatting and data integrity once established
-
 export default function Orders() {
     const { token, isAuthenticated } = useContext(AuthContext);
     const [orders, setOrders] = useState([]);
@@ -14,7 +11,6 @@ export default function Orders() {
 
     useEffect(() => {
         async function fetchOrders() {
-            // If not authenticated, display an error.
             if (!isAuthenticated) {
                 setError("You are not authenticated. Please log in to view your orders.");
                 setLoading(false);
@@ -60,50 +56,53 @@ export default function Orders() {
                 <p>You have no orders yet.</p>
             ) : (
                 <Accordion defaultActiveKey="0">
-                    {orders.map((order, index) => (
-                        <Accordion.Item eventKey={index.toString()} key={order._id}>
-                            <Accordion.Header>
-                                Order #{order._id} -{" "}
-                                {order.orderData && order.orderData.customer
-                                    ? order.orderData.customer.email
-                                    : "No customer info"}
-                            </Accordion.Header>
-                            <Accordion.Body>
-                                {order.orderData ? (
-                                    <>
-                                        <p>
-                                            <strong>Customer Name:</strong>{" "}
-                                            {order.orderData.customer.firstName}{" "}
-                                            {order.orderData.customer.lastName}
-                                        </p>
-                                        <p>
-                                            <strong>Email:</strong>{" "}
-                                            {order.orderData.customer.email}
-                                        </p>
-                                        <p>
-                                            <strong>Address:</strong>{" "}
-                                            {order.orderData.customer.address}
-                                        </p>
-                                        <h5>Items:</h5>
-                                        {order.orderData.items && order.orderData.items.length > 0 ? (
-                                            <ul>
-                                                {order.orderData.items.map((item, i) => (
-                                                    <li key={i}>
-                                                        {item.name} – Quantity: {item.quantity} – Price: $
-                                                        {item.price.toFixed(2)}
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        ) : (
-                                            <p>No items found in this order.</p>
-                                        )}
-                                    </>
-                                ) : (
-                                    <p>No order data available.</p>
-                                )}
-                            </Accordion.Body>
-                        </Accordion.Item>
-                    ))}
+                    {orders.map((order, index) => {
+                        const orderData = order.orderData;
+                        const createdAt = orderData?.createdAt ? new Date(orderData.createdAt).toLocaleString() : "No date";
+                        const address = orderData?.customer
+                            ? `${orderData.customer.address.street} ${orderData.customer.address.streetNumber}, ${orderData.customer.address.postalCode} ${orderData.customer.address.city}`
+                            : "No address";
+                        return (
+                            <Accordion.Item eventKey={index.toString()} key={order._id}>
+                                <Accordion.Header>
+                                    Order #{order._id} - {createdAt}
+                                </Accordion.Header>
+                                <Accordion.Body>
+                                    {orderData ? (
+                                        <>
+                                            <p>
+                                                <strong>Customer Name:</strong> {orderData.customer.firstName} {orderData.customer.lastName}
+                                            </p>
+                                            <p>
+                                                <strong>Address:</strong> {address}
+                                            </p>
+                                            <h5>Items:</h5>
+                                            {orderData.items && orderData.items.length > 0 ? (
+                                                <ul>
+                                                    {orderData.items.map((item, i) => (
+                                                        <li key={i} className="order-list">
+                                                            {item.name} – Quantity: {item.quantity} – Unit Price: $
+                                                            {item.unitPrice !== undefined ? item.unitPrice.toFixed(2) : "0.00"}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            ) : (
+                                                <p>No items found in this order.</p>
+                                            )}
+                                            <p>
+                                                <strong>Total Price:</strong> ${orderData.totalPrice !== undefined ? orderData.totalPrice.toFixed(2) : "0.00"}
+                                            </p>
+                                            <p>
+                                                <strong>Status:</strong> {orderData.status}
+                                            </p>
+                                        </>
+                                    ) : (
+                                        <p>No order data available.</p>
+                                    )}
+                                </Accordion.Body>
+                            </Accordion.Item>
+                        );
+                    })}
                 </Accordion>
             )}
         </div>

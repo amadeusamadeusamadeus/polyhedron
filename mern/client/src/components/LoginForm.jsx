@@ -60,7 +60,6 @@ export default function LoginForm({ onLoginSuccess }) {
             console.log("Login successful:", data);
             authCtx.login(data.token, {
                 id: data.userId,
-                email: data.email,
                 firstName: data.firstName,
                 lastName: data.lastName,
                 role: data.role,

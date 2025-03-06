@@ -1,14 +1,14 @@
-// src/components/Cart.jsx
-import Modal from "./UI/Modal.jsx";
+// src/components/Cart_old.jsx
+import Modal from "../src/components/UI/Modal.jsx";
 import { useContext, useEffect } from "react";
-import CartContext from "../store/CartContext.jsx";
-import Button from "./UI/Button.jsx";
-import UserProgressContext from "../store/UserProgressContext.jsx";
-import CartItem from "./CartItem.jsx";
+import CartContext from "../src/store/CartContext.jsx";
+import Button from "../src/components/UI/Button.jsx";
+import UserProgressContext from "../src/store/UserProgressContext.jsx";
+import CartItem from "../src/components/CartItem.jsx";
 
 //TODO: create an X button to close
 
-export default function Cart() {
+export default function Cart_old() {
     const cartCtx = useContext(CartContext);
     const userProgressCtx = useContext(UserProgressContext);
 
@@ -39,8 +39,8 @@ export default function Cart() {
             <ul>
                 {cartCtx.items.map((item) => (
                     <CartItem
-                        key={item.uuid} // using UUID for uniqueness
-                        shapeName={item.shapeName}  // new: shape name added to the cart item
+                        key={item.uuid}
+                        shapeName={item.shapeName}
                         name={item.name}
                         quantity={item.quantity}
                         price={item.price}

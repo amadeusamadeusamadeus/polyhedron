@@ -9,7 +9,7 @@ const KEY = process.env.KEY;
 // Create a JSON Web Token that includes user data.
 export function createJSONToken(user) {
     return sign({ email: user.email, id: user._id, role: user.role }, KEY, {
-        expiresIn: "1h"
+        expiresIn: "4h"
     });
 }
 
