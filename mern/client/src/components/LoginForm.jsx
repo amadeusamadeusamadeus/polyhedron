@@ -70,7 +70,11 @@ export default function LoginForm({ onLoginSuccess }) {
             setErrorMessage("");
 
             if (onLoginSuccess) onLoginSuccess();
-            navigate("/"); // Redirect to home after login.
+            if (data.role === "admin") {
+                navigate("/admin-dashboard");
+            } else {
+                navigate("/home");
+            }
         } catch (error) {
             console.error("Error during login:", error);
             setErrorMessage("Error during login. Please try again.");

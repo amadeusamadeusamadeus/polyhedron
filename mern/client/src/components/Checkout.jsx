@@ -53,10 +53,11 @@ export default function Checkout({ isModal = true, onClose = () => {} }) {
     const defaultEmail = profileData?.email || "";
     const defaultFirstName = profileData?.firstName || "";
     const defaultLastName = profileData?.lastName || "";
-    const defaultStreet = profileData?.address?.street || "";
-    const defaultStreetNumber = profileData?.address?.streetNumber || "";
-    const defaultPostalCode = profileData?.address?.postalCode || "";
-    const defaultCity = profileData?.address?.city || "";
+    const defaultStreet = profileData?.street || "";
+    const defaultStreetNumber = profileData?.streetNumber || "";
+    const defaultPostalCode = profileData?.postalCode || "";
+    const defaultCity = profileData?.city || "";
+
 
     // Customer fields
     const {
@@ -398,7 +399,9 @@ export default function Checkout({ isModal = true, onClose = () => {} }) {
     );
 
     return isModal ? (
-        <Modal open={userProgressCtx.progress === "checkout"}>{content}</Modal>
+        <Modal open={userProgressCtx.progress === "checkout"} onClose={handleClose}>
+            {content}
+        </Modal>
     ) : (
         <div className="checkout-page-container">{content}</div>
     );

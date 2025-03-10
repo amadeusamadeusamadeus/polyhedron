@@ -14,7 +14,8 @@ router.post("/", async (req, res) => {
             lastName,
             street,
             streetNumber,
-            city
+            city,
+            postalCode,
         } = req.body;
 
         // Validate required fields
@@ -40,6 +41,7 @@ router.post("/", async (req, res) => {
             street,
             streetNumber,
             city,
+            postalCode,
             role: "user"
         };
 

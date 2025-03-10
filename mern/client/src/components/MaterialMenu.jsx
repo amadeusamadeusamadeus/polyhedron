@@ -35,6 +35,7 @@ export default function MaterialMenu({ variations, config, onMaterialSelect }) {
                                         height: "50px",
                                         backgroundSize: "cover",
                                         margin: "0.5rem",
+                                        border: 0,
                                     }}
                                 >
                                     {/*{material.price !== null ? (*/}

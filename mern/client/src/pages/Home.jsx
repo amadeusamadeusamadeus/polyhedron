@@ -2,13 +2,14 @@
 import React, { useState, useEffect } from "react";
 import { getShapes, getMaterials } from "../api/fetch.jsx";
 import Jumbotron from "../components/Jumbotron.jsx";
-import ShapeMenu from "../components/ShapeMenu.jsx";
 import WebgiViewer from "../components/WebgiViewer.jsx";
 import PitchSection from "../components/PitchSection.jsx";
 import PreviewSection from "../components/PreviewSection.jsx";
 import ShoppingSection from "../components/ShoppingSection.jsx";
 import Checkout from "../components/Checkout.jsx";
 import CartModal from "../components/CartModal.jsx";
+
+//TODO: mobile 100%, 80% on desktop
 
 export default function Home() {
     // 3D viewer & configuration state
@@ -24,7 +25,6 @@ export default function Home() {
     // Selected product state
     const [selectedShape, setSelectedShape] = useState(null);
     const [selectedMaterial, setSelectedMaterial] = useState(null);
-
 
     useEffect(() => {
         async function fetchProductData() {
@@ -60,7 +60,6 @@ export default function Home() {
     return (
         <>
             <Jumbotron />
-            <ShapeMenu shapes={dbShapes} onShapeChange={handleShapeChange} />
             <WebgiViewer
                 modelUrl={modelUrl}
                 onVariationChange={setCurrentVariation}
@@ -78,6 +77,8 @@ export default function Home() {
                 onSelectVariation={handleSelectVariation}
                 selectedMaterial={selectedMaterial}
                 selectedShape={selectedShape}
+                shapes={dbShapes}
+                onShapeChange={handleShapeChange}
             />
             <CartModal />
             <Checkout />

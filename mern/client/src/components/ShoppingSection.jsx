@@ -1,6 +1,7 @@
 // src/components/ShoppingSection.jsx
 import React, { useContext } from "react";
 import MaterialMenu from "./MaterialMenu";
+import ShapeMenu from "./ShapeMenu"; // New import for the ShapeMenu component
 import Button from "./UI/Button.jsx";
 import CartContext from "../store/CartContext.jsx";
 import UserProgressContext from "../store/UserProgressContext.jsx";
@@ -11,7 +12,9 @@ export default function ShoppingSection({
                                             config,
                                             onSelectVariation,
                                             selectedMaterial,
-                                            selectedShape  // new prop: the currently selected shape
+                                            selectedShape,  // currently selected shape
+                                            shapes,         // new prop: list of shapes for the shape menu
+                                            onShapeChange   // new prop: shape change handler
                                         }) {
     const cartContext = useContext(CartContext);
     const userProgressCtx = useContext(UserProgressContext);
@@ -41,6 +44,11 @@ export default function ShoppingSection({
 
     return (
         <div>
+            {/* Integrated ShapeMenu */}
+            <div className="shape-menu-section p-3">
+                <ShapeMenu shapes={shapes} onShapeChange={onShapeChange} />
+            </div>
+
             <div className="variation-menu p-3">
                 {variations && variations.length > 0 ? (
                     <MaterialMenu
@@ -71,15 +79,6 @@ export default function ShoppingSection({
                 <Button textOnly onClick={handleShowCart}>
                     Cart ({totalCartItems})
                 </Button>
-                {/*<Navbar.Brand*/}
-                {/*    as={Button}*/}
-                {/*    onClick={handleShowCart}*/}
-                {/*    textOnly={true}*/}
-                {/*    href="#"*/}
-                {/*    className="fs-3"*/}
-                {/*>*/}
-                {/*    /!* Optionally, you can place a label or icon here *!/*/}
-                {/*</Navbar.Brand>*/}
             </div>
         </div>
     );

@@ -1,12 +1,13 @@
+// src/components/Header.jsx
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import LoginForm from './LoginForm.jsx';
 import Button from "./UI/Button.jsx";
-import {useContext, useState} from 'react';
-import {NavLink, useNavigate} from "react-router-dom";
-import {AuthContext} from "../store/AuthContext.jsx";
+import { useContext, useState } from 'react';
+import { NavLink, useNavigate } from "react-router-dom";
+import { AuthContext } from "../store/AuthContext.jsx";
 
 function Header() {
     const authCtx = useContext(AuthContext);
@@ -17,9 +18,9 @@ function Header() {
     const handleShow = () => setShowOffcanvas(true);
 
     const handleLogout = () => {
-        authCtx.logout(); //
+        authCtx.logout();
         setShowOffcanvas(false);
-        navigate("/"); //
+        navigate("/");
     };
 
     function AdminDashboardLink() {
@@ -37,7 +38,7 @@ function Header() {
                         <Navbar.Brand as={NavLink} to="/" className="title fs-3">
                             Polyhedron
                         </Navbar.Brand>
-                        <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} onClick={handleShow}/>
+                        <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} onClick={handleShow} />
                         <Navbar.Offcanvas
                             id={`offcanvasNavbar-expand-${expand}`}
                             aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
@@ -48,33 +49,39 @@ function Header() {
                             <Offcanvas.Header closeButton>
                                 <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
                                     {authCtx.isAuthenticated && authCtx.user
-                                        ? `Signed in as: ${
-                                            authCtx.user.firstName && authCtx.user.lastName
-                                                ? `${authCtx.user.firstName} ${authCtx.user.lastName}`
-                                                : "admin"
-                                        }`
+                                        ? `Signed in as: ${authCtx.user.firstName && authCtx.user.lastName ? `${authCtx.user.firstName} ${authCtx.user.lastName}` : "admin"}`
                                         : "Not signed in"}
                                 </Offcanvas.Title>
                             </Offcanvas.Header>
                             <Offcanvas.Body>
                                 <Nav className="justify-content-end flex-grow-1 pe-3">
-
                                     {authCtx.isAuthenticated ? (
-                                        <>
-                                            <NavLink to="/">Home</NavLink>
-                                            <NavLink to="/orders">Orders</NavLink>
-                                            <NavLink to="/settings">Settings</NavLink>
-                                            <NavLink to="/cart">View Cart</NavLink>
-                                            <AdminDashboardLink/>
-                                            <Button className="nav-link active" onClick={handleLogout}>
-                                                Logout
-                                            </Button>
-                                        </>
+                                        authCtx.user.role === "admin" ? (
+                                            <>
+                                                <NavLink to="/" className="nav-link">Home</NavLink>
+                                                <AdminDashboardLink />
+                                                <Button className="nav-link active" onClick={handleLogout}>
+                                                    Logout
+                                                </Button>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <NavLink to="/" className="nav-link">Home</NavLink>
+                                                <NavLink to="/orders" className="nav-link">Orders</NavLink>
+                                                <NavLink to="/settings" className="nav-link">Settings</NavLink>
+                                                <NavLink to="/cart" className="nav-link">View Cart</NavLink>
+                                                <NavLink to="/checkout" className="nav-link">Go to Checkout</NavLink>
+                                                <AdminDashboardLink />
+                                                <Button className="nav-link active" onClick={handleLogout}>
+                                                    Logout
+                                                </Button>
+                                            </>
+                                        )
                                     ) : (
                                         <>
-                                            <LoginForm/>
-                                            <NavLink to="/">Home</NavLink>
-                                            <NavLink to="/signup">Create New Account</NavLink>
+                                            <LoginForm />
+                                            <NavLink to="/" className="nav-link">Home</NavLink>
+                                            <NavLink to="/signup" className="nav-link">Create New Account</NavLink>
                                         </>
                                     )}
                                 </Nav>

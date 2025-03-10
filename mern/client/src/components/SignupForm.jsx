@@ -18,7 +18,8 @@ export default function SignupForm() {
         lastName: "",
         street: "",
         streetNumber: "",
-        city: ""
+        city: "",
+        postalCode: ""
     });
 
     function handleInputChange(identifier, value) {
@@ -47,7 +48,8 @@ export default function SignupForm() {
             lastName: enteredValues.lastName,
             street: enteredValues.street,
             streetNumber: enteredValues.streetNumber,
-            city: enteredValues.city
+            city: enteredValues.city,
+            postalCode: enteredValues.postalCode
         };
 
         try {
@@ -74,7 +76,8 @@ export default function SignupForm() {
                 lastName: "",
                 street: "",
                 streetNumber: "",
-                city: ""
+                city: "",
+                postalCode: ""
             });
             // Optionally, navigate to the login page if desired:
             // navigate("/users/login");
@@ -210,6 +213,19 @@ export default function SignupForm() {
                             handleInputChange("city", event.target.value)
                         }
                         value={enteredValues.city}
+                        required
+                    />
+                </div>
+                <div className="control">
+                    <label htmlFor="postalCode">Postal Code</label>
+                    <input
+                        type="text"
+                        id="postalCode"
+                        name="postalCode"
+                        onChange={(event) =>
+                            handleInputChange("postalCode", event.target.value)
+                        }
+                        value={enteredValues.postalCode}
                         required
                     />
                 </div>

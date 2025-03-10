@@ -4,7 +4,7 @@ import { Accordion, Spinner, Alert } from "react-bootstrap";
 import { AuthContext } from "../store/AuthContext.jsx";
 
 export default function Orders() {
-    const { token, isAuthenticated } = useContext(AuthContext);
+    const { token, isAuthenticated, authLoaded, user } = useContext(AuthContext);
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -17,11 +17,16 @@ export default function Orders() {
                 return;
             }
             try {
-                const response = await fetch("http://localhost:5050/orders", {
+                // If the user is a regular user, add the customerEmail query parameter
+                const url =
+                    user && user.role === "user"
+                        ? `http://localhost:5050/orders?customerEmail=${encodeURIComponent(user.email)}`
+                        : "http://localhost:5050/orders";
+                const response = await fetch(url, {
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    }
+                        "Authorization": `Bearer ${token}`,
+                    },
                 });
                 if (!response.ok) {
                     throw new Error("Failed to fetch orders");
@@ -34,10 +39,12 @@ export default function Orders() {
                 setLoading(false);
             }
         }
-        fetchOrders();
-    }, [token, isAuthenticated]);
+        if (authLoaded) {
+            fetchOrders();
+        }
+    }, [token, isAuthenticated, authLoaded, user]);
 
-    if (loading) {
+    if (!authLoaded || loading) {
         return (
             <div className="d-flex justify-content-center align-items-center" style={{ height: "80vh" }}>
                 <Spinner animation="border" variant="primary" />
@@ -58,7 +65,9 @@ export default function Orders() {
                 <Accordion defaultActiveKey="0">
                     {orders.map((order, index) => {
                         const orderData = order.orderData;
-                        const createdAt = orderData?.createdAt ? new Date(orderData.createdAt).toLocaleString() : "No date";
+                        const createdAt = orderData?.createdAt
+                            ? new Date(orderData.createdAt).toLocaleString()
+                            : "No date";
                         const address = orderData?.customer
                             ? `${orderData.customer.address.street} ${orderData.customer.address.streetNumber}, ${orderData.customer.address.postalCode} ${orderData.customer.address.city}`
                             : "No address";
@@ -81,7 +90,7 @@ export default function Orders() {
                                                 <ul>
                                                     {orderData.items.map((item, i) => (
                                                         <li key={i} className="order-list">
-                                                            {item.name} – Quantity: {item.quantity} – Unit Price: $
+                                                            {item.quantity} x {item.shape} Material: {item.material} – Unit Price: $
                                                             {item.unitPrice !== undefined ? item.unitPrice.toFixed(2) : "0.00"}
                                                         </li>
                                                     ))}
@@ -90,7 +99,8 @@ export default function Orders() {
                                                 <p>No items found in this order.</p>
                                             )}
                                             <p>
-                                                <strong>Total Price:</strong> ${orderData.totalPrice !== undefined ? orderData.totalPrice.toFixed(2) : "0.00"}
+                                                <strong>Total Price:</strong> $
+                                                {orderData.totalPrice !== undefined ? orderData.totalPrice.toFixed(2) : "0.00"}
                                             </p>
                                             <p>
                                                 <strong>Status:</strong> {orderData.status}
