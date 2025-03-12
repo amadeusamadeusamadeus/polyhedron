@@ -3,6 +3,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { Accordion, Button, Spinner, Alert, Form } from "react-bootstrap";
 import { AuthContext } from "../store/AuthContext.jsx";
 
+//TODO: maybe separate all 4 admin navigation elements into their own pages
+
 function AdminDashboard() {
     const { token } = useContext(AuthContext);
     const [activeTab, setActiveTab] = useState("users");
@@ -76,7 +78,7 @@ function AdminUsers({ token }) {
             streetNumber: user.streetNumber || "",
             postalCode: user.postalCode || "",
             city: user.city || "",
-            role: user.role
+            role: user.role,
         });
     };
 
@@ -135,6 +137,7 @@ function AdminUsers({ token }) {
                                                 onChange={(e) =>
                                                     setEditForm({ ...editForm, email: e.target.value })
                                                 }
+                                                required
                                             />
                                         </Form.Group>
                                         <Form.Group className="mb-2">
@@ -145,6 +148,7 @@ function AdminUsers({ token }) {
                                                 onChange={(e) =>
                                                     setEditForm({ ...editForm, firstName: e.target.value })
                                                 }
+                                                required
                                             />
                                         </Form.Group>
                                         <Form.Group className="mb-2">
@@ -155,9 +159,9 @@ function AdminUsers({ token }) {
                                                 onChange={(e) =>
                                                     setEditForm({ ...editForm, lastName: e.target.value })
                                                 }
+                                                required
                                             />
                                         </Form.Group>
-
                                         <Form.Group className="mb-2">
                                             <Form.Label>Street</Form.Label>
                                             <Form.Control
@@ -198,7 +202,6 @@ function AdminUsers({ token }) {
                                                 }
                                             />
                                         </Form.Group>
-
                                         <Form.Group className="mb-2">
                                             <Form.Label>Role</Form.Label>
                                             <Form.Select
@@ -467,11 +470,7 @@ function AdminOrders({ token }) {
                                                     }
                                                 />
                                             </Form.Group>
-                                            <Button
-                                                variant="success"
-                                                onClick={() => saveOrder(order._id)}
-                                                className="me-2"
-                                            >
+                                            <Button variant="success" onClick={() => saveOrder(order._id)} className="me-2">
                                                 Save
                                             </Button>
                                             <Button variant="secondary" onClick={cancelEditing}>
@@ -888,10 +887,7 @@ function AdminProductMaterials({ token }) {
                                         step="0.01"
                                         value={editMaterialForm.priceModifier}
                                         onChange={(e) =>
-                                            setEditMaterialForm({
-                                                ...editMaterialForm,
-                                                priceModifier: parseFloat(e.target.value),
-                                            })
+                                            setEditMaterialForm({ ...editMaterialForm, priceModifier: parseFloat(e.target.value) })
                                         }
                                         className="me-2"
                                     />

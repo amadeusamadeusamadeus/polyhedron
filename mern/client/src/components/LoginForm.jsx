@@ -73,7 +73,7 @@ export default function LoginForm({ onLoginSuccess }) {
             if (data.role === "admin") {
                 navigate("/admin-dashboard");
             } else {
-                navigate("/home");
+                navigate("/");
             }
         } catch (error) {
             console.error("Error during login:", error);

@@ -1,5 +1,9 @@
 /* App.css */
 
+html {
+    background-color: white;
+}
+
 /* Modal styles – used by your custom modal component */
 .modal {
     position: fixed;

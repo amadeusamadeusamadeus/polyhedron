@@ -1,5 +1,5 @@
 // src/components/ShoppingSection.jsx
-import React, { useContext } from "react";
+import React, {useContext} from "react";
 import MaterialMenu from "./MaterialMenu";
 import ShapeMenu from "./ShapeMenu"; // New import for the ShapeMenu component
 import Button from "./UI/Button.jsx";
@@ -43,43 +43,42 @@ export default function ShoppingSection({
     }
 
     return (
-        <div>
-            {/* Integrated ShapeMenu */}
-            <div className="shape-menu-section p-3">
-                <ShapeMenu shapes={shapes} onShapeChange={onShapeChange} />
-            </div>
+            <div>
+                <div className="shape-menu-section p-3">
+                    <ShapeMenu shapes={shapes} onShapeChange={onShapeChange}/>
+                </div>
 
-            <div className="variation-menu p-3">
-                {variations && variations.length > 0 ? (
-                    <MaterialMenu
-                        variations={variations}
-                        config={config}
-                        onMaterialSelect={onSelectVariation}
-                    />
-                ) : (
-                    <p>No variations available</p>
-                )}
+                <div className="variation-menu p-3">
+                    {variations && variations.length > 0 ? (
+                        <MaterialMenu
+                            variations={variations}
+                            config={config}
+                            onMaterialSelect={onSelectVariation}
+                        />
+                    ) : (
+                        <p>No variations available</p>
+                    )}
+                </div>
+                <div className="selected-material">
+                    <p>
+                        Currently selected material:{" "}
+                        {selectedMaterial ? selectedMaterial.name : "None"}
+                    </p>
+                </div>
+                <div>
+                    <p>
+                        Price:{" "}
+                        {selectedMaterial && selectedMaterial.price !== null
+                            ? `$${selectedMaterial.price.toFixed(2)}`
+                            : "Not available"}
+                    </p>
+                </div>
+                <div>
+                    <Button onClick={handleAddItemToCart}>Add to Cart</Button>
+                    <Button textOnly onClick={handleShowCart}>
+                        Cart ({totalCartItems})
+                    </Button>
+                </div>
             </div>
-            <div className="selected-material">
-                <p>
-                    Currently selected material:{" "}
-                    {selectedMaterial ? selectedMaterial.name : "None"}
-                </p>
-            </div>
-            <div>
-                <p>
-                    Price:{" "}
-                    {selectedMaterial && selectedMaterial.price !== null
-                        ? `$${selectedMaterial.price.toFixed(2)}`
-                        : "Not available"}
-                </p>
-            </div>
-            <div>
-                <Button onClick={handleAddItemToCart}>Add to Cart</Button>
-                <Button textOnly onClick={handleShowCart}>
-                    Cart ({totalCartItems})
-                </Button>
-            </div>
-        </div>
     );
 }
