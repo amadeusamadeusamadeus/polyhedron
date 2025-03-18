@@ -7,6 +7,7 @@ export default function LoadingScreen({ isLoading, progress }) {
         <div className="loading-overlay">
             <div className="loading-content">
                 <img src="animation.gif" alt="Loading..." />
+                <h2>Polyhedron</h2>
                 <p>Loading, please wait... {(progress * 100).toFixed(0)}%</p>
             </div>
         </div>

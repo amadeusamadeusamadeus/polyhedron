@@ -9,7 +9,6 @@ import {
     CanvasSnipperPlugin,
     MaterialConfiguratorPlugin,
     ScrollableCameraViewPlugin,
-    LoadingScreenPlugin,
 } from "webgi";
 import { ensureMaterialInDb } from "../api/materialService";
 
@@ -83,7 +82,6 @@ export default function WebgiViewer({
             await addBasePlugins(viewer);
             await viewer.addPlugin(FileTransferPlugin);
             await viewer.addPlugin(CanvasSnipperPlugin);
-            await viewer.addPlugin(LoadingScreenPlugin);
 
 
             // Conditionally add the scroll plugin if on the homepage.
@@ -123,14 +121,7 @@ export default function WebgiViewer({
             }
 
             if (onViewerLoaded) onViewerLoaded();
-
-            // Wait for a fixed delay after viewer.load resolves.
-            // Adjust this delay (in milliseconds) as needed.
-            await new Promise((resolve) => setTimeout(resolve, 0));
-            // Wait one extra animation frame to ensure the scene is rendered.
-            requestAnimationFrame(() => {
-                setIsLoaded(true);
-            });
+            setIsLoaded(true);
         }
         setupViewer();
 

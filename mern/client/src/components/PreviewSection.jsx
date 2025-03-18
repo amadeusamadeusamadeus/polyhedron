@@ -1,15 +1,16 @@
 import React from 'react';
 
-export default function PreviewSection({ onCustomise }) {
+export default function PreviewSection({onCustomise}) {
 
     return (
-            <div className="preview-section wrapper">
-                <h2>ZZZZZZZ</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, architecto autem cumque debitis
-                    dignissimos distinctio dolores esse est ex, labore libero nisi perferendis quae sunt, suscipit ullam
-                    veritatis! Ad animi aspernatur beatae delectus dignissimos dolor doloremque ea esse et id illo iste
-                    mollitia necessitatibus nemo quasi quis sed, ullam, voluptatem.</p>
-                <button className="button" onClick={onCustomise}>Customise!</button>
+        <div className="preview-section wrapper row">
+            <div className="preview-content paper-card col-6 offset-3 justify-content-center text-center">
+                <h2 className="title-gold">CUSTOMIZE YOUR DICE</h2>
+                <p>You can customize both the material and the shape of your dice. Zoom and rotate to look at it from
+                    every angle and add it to your personal cart!</p>
+                <hr className="line w-50 mx-auto"/>
+                <button className="button" onClick={onCustomise}>CUSTOMIZE</button>
             </div>
+        </div>
     )
 }

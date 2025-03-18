@@ -1,44 +1,62 @@
 /* index.css */
 
 /* Global resets and base layout */
-#root {
+:root {
     max-width: 1280px;
     margin: 0 auto;
     padding: 0 2rem;
     text-align: center;
-    --primary-bg-color: #ffffff;
+    --primary-bg-color: #fafaf0;
     --secondary-bg-color: #000000;
+    background-color: transparent;
 }
 
 html {
-    background-color: var(--primary-bg-color);
+    background-color: var(--primary-bg-color) !important;
+    background-size: cover;
 }
+
 * {
     box-sizing: border-box;
 }
+
 body {
+    /*z-index: -1;*/
     margin: 0;
     font-family: "SF Pro Display", SF Pro Icons, Helvetica Neue, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    color: #ffffff;
+    background-color: var(--primary-bg-color) !important;
 }
 
-Header {
-    z-index: 1000;
+body * {
+    /*z-index: -1;*/
+    background-color: transparent;
 }
 
-/* Global utility classes */
+.site-header {
+    position: relative;
+    z-index: 13000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: transparent;
+    max-width: 1280px;
+}
+
 .border-black {
     color: var(--secondary-bg-color);
 }
+
 .line {
     color: var(--secondary-bg-color);
     opacity: 1;
 }
+
 .customContextGrid {
     opacity: 0;
 }
+
 .text-button {
     font: inherit;
     cursor: pointer;
@@ -50,11 +68,8 @@ Header {
 /* Global navbar styles (if used by multiple parts of your app) */
 .navbar-toggler {
     border: none !important;
-    background-color: transparent !important;
-    box-shadow: none !important;
-    opacity: 1;
-    color: #000000 !important;
 }
+
 .navbar-toggler:focus,
 .navbar-toggler:active {
     outline: none !important;
@@ -65,16 +80,18 @@ Header {
 dialog:not([open]) {
     display: none;
 }
+
 #modal:empty {
     display: none;
 }
+
 #modal {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none; /* so it doesn't block clicks when empty */
+    pointer-events: none;
 }
 
 .section {
@@ -84,7 +101,7 @@ dialog:not([open]) {
     width: 100%;
     height: 100vh;
     align-content: center;
-    justify-content: center;
+    justify-content: space-between;
     margin: 0;
     padding: 0;
     scroll-snap-align: start;
@@ -92,6 +109,7 @@ dialog:not([open]) {
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    background-color: transparent;
 }
 
 #webgi-canvas-container {
@@ -99,14 +117,80 @@ dialog:not([open]) {
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 1000;
+    z-index: 100;
     pointer-events: auto;
-    background-color: var(--primary-bg-color),
 }
 
 #webgi-canvas {
-    background-color: var(--primary-bg-color);
-    z-index: 1; display: block
+    z-index: 100;
+    display: block
 }
+
+div.jumbo-content {
+    margin-top: 15%;
+}
+
+
+h2 {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.scroll-down-overlay {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 1010;
+    transition: opacity 0.3s ease;
+}
+
+.title-gold {
+    background: linear-gradient(30deg, rgba(172, 132, 69, 1) 30%, rgba(209, 195, 158, 1) 50%, rgba(172, 132, 69, 1) 70%);
+    background-clip: text;
+    color: transparent;
+
+}
+
+.title-silver {
+    background: linear-gradient(30deg, rgba(162, 162, 162, 1) 30%, rgba(217, 217, 217, 1) 50%, rgba(162, 162, 162, 1) 70%);
+    background-clip: text;
+    color: transparent;
+}
+
+.offcanvas {
+    z-index: 12000 !important;
+    pointer-events: auto;
+}
+
+.viewer-container.offcanvas-open {
+    pointer-events: none;
+}
+
+.offcanvas-backdrop {
+    pointer-events: none;
+    z-index: 11999 !important;
+}
+
+.nav-link {
+    pointer-events: auto;
+}
+
+/*.paper-card {*/
+/*    display: inline-block;*/
+/*    align-self: flex-start;*/
+/*    background: #fff url('../../client/public/card_bg_gray.jpg') repeat;*/
+/*    background-size: cover;*/
+/*    box-shadow: -1px -1px 0 rgba(248, 246, 246, 0.6),*/
+/*    3px 3px 6px rgba(0, 0, 0, 0.6);*/
+/*    padding: 1rem;*/
+/*}*/
+
+/*.embossed-text {*/
+/*    color: #ccc;*/
+/*    text-shadow:*/
+/*            2px 2px 3px rgba(0, 0, 0, 0.6),    !* Dark shadow on bottom-right *!*/
+/*            -2px -2px 3px rgba(255, 255, 255, 0.1); !* Light shadow on top-left *!*/
+/*}*/
 
 

@@ -1,0 +1,10 @@
+.scroll-down-overlay {
+    position: fixed;
+    bottom: 20%;         /* Adjust distance from the bottom as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1010;        /* Ensure it appears above your content */
+    text-align: center;
+    font-size: 2rem;      /* Adjust the size as needed */
+    transition: opacity 0.3s ease;
+}

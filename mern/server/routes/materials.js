@@ -55,7 +55,7 @@ router.put("/:id", async (req, res) => {
     try {
         const materialId = req.params.id;
         const { uuid, name, priceModifier, icon } = req.body;
-        const updateResult = await db.collection("products_materials").updateOne(
+        const updateResult = await db.collection("products.materials").updateOne(
             { _id: new ObjectId(materialId) },
             { $set: { uuid, name, priceModifier, icon } }
         );

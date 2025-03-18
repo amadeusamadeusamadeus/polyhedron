@@ -2,6 +2,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Accordion, Spinner, Alert } from "react-bootstrap";
 import { AuthContext } from "../store/AuthContext.jsx";
+import "../index.css";
 
 export default function Orders() {
     const { token, isAuthenticated, authLoaded, user } = useContext(AuthContext);

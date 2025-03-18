@@ -1,4 +1,3 @@
-// src/pages/Home.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { getShapes, getMaterials } from "../api/fetch.jsx";
 import Jumbotron from "../components/Jumbotron.jsx";
@@ -10,7 +9,10 @@ import Checkout from "../components/Checkout.jsx";
 import CartModal from "../components/CartModal.jsx";
 import gsap from "gsap";
 import LoadingScreen from "../components/LoadingScreen.jsx";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom"
+import Button from "../components/UI/Button.jsx"
+import "../index.css";
+// import ScrollDownIndicator from "../components/ScrollDownIndicator.jsx";
 
 export default function Home() {
     // 3D viewer & configuration state
@@ -19,7 +21,6 @@ export default function Home() {
     const [variations, setVariations] = useState([]);
     const [config, setConfig] = useState(null);
     const [mode, setMode] = useState("scroll"); // "scroll" or "customise"
-    // This state now controls the overall page content loading:
     const [isLoading, setIsLoading] = useState(true);
     const [savedScrollPos, setSavedScrollPos] = useState(0);
     const [loadingStart, setLoadingStart] = useState(Date.now());
@@ -33,9 +34,15 @@ export default function Home() {
     const [selectedMaterial, setSelectedMaterial] = useState(null);
 
     const viewerContainerRef = useRef(null);
+
     const location = useLocation();
 
+    const [progress, setProgress] = useState(0);
+    const minLoadingTime = 2000;
+    // const lastSectionRef = useRef(null);
+
     useEffect(() => {
+
         async function fetchProductData() {
             try {
                 const shapesData = await getShapes();
@@ -53,6 +60,18 @@ export default function Home() {
         }
         fetchProductData();
     }, []);
+
+    useEffect(() => {
+        if (!isLoading) return;
+        const interval = setInterval(() => {
+            const elapsed = Date.now() - loadingStart;
+            const newProgress = Math.min(elapsed / minLoadingTime, 1);
+            setProgress(newProgress);
+            if (newProgress >= 1) clearInterval(interval);
+        }, 50);
+        return () => clearInterval(interval);
+    }, [isLoading, loadingStart]);
+
 
     const handleShapeChange = (shape) => {
         console.log("Shape changed to:", shape);
@@ -101,7 +120,7 @@ export default function Home() {
                 left: 0,
                 width: "100vw",
                 height: "100vh",
-                zIndex: -1,
+                zIndex: 0,
                 opacity: 1,
                 transition: "opacity 0.5s",
             }
@@ -111,20 +130,16 @@ export default function Home() {
                 left: 0,
                 width: "100vw",
                 height: "100vh",
-                zIndex: -1,
+                zIndex: 0,
                 opacity: 1,
                 transition: "opacity 0.5s",
             };
 
     return (
         <>
-            {/* The custom loading screen covers everything until isLoading is false */}
-            <LoadingScreen isLoading={isLoading} />
-
-            {/* The viewer is always mounted */}
+            <LoadingScreen isLoading={isLoading} progress={progress} />
             <div ref={viewerContainerRef} style={viewerContainerStyle}>
                 <WebgiViewer
-                    // Removed the key tied to location.pathname so the viewer stays persistent
                     mode={mode}
                     modelUrl={modelUrl}
                     onVariationChange={setCurrentVariation}
@@ -133,66 +148,67 @@ export default function Home() {
                     dbMaterials={dbMaterials}
                     dbShape={selectedShape}
                     setDbMaterials={setDbMaterials}
-                    // Instead of using onViewerLoaded, use onFullyLoaded to hide the loading screen
                     onViewerLoaded={() => {
-                        // This callback is invoked from WebgiViewer when the scene is fully rendered.
-                        setIsLoading(false);
+                        const elapsed = Date.now() - loadingStart;
+                        const remaining = Math.max(0, minLoadingTime - elapsed);
+                        setTimeout(() => {
+                            setIsLoading(false);
+                        }, remaining);
                     }}
                 />
             </div>
 
-            {/* Only render the rest of the page when the viewer is fully loaded */}
-            {!isLoading && (
+            {mode === "scroll" && (
                 <>
-                    {mode === "scroll" ? (
-                        <>
-                            <section id="view2" className="section">
-                                <Jumbotron />
-                            </section>
-                            <section id="view3" className="section">
-                                <PitchSection />
-                            </section>
-                            <section id="view4" className="section">
-                                <PreviewSection onCustomise={handleCustomise} />
-                            </section>
-                        </>
-                    ) : (
-                        <div
-                            className="customise-controls"
-                            style={{
-                                position: "fixed",
-                                bottom: 0,
-                                left: 0,
-                                width: "100%",
-                                zIndex: 101,
-                            }}
-                        >
-                            <ShoppingSection
-                                variations={variations}
-                                config={config}
-                                onSelectVariation={handleSelectVariation}
-                                selectedMaterial={selectedMaterial}
-                                selectedShape={selectedShape}
-                                shapes={dbShapes}
-                                onShapeChange={handleShapeChange}
-                            />
-                            <button
-                                onClick={handleExitCustomise}
-                                style={{
-                                    position: "fixed",
-                                    top: "20px",
-                                    right: "20px",
-                                    zIndex: 102,
-                                }}
-                            >
-                                Exit Customise Mode
-                            </button>
-                        </div>
-                    )}
-                    <CartModal />
-                    <Checkout />
+                    <section id="view2" className="section">
+                        <Jumbotron />
+                    </section>
+                    <section id="view3" className="section">
+                        <PitchSection />
+                    </section>
+                    <section id="view4" className="section">
+                        <PreviewSection onCustomise={handleCustomise} />
+                    </section>
                 </>
             )}
+
+            {mode === "customise" && (
+                <div
+                    className="customise-controls"
+                    style={{
+                        position: "fixed",
+                        bottom: 0,
+                        left: 0,
+                        width: "100%",
+                        zIndex: 101,
+                    }}
+                >
+                    <ShoppingSection
+                        variations={variations}
+                        config={config}
+                        onSelectVariation={handleSelectVariation}
+                        selectedMaterial={selectedMaterial}
+                        selectedShape={selectedShape}
+                        shapes={dbShapes}
+                        onShapeChange={handleShapeChange}
+                    />
+                    <Button
+                        onClick={handleExitCustomise}
+                        style={{
+                            position: "fixed",
+                            top: "10%",
+                            right: "10%",
+                            zIndex: 102,
+                        }}
+                    >
+                        EXIT
+                    </Button>
+                </div>
+            )}
+
+            <CartModal />
+            <Checkout />
+            {/*<ScrollDownIndicator lastSectionRef={lastSectionRef} />*/}
         </>
     );
 }

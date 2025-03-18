@@ -1,5 +1,6 @@
 // src/App.jsx
 import React from "react";
+import "./index.css"
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {CartContextProvider} from "./store/CartContext.jsx";
 import {UserProgressContextProvider} from "./store/UserProgressContext.jsx";
@@ -17,12 +18,18 @@ import CartPage from "./pages/CartPage.jsx";
 import CheckoutPage from "./pages/CheckoutPage.jsx";
 
 
+
+
 const router = createBrowserRouter([
     {
         path: "/",
         element: <RootLayout/>,
         children: [
-            {index: true, element: <Home/>},
+            {index: true, element:
+
+                    <Home/>
+
+            },
             {path: "orders", element: <Orders/>},
             {path: "signup", element: <Signup/>},
             {path: "settings", element: <UserSettings/>},

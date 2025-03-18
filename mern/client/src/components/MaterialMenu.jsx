@@ -38,11 +38,6 @@ export default function MaterialMenu({ variations, config, onMaterialSelect }) {
                                         border: 0,
                                     }}
                                 >
-                                    {/*{material.price !== null ? (*/}
-                                    {/*    <div style={{ fontSize: "0.7rem", background: "#fff", padding: "2px" }}>*/}
-                                    {/*        ${material.price.toFixed(2)}*/}
-                                    {/*    </div>*/}
-                                    {/*) : null}*/}
                                 </Button>
                             );
                         })}

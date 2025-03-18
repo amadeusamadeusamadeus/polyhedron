@@ -1,4 +1,3 @@
-// src/components/Header.jsx
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -23,6 +22,10 @@ function Header() {
         navigate("/");
     };
 
+    function handleNav () {
+        setShowOffcanvas(false);
+    }
+
     function AdminDashboardLink() {
         if (authCtx.isAuthenticated && authCtx.user?.role === "admin") {
             return <NavLink to="/admin-dashboard" className="nav-link active">Admin Dashboard</NavLink>;
@@ -31,9 +34,9 @@ function Header() {
     }
 
     return (
-        <>
+        <div className="site-header" role="banner">
             {[false].map((expand) => (
-                <Navbar key={expand} expand={expand} className="main-header bg-white mb-1">
+                <Navbar key={expand} expand={expand} className="main-header mb-1">
                     <Container fluid>
                         <Navbar.Brand as={NavLink} to="/" className="title fs-3">
                             Polyhedron
@@ -66,11 +69,11 @@ function Header() {
                                             </>
                                         ) : (
                                             <>
-                                                <NavLink to="/" className="nav-link">Home</NavLink>
-                                                <NavLink to="/orders" className="nav-link">Orders</NavLink>
-                                                <NavLink to="/settings" className="nav-link">Settings</NavLink>
-                                                <NavLink to="/cart" className="nav-link">View Cart</NavLink>
-                                                <NavLink to="/checkout" className="nav-link">Go to Checkout</NavLink>
+                                                <NavLink to="/" className="nav-link" onClick={handleNav}>Home</NavLink>
+                                                <NavLink to="/orders" className="nav-link" onClick={handleNav}>Orders</NavLink>
+                                                <NavLink to="/settings" className="nav-link" onClick={handleNav}>Settings</NavLink>
+                                                <NavLink to="/cart" className="nav-link" onClick={handleNav}>View Cart</NavLink>
+                                                <NavLink to="/checkout" className="nav-link" onClick={handleNav}>Go to Checkout</NavLink>
                                                 <AdminDashboardLink />
                                                 <Button className="nav-link active" onClick={handleLogout}>
                                                     Logout
@@ -90,7 +93,7 @@ function Header() {
                     </Container>
                 </Navbar>
             ))}
-        </>
+        </div>
     );
 }
 

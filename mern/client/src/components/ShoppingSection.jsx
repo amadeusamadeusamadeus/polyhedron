@@ -12,14 +12,13 @@ export default function ShoppingSection({
                                             config,
                                             onSelectVariation,
                                             selectedMaterial,
-                                            selectedShape,  // currently selected shape
-                                            shapes,         // new prop: list of shapes for the shape menu
-                                            onShapeChange   // new prop: shape change handler
+                                            selectedShape,
+                                            shapes,
+                                            onShapeChange
                                         }) {
     const cartContext = useContext(CartContext);
     const userProgressCtx = useContext(UserProgressContext);
 
-    // Calculate total items in cart.
     const totalCartItems = cartContext.items.reduce(
         (total, item) => total + item.quantity,
         0
@@ -34,7 +33,7 @@ export default function ShoppingSection({
             // Create a new cart item that includes the shape name.
             const newItem = {
                 ...selectedMaterial,
-                shapeName: selectedShape.name,  // e.g. "D20"
+                shapeName: selectedShape.name,
             };
             cartContext.addItem(newItem);
         } else {
