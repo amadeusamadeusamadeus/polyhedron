@@ -74,7 +74,7 @@ export default function ShoppingSection({
                 </div>
                 <div>
                     <Button onClick={handleAddItemToCart}>Add to Cart</Button>
-                    <Button textOnly onClick={handleShowCart}>
+                    <Button  onClick={handleShowCart}>
                         Cart ({totalCartItems})
                     </Button>
                 </div>

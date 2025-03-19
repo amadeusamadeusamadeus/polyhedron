@@ -26,7 +26,7 @@ export default function MaterialMenu({ variations, config, onMaterialSelect }) {
                         {variation.materials.map((material) => {
                             const iconUrl = material.userData && material.userData.icon ? material.userData.icon : "";
                             return (
-                                <Button
+                                <button
                                     key={material.uuid}
                                     onClick={() => evaluateClick(material)}
                                     style={{
@@ -38,7 +38,7 @@ export default function MaterialMenu({ variations, config, onMaterialSelect }) {
                                         border: 0,
                                     }}
                                 >
-                                </Button>
+                                </button>
                             );
                         })}
                     </div>

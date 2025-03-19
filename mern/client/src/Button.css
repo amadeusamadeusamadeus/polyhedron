@@ -1,0 +1,57 @@
+/* src/components/UI/Button.css */
+
+.button {
+    position: relative;
+    padding: 15px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #f3f3f3;  /* Initial text color is white */
+    background-color: #151515;
+    /*border: 2px solid silver;*/
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    text-transform: uppercase;
+    display: inline-flex;
+    white-space: nowrap;  /* Prevents text from breaking into multiple lines */
+    transition: background 0.3s ease; /* Smooth transition for background change */
+}
+
+.gradient {
+    position: absolute;
+    top: 0;
+    left: -100%;  /* Start the gradient off-screen to the left */
+    width: 100%;
+    height: 4px;  /* Thin gradient */
+    background: linear-gradient(45deg, silver, gray, silver); /* Rotating the gradient */
+    opacity: 0.6;
+    transform: rotate(45deg);  /* Apply rotation of 45 degrees */
+    filter: blur(4px);  /* Optional: Add blur effect to the gradient */
+    z-index: 1;  /* Keep the gradient above the button background but below the text */
+}
+
+.text-letter {
+    position: relative;
+    z-index: 2;  /* Ensure text is above the gradient */
+    color: #f3f3f3;  /* Initial text color is white */
+    background: linear-gradient(45deg, silver, gray, silver);  /* Apply gradient */
+    background-clip: text;  /* Apply the gradient to the text */
+    -webkit-background-clip: text;  /* Webkit for compatibility with Safari */
+    display: inline-block;
+    background-position: 100%;  /* Start with the gradient off to the right */
+    transition: background-position 1s ease;  /* Smooth transition for background position */
+}
+
+.button .text-letter-space {
+    display: inline-block;
+    width: 1ch;  /* Space width */
+    opacity: 1; /* Ensure space is visible */
+}
+
+/*.exit-mode-button {*/
+/*    font-size: 20px;*/
+/*    position: fixed;*/
+/*    top: 10%;*/
+/*    right: 10%;*/
+/*    z-index: 102;*/
+/*}*/

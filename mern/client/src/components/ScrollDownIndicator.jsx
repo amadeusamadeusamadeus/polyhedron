@@ -1,59 +1,66 @@
-import React, { useState, useEffect } from "react";
-import "../ScrollDownIndicator.css";
+// src/components/ScrollDownIndicator.jsx
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
-export default function ScrollDownIndicator({ lastSectionRef }) {
-    const [isScrolling, setIsScrolling] = useState(false);
-    const [isAtBottom, setIsAtBottom] = useState(false);
+export default function ScrollDownIndicator() {
+    const [hideIndicator, setHideIndicator] = useState(false);
 
-    // Debounce scroll events to determine if the user is actively scrolling.
     useEffect(() => {
-        let timeoutId = null;
-        const handleScroll = () => {
-            setIsScrolling(true);
-            if (timeoutId) clearTimeout(timeoutId);
-            timeoutId = setTimeout(() => {
-                setIsScrolling(false);
-            }, 150);
-        };
+        const view4Element = document.getElementById("view4");
+        if (!view4Element) return;
 
-        window.addEventListener("scroll", handleScroll);
-        return () => {
-            window.removeEventListener("scroll", handleScroll);
-            if (timeoutId) clearTimeout(timeoutId);
-        };
-    }, []);
-
-    // Use IntersectionObserver to determine when the sentinel is visible.
-    useEffect(() => {
-        if (!lastSectionRef.current) return;
-
+        // Observer will hide the indicator once 30% of #view4 is visible.
         const observer = new IntersectionObserver(
-            (entries) => {
+            (entries, obs) => {
                 entries.forEach((entry) => {
-                    // Adjust the ratio as needed. For example, 0.9 means 90% of the sentinel is visible.
-                    if (entry.intersectionRatio >= 1) {
-                        setIsAtBottom(true);
-                    } else {
-                        setIsAtBottom(false);
+                    if (entry.intersectionRatio >= 0.5) {
+                        setHideIndicator(true);
+                        obs.disconnect();
                     }
                 });
             },
-            { threshold: [0, 0.5, 0.9, 1.0] }
+            { root: null, threshold: 0.5 }
         );
-
-        observer.observe(lastSectionRef.current);
+        observer.observe(view4Element);
         return () => observer.disconnect();
-    }, [lastSectionRef]);
+    }, []);
 
-    // Hide the indicator if the user is scrolling or if the sentinel is visible.
-    if (isScrolling || isAtBottom) {
-        return null;
-    }
+
+    const variants = {
+        visible: { opacity: 1, y: 0, transition: { delay: 3.8, duration: 0.2, ease: "easeOut" } },
+        hidden: { opacity: 0, y: 0, transition: { duration: 0.2, ease: "easeOut" } }
+    };
 
     return (
-        <div className="scroll-down-overlay">
-            <p>SCROLL DOWN</p>
-            <p>&#x2193;</p>
-        </div>
+        <motion.div
+            initial="hidden"
+            animate={hideIndicator ? "hidden" : "visible"}
+            variants={variants}
+            style={{
+                position: "fixed",
+                bottom: "20px",
+                left: "50%",
+                transform: "translateX(-50%)",
+                zIndex: 11000,
+                textAlign: "center",
+            }}
+        >
+            <p style={{ margin: 0 }}>Scroll Down</p>
+            <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                style={{ marginTop: "5px" }}
+            >
+                <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path d="M12 16l-6-6h12z" />
+                </svg>
+            </motion.div>
+        </motion.div>
     );
 }

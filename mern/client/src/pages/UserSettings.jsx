@@ -1,3 +1,4 @@
+// src/components/UserSettings.jsx
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../store/AuthContext.jsx";
 import { isEmail, isNotEmpty } from "../utility/validation.js";
@@ -18,7 +19,7 @@ export default function UserSettings() {
     const [passwordError, setPasswordError] = useState(null);
     const [passwordSuccess, setPasswordSuccess] = useState("");
 
-    // Details form fields (excluding password and role)
+    // Details form fields
     const emailInput = useInput("", isEmail);
     const firstNameInput = useInput("", isNotEmpty);
     const lastNameInput = useInput("", isNotEmpty);
@@ -32,7 +33,7 @@ export default function UserSettings() {
     const newPasswordInput = useInput("", isNotEmpty);
     const confirmPasswordInput = useInput("", isNotEmpty);
 
-    // Fetch profile on component mount
+    // Fetch profile on mount
     useEffect(() => {
         if (isAuthenticated && user?.id) {
             setLoading(true);
@@ -58,7 +59,7 @@ export default function UserSettings() {
                     streetInput.setEnteredValue(data.street);
                     streetNumberInput.setEnteredValue(data.streetNumber);
                     cityInput.setEnteredValue(data.city);
-                    postalCodeInput.setEnteredValue(data.postalCode)
+                    postalCodeInput.setEnteredValue(data.postalCode);
                     setLoading(false);
                 })
                 .catch((err) => {
@@ -68,13 +69,12 @@ export default function UserSettings() {
         }
     }, [isAuthenticated, user, token]);
 
-    // Handle submission of the user details form
+    // Handle submission of details form
     const handleDetailsSubmit = (e) => {
         e.preventDefault();
         setDetailsError(null);
         setDetailsSuccess("");
 
-        // Validate fields using our custom hook flags
         if (emailInput.hasError) {
             setDetailsError("Please enter a valid email address.");
             return;
@@ -126,7 +126,7 @@ export default function UserSettings() {
             });
     };
 
-    // Handle submission of the password update form
+    // Handle submission of password update form
     const handlePasswordSubmit = (e) => {
         e.preventDefault();
         setPasswordError(null);
@@ -137,8 +137,6 @@ export default function UserSettings() {
             return;
         }
         setPasswordLoading(true);
-
-        // Send plain text new password (the backend will hash it)
         const payload = {
             oldPassword: oldPasswordInput.value,
             newPassword: newPasswordInput.value,
@@ -160,7 +158,6 @@ export default function UserSettings() {
             })
             .then(() => {
                 setPasswordSuccess("Password updated successfully.");
-                // Reset password form fields
                 oldPasswordInput.reset("");
                 newPasswordInput.reset("");
                 confirmPasswordInput.reset("");
@@ -195,9 +192,7 @@ export default function UserSettings() {
             })
             .then(() => {
                 alert("Your account has been deleted.");
-                // Optionally, logout or redirect the user after deletion.
                 if (logout) logout();
-                // For example: window.location.href = "/";
             })
             .catch((err) => {
                 alert(`Error deleting account: ${err.message}`);
@@ -209,150 +204,267 @@ export default function UserSettings() {
     }
 
     return (
-        <div className="user-settings">
+        <div className="user-settings container my-4">
             {profile && (
                 <>
-                    <section className="user-settings">
-                        <h3>User Settings</h3>
-                        {detailsError && <p className="error">{detailsError}</p>}
-                        {detailsSuccess && <p className="success">{detailsSuccess}</p>}
-                        <form onSubmit={handleDetailsSubmit}>
-                            <div>
-                                <label>Email:</label>
+                    {/* Details Update Form */}
+                    <section className="user-settings-details mb-5">
+                        <h2>User Settings</h2>
+                        {detailsError && (
+                            <div className="alert alert-danger" role="alert">
+                                {detailsError}
+                            </div>
+                        )}
+                        {detailsSuccess && (
+                            <div className="alert alert-success" role="alert">
+                                {detailsSuccess}
+                            </div>
+                        )}
+                        <form onSubmit={handleDetailsSubmit} className="row g-3">
+                            <div className="col-md-12">
+                                <label htmlFor="email" className="form-label text-start">
+                                    Email
+                                </label>
                                 <input
                                     type="email"
+                                    id="email"
+                                    name="email"
+                                    className={`form-control ${emailInput.hasError ? "is-invalid" : ""}`}
                                     value={emailInput.value}
                                     onChange={emailInput.handleInputChange}
                                     onBlur={emailInput.handleInputBlur}
+                                    required
                                 />
                                 {emailInput.hasError && (
-                                    <span>Please enter a valid email.</span>
+                                    <div className="invalid-feedback">
+                                        Please enter a valid email.
+                                    </div>
                                 )}
                             </div>
-                            <div>
-                                <label>First Name:</label>
+
+                            <div className="col-md-6">
+                                <label htmlFor="first-name" className="form-label">
+                                    First Name
+                                </label>
                                 <input
                                     type="text"
+                                    id="first-name"
+                                    name="first-name"
+                                    className={`form-control ${firstNameInput.hasError ? "is-invalid" : ""}`}
                                     value={firstNameInput.value}
                                     onChange={firstNameInput.handleInputChange}
                                     onBlur={firstNameInput.handleInputBlur}
+                                    required
                                 />
                                 {firstNameInput.hasError && (
-                                    <span>First name is required.</span>
+                                    <div className="invalid-feedback">
+                                        First name is required.
+                                    </div>
                                 )}
                             </div>
-                            <div>
-                                <label>Last Name:</label>
+
+                            <div className="col-md-6">
+                                <label htmlFor="last-name" className="form-label">
+                                    Last Name
+                                </label>
                                 <input
                                     type="text"
+                                    id="last-name"
+                                    name="last-name"
+                                    className={`form-control ${lastNameInput.hasError ? "is-invalid" : ""}`}
                                     value={lastNameInput.value}
                                     onChange={lastNameInput.handleInputChange}
                                     onBlur={lastNameInput.handleInputBlur}
+                                    required
                                 />
                                 {lastNameInput.hasError && (
-                                    <span>Last name is required.</span>
+                                    <div className="invalid-feedback">
+                                        Last name is required.
+                                    </div>
                                 )}
                             </div>
-                            <div>
-                                <label>Street:</label>
+
+                            <div className="col-md-6">
+                                <label htmlFor="street" className="form-label text-start">
+                                    Street
+                                </label>
                                 <input
                                     type="text"
+                                    id="street"
+                                    name="street"
+                                    className={`form-control ${streetInput.hasError ? "is-invalid" : ""}`}
                                     value={streetInput.value}
                                     onChange={streetInput.handleInputChange}
                                     onBlur={streetInput.handleInputBlur}
+                                    required
                                 />
                                 {streetInput.hasError && (
-                                    <span>Street is required.</span>
+                                    <div className="invalid-feedback">
+                                        Street is required.
+                                    </div>
                                 )}
                             </div>
-                            <div>
-                                <label>Street Number:</label>
+
+                            <div className="col-md-1">
+                                <label htmlFor="street-number" className="form-label text-start">
+                                    Number
+                                </label>
                                 <input
                                     type="text"
+                                    id="street-number"
+                                    name="street-number"
+                                    className={`form-control ${streetNumberInput.hasError ? "is-invalid" : ""}`}
                                     value={streetNumberInput.value}
                                     onChange={streetNumberInput.handleInputChange}
                                     onBlur={streetNumberInput.handleInputBlur}
+                                    required
                                 />
                                 {streetNumberInput.hasError && (
-                                    <span>Street number is required.</span>
+                                    <div className="invalid-feedback">
+                                        Street number is required.
+                                    </div>
                                 )}
                             </div>
-                            <div>
-                                <label>City:</label>
+
+                            <div className="col-md-3">
+                                <label htmlFor="city" className="form-label">
+                                    City
+                                </label>
                                 <input
                                     type="text"
+                                    id="city"
+                                    name="city"
+                                    className={`form-control ${cityInput.hasError ? "is-invalid" : ""}`}
                                     value={cityInput.value}
                                     onChange={cityInput.handleInputChange}
                                     onBlur={cityInput.handleInputBlur}
+                                    required
                                 />
-                                {cityInput.hasError && <span>City is required.</span>}
+                                {cityInput.hasError && (
+                                    <div className="invalid-feedback">
+                                        City is required.
+                                    </div>
+                                )}
                             </div>
-                            <div>
-                                <label>Postal Code:</label>
+
+                            <div className="col-md-2">
+                                <label htmlFor="postalCode" className="form-label">
+                                    Postal Code
+                                </label>
                                 <input
                                     type="text"
+                                    id="postalCode"
+                                    name="postalCode"
+                                    className={`form-control ${postalCodeInput.hasError ? "is-invalid" : ""}`}
                                     value={postalCodeInput.value}
                                     onChange={postalCodeInput.handleInputChange}
                                     onBlur={postalCodeInput.handleInputBlur}
+                                    required
                                 />
-                                {postalCodeInput.hasError && <span>Postal code is required.</span>}
+                                {postalCodeInput.hasError && (
+                                    <div className="invalid-feedback">
+                                        Postal code is required.
+                                    </div>
+                                )}
                             </div>
-                            <button type="submit" disabled={detailsLoading}>
-                                {detailsLoading ? "Updating..." : "Update Details"}
-                            </button>
+
+                            <div className="col-12">
+                                <button type="submit" className="btn btn-primary" disabled={detailsLoading}>
+                                    {detailsLoading ? "Updating..." : "Update Details"}
+                                </button>
+                            </div>
                         </form>
                     </section>
 
-                    <section className="password-update">
+                    {/* Password Update Form */}
+                    <section className="password-update mb-5">
                         <h3>Change Password</h3>
-                        {passwordError && <p className="error">{passwordError}</p>}
-                        {passwordSuccess && <p className="success">{passwordSuccess}</p>}
-                        <form onSubmit={handlePasswordSubmit}>
-                            <div>
-                                <label>Old Password:</label>
+                        {passwordError && (
+                            <div className="alert alert-danger" role="alert">
+                                {passwordError}
+                            </div>
+                        )}
+                        {passwordSuccess && (
+                            <div className="alert alert-success" role="alert">
+                                {passwordSuccess}
+                            </div>
+                        )}
+                        <form onSubmit={handlePasswordSubmit} className="row g-3">
+                            <div className="col-md-4">
+                                <label htmlFor="old-password" className="form-label">
+                                    Old Password
+                                </label>
                                 <input
                                     type="password"
+                                    id="old-password"
+                                    name="old-password"
+                                    className={`form-control ${oldPasswordInput.hasError ? "is-invalid" : ""}`}
                                     value={oldPasswordInput.value}
                                     onChange={oldPasswordInput.handleInputChange}
                                     onBlur={oldPasswordInput.handleInputBlur}
+                                    required
                                 />
                                 {oldPasswordInput.hasError && (
-                                    <span>Old password is required.</span>
+                                    <div className="invalid-feedback">
+                                        Old password is required.
+                                    </div>
                                 )}
                             </div>
-                            <div>
-                                <label>New Password:</label>
+
+                            <div className="col-md-4">
+                                <label htmlFor="new-password" className="form-label">
+                                    New Password
+                                </label>
                                 <input
                                     type="password"
+                                    id="new-password"
+                                    name="new-password"
+                                    className={`form-control ${newPasswordInput.hasError ? "is-invalid" : ""}`}
                                     value={newPasswordInput.value}
                                     onChange={newPasswordInput.handleInputChange}
                                     onBlur={newPasswordInput.handleInputBlur}
+                                    required
                                 />
                                 {newPasswordInput.hasError && (
-                                    <span>New password is required.</span>
+                                    <div className="invalid-feedback">
+                                        New password is required.
+                                    </div>
                                 )}
                             </div>
-                            <div>
-                                <label>Confirm Password:</label>
+
+                            <div className="col-md-4">
+                                <label htmlFor="confirm-password" className="form-label">
+                                    Confirm Password
+                                </label>
                                 <input
                                     type="password"
+                                    id="confirm-password"
+                                    name="confirm-password"
+                                    className={`form-control ${confirmPasswordInput.hasError ? "is-invalid" : ""}`}
                                     value={confirmPasswordInput.value}
                                     onChange={confirmPasswordInput.handleInputChange}
                                     onBlur={confirmPasswordInput.handleInputBlur}
+                                    required
                                 />
                                 {confirmPasswordInput.hasError && (
-                                    <span>Please confirm your new password.</span>
+                                    <div className="invalid-feedback">
+                                        Please confirm your new password.
+                                    </div>
                                 )}
                             </div>
-                            <button type="submit" disabled={passwordLoading}>
-                                {passwordLoading ? "Updating..." : "Change Password"}
-                            </button>
+
+                            <div className="col-12">
+                                <button type="submit" className="btn btn-primary" disabled={passwordLoading}>
+                                    {passwordLoading ? "Updating..." : "Change Password"}
+                                </button>
+                            </div>
                         </form>
                     </section>
 
-                    <section className="account-deletion">
+                    {/* Account Deletion */}
+                    <section className="account-deletion mb-5">
                         <h3>Delete Account</h3>
-                        <button onClick={handleDeleteAccount} className="delete-account">
+                        <button onClick={handleDeleteAccount} className="btn btn-danger">
                             Delete Account
                         </button>
                     </section>

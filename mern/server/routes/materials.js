@@ -5,10 +5,7 @@ import { ObjectId } from "mongodb";
 
 const router = express.Router();
 
-/**
- * GET /materials
- * Retrieve all product materials.
- */
+
 router.get("/", async (req, res) => {
     try {
         const materials = await db.collection("products.materials").find({}).toArray();
