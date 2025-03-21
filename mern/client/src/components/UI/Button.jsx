@@ -7,15 +7,14 @@ export default function Button({
                                    textOnly,
                                    className,
                                    onActive,
-                                   isActive: propIsActive = false,  // Default isActive to false if not provided
-                                   disableActive = false,  // Prop to completely disable the active functionality
-                                   whileHoverScale = 0, // Default scale effect on hover (0 disables scale)
+                                   isActive: propIsActive = false,
+                                   disableActive = false,
+                                   whileHoverScale = 0.9,
                                    ...props
                                }) {
     const [isHovered, setIsHovered] = useState(false);
-    const [isActive, setIsActiveState] = useState(false);  // Track if the button is clicked (active)
+    const [isActive, setIsActiveState] = useState(false);
 
-    // Set `isActive` based on the prop passed or default to local state, but respect `disableActive`
     useEffect(() => {
         if (!disableActive) {
             setIsActiveState(propIsActive);
@@ -26,7 +25,6 @@ export default function Button({
         .filter(Boolean)
         .join(" ");
 
-    // Function to split the text into individual letters and handle spaces
     const splitText = (text) => {
         if (typeof text !== 'string') return text;
 
@@ -40,19 +38,19 @@ export default function Button({
                 <motion.span
                     key={index}
                     className="text-letter"
-                    initial={{ color: 'white' }}  // Text starts as white
+                    initial={{ color: 'white' }}
                     animate={{
-                        color: isHovered || isActive ? 'transparent' : 'white',  // Transition to transparent (gradient) on hover or active
-                        background: isHovered || isActive
+                        color: isHovered || isActive ? 'transparent' : 'white',
+                        backgroundImage: isHovered || isActive
                             ? 'linear-gradient(30deg, rgb(94, 94, 94) 30%, rgb(172, 172, 172) 50%, rgb(94, 94, 94) 70%)'
-                            : 'white',
+                            : 'none',  // Default to none, preventing background animation issues
                         backgroundClip: 'text',
                         WebkitBackgroundClip: 'text', // For Safari compatibility
                     }}
                     transition={{
-                        duration: 0.1,  // Duration of the text color change
+                        duration: 0.1,
                         ease: 'easeInOut',
-                        delay: isHovered || isActive ? index * 0.03 : (text.length - index) * 0.03, // Reverse delay on hover end
+                        delay: isHovered || isActive ? index * 0.01 : (text.length - index) * 0.01,
                     }}
                 >
                     {letter}
@@ -62,34 +60,34 @@ export default function Button({
     };
 
     const handleButtonClick = () => {
-        if (disableActive) return;  // Do nothing if `disableActive` is true
+        if (disableActive) return;
 
         const newIsActive = !isActive;
-        setIsActiveState(newIsActive);  // Toggle the active state
-        if (onActive) onActive(newIsActive);  // Call the passed onActive callback
+        setIsActiveState(newIsActive);
+        if (onActive) onActive(newIsActive);
     };
 
     return (
         <motion.button
             className={cssClasses}
-            onClick={() => { handleButtonClick(); props.onClick && props.onClick(); }}  // Ensure custom onClick is called
+            onClick={() => { handleButtonClick(); props.onClick && props.onClick(); }}
             onHoverStart={() => setIsHovered(true)}
             onHoverEnd={() => setIsHovered(false)}
-            whileHover={whileHoverScale ? { scale: whileHoverScale } : undefined} // Optional scale effect on hover
+            whileHover={whileHoverScale ? { scale: whileHoverScale } : undefined}
             style={{
-                background: 'black',  // Button's background stays solid (black)
+                background: 'black',  // Solid background color
             }}
         >
             <motion.div
                 className="gradient"
                 initial={{ left: '-100%' }}
-                animate={{ left: isHovered ? '100%' : '-100%' }} // Animation only on hover
+                animate={{ left: isHovered ? '100%' : '-100%' }}
                 transition={{
-                    duration: 1, // Duration for the gradient effect
+                    duration: 1,
                     ease: 'easeInOut',
                 }}
             />
-            {splitText(children)} {/* Split the text into individual letters */}
+            {splitText(children)}
         </motion.button>
     );
 }

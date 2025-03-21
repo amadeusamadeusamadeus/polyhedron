@@ -209,7 +209,7 @@ export default function UserSettings() {
                 <>
                     {/* Details Update Form */}
                     <section className="user-settings-details mb-5">
-                        <h2>User Settings</h2>
+                        <h2 className="text-center">USER SETTINGS</h2>
                         {detailsError && (
                             <div className="alert alert-danger" role="alert">
                                 {detailsError}
@@ -221,7 +221,7 @@ export default function UserSettings() {
                             </div>
                         )}
                         <form onSubmit={handleDetailsSubmit} className="row g-3">
-                            <div className="col-md-12">
+                            <div className="">
                                 <label htmlFor="email" className="form-label text-start">
                                     Email
                                 </label>
@@ -368,7 +368,7 @@ export default function UserSettings() {
                                 )}
                             </div>
 
-                            <div className="col-12">
+                            <div className="">
                                 <button type="submit" className="btn btn-primary" disabled={detailsLoading}>
                                     {detailsLoading ? "Updating..." : "Update Details"}
                                 </button>

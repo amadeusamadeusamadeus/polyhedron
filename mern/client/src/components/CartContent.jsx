@@ -1,10 +1,10 @@
 // src/components/CartContent.jsx
-import React, { useContext, useEffect } from "react";
+import React, {useContext, useEffect} from "react";
 import CartContext from "../store/CartContext.jsx";
 import CartItem from "./CartItem.jsx";
 import Button from "./UI/Button.jsx";
 
-export default function CartContent({ onClose, onCheckout, showActions = true }) {
+export default function CartContent({onClose, onCheckout, showActions = true}) {
     const cartCtx = useContext(CartContext);
 
     useEffect(() => {
@@ -18,25 +18,28 @@ export default function CartContent({ onClose, onCheckout, showActions = true })
 
     return (
         <div className="cart-content">
-            <h2>Your Cart</h2>
+            <h2>YOUR CART</h2>
+
             {cartCtx.items.length === 0 ? (
-                <p>Your cart is empty.</p>
+                <p className="text-center">Your cart is empty.</p>
             ) : (
                 <>
-                <ul>
-                    {cartCtx.items.map((item) => (
-                        <CartItem
-                            key={item.uuid}
-                            shapeName={item.shapeName}
-                            name={item.name}
-                            quantity={item.quantity}
-                            price={item.price}
-                            onIncrease={() => cartCtx.addItem(item)}
-                            onDecrease={() => cartCtx.removeItem(item.uuid)}
-                        />
-                    ))}
-                </ul>
-                <p className="cart-total">Total: {cartTotal.toFixed(2)}</p>
+                    <div className="cart-items">
+                        <ul>
+                            {cartCtx.items.map((item) => (
+                                <CartItem
+                                    key={item.uuid}
+                                    shapeName={item.shapeName}
+                                    name={item.name}
+                                    quantity={item.quantity}
+                                    price={item.price}
+                                    onIncrease={() => cartCtx.addItem(item)}
+                                    onDecrease={() => cartCtx.removeItem(item.uuid)}
+                                />
+                            ))}
+                        </ul>
+                    </div>
+                    <p className="cart-total">Total: € {cartTotal.toFixed(2)}</p>
                 </>
             )}
             {showActions && (

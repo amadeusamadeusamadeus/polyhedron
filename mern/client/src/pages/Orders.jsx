@@ -59,7 +59,7 @@ export default function Orders() {
 
     return (
         <div className="container my-4">
-            <h2>Your Orders</h2>
+            <h2 className="text-center">YOUR ORDERS</h2>
             {orders.length === 0 ? (
                 <p>You have no orders yet.</p>
             ) : (
@@ -74,8 +74,8 @@ export default function Orders() {
                             : "No address";
                         return (
                             <Accordion.Item eventKey={index.toString()} key={order._id}>
-                                <Accordion.Header>
-                                    Order #{order._id} - {createdAt}
+                                <Accordion.Header className="h5">
+                                    ORDER #{order._id} - {createdAt}
                                 </Accordion.Header>
                                 <Accordion.Body>
                                     {orderData ? (
@@ -91,7 +91,7 @@ export default function Orders() {
                                                 <ul>
                                                     {orderData.items.map((item, i) => (
                                                         <li key={i} className="order-list">
-                                                            {item.quantity} x {item.shape} Material: {item.material} – Unit Price: $
+                                                            {item.quantity} x {item.shape} Material: {item.material} – Unit Price: €
                                                             {item.unitPrice !== undefined ? item.unitPrice.toFixed(2) : "0.00"}
                                                         </li>
                                                     ))}
@@ -100,7 +100,7 @@ export default function Orders() {
                                                 <p>No items found in this order.</p>
                                             )}
                                             <p>
-                                                <strong>Total Price:</strong> $
+                                                <strong>Total Price:</strong> €
                                                 {orderData.totalPrice !== undefined ? orderData.totalPrice.toFixed(2) : "0.00"}
                                             </p>
                                             <p>

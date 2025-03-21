@@ -141,8 +141,13 @@ export default function Checkout({ isModal = true, onClose = () => {} }) {
         reset: resetSecurityCode,
     } = useInput("", (value) => value.trim() !== "");
 
+    const [isModalOpen, setIsModalOpen] = useState(true);
+
     function handleClose() {
-        if (isModal) userProgressCtx.hideCheckout();
+        setIsModalOpen(false); // Set it to false to trigger exit animation
+        setTimeout(() => {
+            userProgressCtx.hideCheckout(); // This will close the modal after animation
+        }, 300); // Set a timeout that matches the animation duration (300ms)
     }
 
     function handleSubmit(event) {
@@ -241,8 +246,8 @@ export default function Checkout({ isModal = true, onClose = () => {} }) {
 
     const content = (
         <form onSubmit={handleSubmit}>
-            <h2>Checkout</h2>
-            <p>Total Amount: {cartTotal}</p>
+            <h2 className="">CHECKOUT</h2>
+            <p>Total Amount: € {parseFloat((cartTotal).toFixed(2))}</p>
             <fieldset>
                 <legend>Customer Information</legend>
                 <div className="control">
@@ -389,7 +394,7 @@ export default function Checkout({ isModal = true, onClose = () => {} }) {
             </fieldset>
             <p className="modal-actions">
                 {isModal && (
-                    <Button textOnly type="button" onClick={handleClose}>
+                    <Button type="button" onClick={handleClose}>
                         Close
                     </Button>
                 )}
@@ -400,9 +405,9 @@ export default function Checkout({ isModal = true, onClose = () => {} }) {
 
     return isModal ? (
         <Modal open={userProgressCtx.progress === "checkout"} onClose={handleClose}>
-            {content}
+            <div className="checkout-page-container"> {content}</div>
         </Modal>
-    ) : (
-        <div className="checkout-page-container">{content}</div>
+) : (
+    <div className="checkout-page-container">{content}</div>
     );
 }

@@ -7,6 +7,7 @@ export default function ShapeMenu({ shapes, onShapeChange }) {
         <div className="shape-menu">
             {shapes.map((shape) => (
                 <Button
+                    isActive={false}
                     key={shape._id}
                     onClick={() => onShapeChange(shape)}
                     style={{ margin: "0.5rem" }}

@@ -30,7 +30,6 @@ export default function ShoppingSection({
 
     function handleAddItemToCart() {
         if (selectedMaterial && selectedShape) {
-            // Create a new cart item that includes the shape name.
             const newItem = {
                 ...selectedMaterial,
                 shapeName: selectedShape.name,
@@ -43,23 +42,27 @@ export default function ShoppingSection({
 
     return (
             <div>
-                <div className="shape-menu-section p-3">
-                    <ShapeMenu shapes={shapes} onShapeChange={onShapeChange}/>
-                </div>
+                <div className="model-menus">
 
-                <div className="variation-menu p-3">
-                    {variations && variations.length > 0 ? (
-                        <MaterialMenu
-                            variations={variations}
-                            config={config}
-                            onMaterialSelect={onSelectVariation}
-                        />
-                    ) : (
-                        <p>No variations available</p>
-                    )}
+
+                    <div className="variation-menu">
+                        {variations && variations.length > 0 ? (
+                            <MaterialMenu
+                                variations={variations}
+                                config={config}
+                                onMaterialSelect={onSelectVariation}
+                            />
+                        ) : (
+                            <p>No variations available</p>
+                        )}
+                    </div>
+                    <div className="shape-menu-section">
+                        <ShapeMenu shapes={shapes} onShapeChange={onShapeChange}/>
+                    </div>
                 </div>
-                <div className="selected-material">
-                    <p>
+                <div className="purchase-menu text-wrap">
+                    <div className="selected-material text-wrap">
+                        <p>
                         Currently selected material:{" "}
                         {selectedMaterial ? selectedMaterial.name : "None"}
                     </p>
@@ -68,15 +71,20 @@ export default function ShoppingSection({
                     <p>
                         Price:{" "}
                         {selectedMaterial && selectedMaterial.price !== null
-                            ? `$${selectedMaterial.price.toFixed(2)}`
+                            ? `€${selectedMaterial.price.toFixed(2)}`
                             : "Not available"}
                     </p>
                 </div>
+                </div>
                 <div>
-                    <Button onClick={handleAddItemToCart}>Add to Cart</Button>
-                    <Button  onClick={handleShowCart}>
+                    <Button  disableActive={true} onClick={handleAddItemToCart}>Add to Cart</Button>
+                    <Button  disableActive={true} onClick={handleShowCart}>
                         Cart ({totalCartItems})
                     </Button>
+                    {/*<Button>*/}
+                    {/*    Exit*/}
+                    {/*</Button>*/}
+
                 </div>
             </div>
     );

@@ -45,7 +45,7 @@ export default function PreviewSection({ onCustomise }) {
                 transition={{type: "spring", ease: "easeInOut", duration: 1}}
             >
                 <div className="preview-content paper-card col-6 offset-3 justify-content-center text-center">
-                    <h2 className="title-gold">CUSTOMIZE YOUR DICE</h2>
+                    <h2 className="title-chrome">CUSTOMIZE YOUR DICE</h2>
                     <p>
                         You can customize both the material and the shape of your dice. Zoom and rotate to look at it
                         from
@@ -53,6 +53,7 @@ export default function PreviewSection({ onCustomise }) {
                     </p>
                     <hr className="line w-50 mx-auto"/>
                     <Button className="button"
+                            disableActive={true}
                             onClick={onCustomise}>
                         CUSTOMIZE
                     </Button>

@@ -39,7 +39,6 @@ export default function Home() {
 
     const [progress, setProgress] = useState(0);
     const minLoadingTime = 2000;
-    // const lastSectionRef = useRef(null);
 
     useEffect(() => {
 
@@ -181,16 +180,7 @@ export default function Home() {
             )}
 
             {mode === "customise" && (
-                <div
-                    className="customise-controls"
-                    style={{
-                        position: "fixed",
-                        bottom: 0,
-                        left: 0,
-                        width: "100%",
-                        zIndex: 101,
-                    }}
-                >
+                <div className="customise-controls">
                     <ShoppingSection
                         variations={variations}
                         config={config}
@@ -202,10 +192,9 @@ export default function Home() {
                     />
                     <Button
                         className="exit-mode-button"
-                        textOnly={true}
                         onClick={handleExitCustomise}
                     >
-                        EXIT
+                        <img src={"cross.svg"} alt="exit-button" />
                     </Button>
                 </div>
             )}

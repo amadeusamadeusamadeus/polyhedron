@@ -38,7 +38,7 @@ export default function PitchSection({ onCustomise }) {
     const rawX = useTransform(
         scrollYProgress,
         [0, 0.3, 0.7, 1],
-        [initialOffset, 0, 0, -initialOffset]
+        [initialOffset, 0, 0, initialOffset]
     );
     const xSpring = useSpring(rawX, { stiffness: 80, damping: 30 });
 
@@ -61,7 +61,7 @@ export default function PitchSection({ onCustomise }) {
             style={{ opacity: opacitySpring, x: xSpring }}
         >
             <div className="pitch-content paper-card col-6 offset-6 align-content-top text-end">
-                <h2 className="pitch-title title-silver">TRY IT BELOW</h2>
+                <h2 className="title-chrome pitch-title ">TRY IT BELOW</h2>
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, architecto autem cumque debitis
                     dignissimos distinctio dolores esse est ex, labore libero nisi perferendis quae sunt, suscipit ullam

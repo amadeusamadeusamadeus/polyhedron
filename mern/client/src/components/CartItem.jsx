@@ -11,15 +11,17 @@ export default function CartItem({
                                  }) {
     return (
         <li className="cart-item">
-            <p>
-                {shapeName} Material: {name} – Quantity: {quantity} – Price:
-                {price.toFixed(2)}
-            </p>
-            <p className="cart-item-actions">
+            <div className="item-details">
+                <span className="item-name">Shape: {shapeName}</span>
+                <span className="item-material">Material: {name}</span>
+                <span className="item-quantity">Quantity: {quantity}</span>
+                <span className="item-price">Unit price: € {price.toFixed(2)}</span>
+            </div>
+            <div className="cart-item-actions">
                 <button onClick={onDecrease}>-</button>
                 <span>{quantity}</span>
                 <button onClick={onIncrease}>+</button>
-            </p>
+            </div>
         </li>
     );
 }

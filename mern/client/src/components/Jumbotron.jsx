@@ -59,7 +59,7 @@ export default function Jumbotron() {
             style={{ opacity: opacitySpring, x: xSpring }}
         >
             <div className="jumbo-content paper-card col-6 align-content-top text-start">
-                <h2 className="title-gold jumbo-title col-12 fs-1">ELEVATE YOUR GAME</h2>
+                <h2 className="title-chrome jumbo-title col-12 fs-1">ELEVATE YOUR GAME</h2>
                 <span className="description embossed-text">
           <p>
             Our luxury dice combine cutting-edge materials with precision engineering for a perfectly balanced roll and a unique look.

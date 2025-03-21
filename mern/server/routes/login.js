@@ -11,7 +11,6 @@ const KEY = process.env.KEY;
 
 // Helper function to create a JSON Web Token.
 function createJSONToken(user) {
-    // Include email, id, and role in the payload
     return sign({ email: user.email, id: user._id, role: user.role }, KEY, { expiresIn: "1h" });
 }
 

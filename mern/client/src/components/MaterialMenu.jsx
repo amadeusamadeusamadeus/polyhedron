@@ -21,7 +21,6 @@ export default function MaterialMenu({ variations, config, onMaterialSelect }) {
         <div className="material-menu">
             {variations.map((variation) => (
                 <div key={variation.title} className="variation-group">
-                    {/*<h4>{variation.title}</h4>*/}
                     <div className="variation-options" style={{ display: "flex", flexWrap: "wrap" }}>
                         {variation.materials.map((material) => {
                             const iconUrl = material.userData && material.userData.icon ? material.userData.icon : "";

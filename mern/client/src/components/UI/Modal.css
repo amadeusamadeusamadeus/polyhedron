@@ -8,19 +8,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000; /* Make sure it appears above other elements */
+    z-index: 1000;
 }
 
 .modal-container {
-    background: #ffffff;
+    background: #f3f3f3;
     padding: 1rem;
     border-radius: 6px;
     max-width: 40rem;
     width: 80%;
     max-height: 80%;
-    overflow-y: auto; /* Allow scrolling if content overflows */
+    overflow-y: auto;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-    animation: fade-slide-up 0.3s ease-out forwards;
+    /*animation: fade-slide-up 0.3s ease-out forwards;*/
 }
 
 /* Optional keyframes for the animation */
