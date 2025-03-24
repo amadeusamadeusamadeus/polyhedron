@@ -1,4 +1,3 @@
-// src/components/WebgiViewer.jsx
 import React, { useRef, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import {
@@ -9,6 +8,7 @@ import {
     CanvasSnipperPlugin,
     MaterialConfiguratorPlugin,
     ScrollableCameraViewPlugin,
+    InteractionPromptPlugin,
 } from "webgi";
 import { ensureMaterialInDb } from "../api/materialService";
 
@@ -22,15 +22,22 @@ export default function WebgiViewer({
                                         dbShape,
                                         setDbMaterials,
                                         onViewerLoaded,
+                                        selectedMaterial,
                                     }) {
     const canvasRef = useRef(null);
     const viewerRef = useRef(null);
     const configRef = useRef(null);
     const scrollRef = useRef(null);
+    const interactionRef = useRef(null);
     const location = useLocation();
-    const isHomePage = location.pathname === "/";
-
+    const isHomePage = location.pathname === "/" || location.pathname === "/home";
     const [isLoaded, setIsLoaded] = useState(false);
+
+    // Keep the latest dbMaterials in a ref.
+    const dbMaterialsRef = useRef(dbMaterials);
+    useEffect(() => {
+        dbMaterialsRef.current = dbMaterials;
+    }, [dbMaterials]);
 
     const updateVariations = async (configPlugin) => {
         const updatedVariations = await Promise.all(
@@ -72,9 +79,17 @@ export default function WebgiViewer({
         setVariations(updatedVariations);
     };
 
+    // Initialize the viewer when the model changes.
     useEffect(() => {
         async function setupViewer() {
             if (!canvasRef.current) return;
+            // Dispose previous viewer instance if it exists.
+            if (viewerRef.current) {
+                viewerRef.current.dispose();
+                viewerRef.current = null;
+            }
+            setIsLoaded(false);
+
             const viewer = new ViewerApp({ canvas: canvasRef.current });
             viewerRef.current = viewer;
 
@@ -82,123 +97,128 @@ export default function WebgiViewer({
             await addBasePlugins(viewer);
             await viewer.addPlugin(FileTransferPlugin);
             await viewer.addPlugin(CanvasSnipperPlugin);
+            // Pre-add InteractionPromptPlugin (will be toggled by mode)
+            await viewer.addPlugin(InteractionPromptPlugin);
 
-
-            // Conditionally add the scroll plugin if on the homepage.
+            // Always add the scroll plugin on initialization only if on the home page.
             if (isHomePage) {
-                const hasScrollSections = !!document.querySelector("#view1");
-                if (hasScrollSections) {
-                    const scrollPlugin = await viewer.addPlugin(ScrollableCameraViewPlugin);
-                    scrollRef.current = scrollPlugin;
-                    scrollPlugin.enabled = mode === "scroll";
-                } else {
-                    console.warn(
-                        "No scroll sections found. Skipping ScrollableCameraViewPlugin initialization."
-                    );
-                }
+                const scrollPlugin = await viewer.addPlugin(ScrollableCameraViewPlugin);
+                scrollRef.current = scrollPlugin;
             }
 
-            // Add the material configurator plugin.
             const configPlugin = await viewer.addPlugin(MaterialConfiguratorPlugin);
             configRef.current = configPlugin;
             configPlugin.onVariationChange = (selectedVariation) => {
                 console.log("Variation changed:", selectedVariation);
-                if (onVariationChange) {
-                    onVariationChange(selectedVariation);
-                }
+                if (onVariationChange) onVariationChange(selectedVariation);
             };
 
-            // Start loading the model.
             await viewer.load(modelUrl);
             await updateVariations(configPlugin);
             setConfig(configPlugin);
 
-            // Set camera controls based on mode.
-            if (mode === "scroll") {
-                viewer.scene.activeCamera.controls.enabled = false;
-            } else {
-                viewer.scene.activeCamera.controls.enabled = true;
-            }
+            // Set initial camera controls based on mode.
+            viewer.scene.activeCamera.controls.enabled = mode !== "scroll";
 
+            // Call onViewerLoaded callback.
             if (onViewerLoaded) onViewerLoaded();
             setIsLoaded(true);
         }
         setupViewer();
 
-        // Cleanup: Dispose viewer when the component unmounts.
         return () => {
             if (viewerRef.current) {
                 viewerRef.current.dispose();
                 viewerRef.current = null;
             }
         };
-    }, [onVariationChange, setVariations, setConfig, modelUrl, isHomePage]);
+    }, [modelUrl, isHomePage, onVariationChange, setVariations, setConfig, dbShape]);
 
+    // Update viewer plugins and camera controls when mode changes.
     useEffect(() => {
         if (!viewerRef.current) return;
         const viewer = viewerRef.current;
-        if (isHomePage) {
-            if (!scrollRef.current) {
-                (async () => {
-                    const hasScrollSections = !!document.querySelector("#view1");
-                    if (hasScrollSections) {
-                        const scrollPlugin = await viewer.addPlugin(ScrollableCameraViewPlugin);
-                        scrollRef.current = scrollPlugin;
-                        scrollPlugin.enabled = mode === "scroll";
-                    }
-                })();
-            } else {
-                scrollRef.current.enabled = mode === "scroll";
+
+        // Ensure that if we are not on the home page, the scroll plugin is removed.
+        if (!isHomePage && scrollRef.current) {
+            viewer.removePlugin(scrollRef.current);
+            scrollRef.current = null;
+        }
+
+        if (mode === "scroll" && isHomePage) {
+            // (Re)Add the scroll plugin if not present.
+            (async () => {
+                if (!scrollRef.current) {
+                    const scrollPlugin = await viewer.addPlugin(ScrollableCameraViewPlugin);
+                    scrollRef.current = scrollPlugin;
+                }
+                scrollRef.current.enabled = true;
+            })();
+            // Disable the interaction plugin if it exists.
+            if (interactionRef.current) {
+                interactionRef.current.enabled = false;
             }
-        } else {
+            // Disable camera controls and pointer events for scroll mode.
+            viewer.scene.activeCamera.controls.enabled = false;
+            if (canvasRef.current) {
+                canvasRef.current.style.pointerEvents = "none";
+            }
+        } else if (mode === "customise") {
+            // Remove the scroll plugin entirely to prevent it from searching the document.
             if (scrollRef.current) {
                 viewer.removePlugin(scrollRef.current);
                 scrollRef.current = null;
             }
+            // Enable camera controls and pointer events for customise mode.
+            viewer.scene.activeCamera.controls.enabled = true;
+            if (canvasRef.current) {
+                canvasRef.current.style.pointerEvents = "auto";
+            }
+            // Ensure the interaction plugin is enabled.
+            (async () => {
+                if (!interactionRef.current) {
+                    const interactionPlugin = await viewer.addPlugin(InteractionPromptPlugin);
+                    interactionRef.current = interactionPlugin;
+                    interactionPlugin.enabled = true;
+                } else {
+                    interactionRef.current.enabled = true;
+                }
+            })();
         }
-    }, [isHomePage, mode]);
+    }, [mode, isHomePage]);
 
+    // When switching to scroll mode, reapply the selected material variation.
     useEffect(() => {
-        if (!viewerRef.current) return;
-        const viewer = viewerRef.current;
-        if (scrollRef.current) {
-            if (mode === "scroll") {
-                viewer.scene.activeCamera.controls.enabled = false;
-                if (canvasRef.current) {
-                    canvasRef.current.style.pointerEvents = "none";
-                }
-            } else if (mode === "customise") {
-                viewer.scene.activeCamera.controls.enabled = true;
-                if (canvasRef.current) {
-                    canvasRef.current.style.pointerEvents = "auto";
-                }
+        if (mode === "scroll" && configRef.current && selectedMaterial) {
+            const variation = configRef.current.variations.find((v) =>
+                v.materials.some((m) => m.uuid === selectedMaterial.uuid)
+            );
+            if (variation && configRef.current.applyVariation) {
+                configRef.current.applyVariation(variation, selectedMaterial.uuid);
             }
         }
-    }, [mode]);
+    }, [mode, selectedMaterial]);
 
-    // Re-run merge when dbShape or dbMaterials change.
+    // Update variations if the shape or materials change.
     useEffect(() => {
-        console.log("Re-running merge with dbShape:", dbShape, "and dbMaterials:", dbMaterials);
         if (configRef.current && dbShape && dbMaterials.length > 0) {
             updateVariations(configRef.current);
         }
     }, [dbShape, dbMaterials]);
 
+    // Force a scroll update once the viewer is loaded and in scroll mode.
+    useEffect(() => {
+        if (isLoaded && mode === "scroll") {
+            window.dispatchEvent(new Event("scroll"));
+        }
+    }, [isLoaded, mode]);
+
     return (
-        <div
-            id="webgi-canvas-container"
-            style={{
-                width: "100%",
-                height: "100%",
-            }}
-        >
+        <div id="webgi-canvas-container" style={{ width: "100%", height: "100%" }}>
             <canvas
                 id="webgi-canvas"
                 ref={canvasRef}
-                style={{
-                    width: "100%",
-                    height: "100%",
-                }}
+                style={{ width: "100%", height: "100%" }}
             />
             {!isLoaded && (
                 <div

@@ -69,7 +69,7 @@ export default function PitchSection({ onCustomise }) {
                     mollitia necessitatibus nemo quasi quis sed, ullam, voluptatem
                 </p>
                 <hr className="line w-50 ms-auto" />
-                <Button onClick={handleExplore}>SCROLL DOWN</Button>
+                <Button onClick={handleExplore}>TRY NOW</Button>
             </div>
         </motion.div>
     );

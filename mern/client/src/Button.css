@@ -6,6 +6,7 @@
     font-size: 16px;
     font-weight: bold;
     color: #f3f3f3;
+    width: auto;
     background-color: #151515;
     /*border: 2px solid silver;*/
     border-radius: 2px;
@@ -15,32 +16,37 @@
     display: inline-flex;
     white-space: nowrap;
     transition: background 0.3s ease;
+    box-shadow:
+            0 4px 8px 0 rgba(0, 0, 0, 0.3), /* Outer bottom shadow */
+    3px 0 20px 0 rgba(0, 0, 0, 0.3), /* Outer right shadow */
+    inset 0 -5px 2px rgba(255, 255, 255, 0.2), /* Inner bottom shadow */
+    inset 5px 0 5px rgba(255, 255, 255, 0.2); /* Inner right shadow */
     /*font-family: "Roboto Light", sans-serif;*/
 }
 
 .gradient {
     position: absolute;
     top: 0;
-    left: -100%; /* Start the gradient off-screen to the left */
+    left: -100%;
     width: 100%;
-    height: 4px; /* Thin gradient */
-    background: linear-gradient(45deg, silver, gray, silver); /* Rotating the gradient */
-    opacity: 0.6;
-    transform: rotate(45deg); /* Apply rotation of 45 degrees */
-    filter: blur(4px); /* Optional: Add blur effect to the gradient */
-    z-index: 1; /* Keep the gradient above the button background but below the text */
+    height: 4px;
+    background: linear-gradient(45deg, silver, gray, silver);
+    opacity: 0.8;
+    transform: rotate(45deg);
+    filter: blur(8px);
+    z-index: 1;
 }
 
 .text-letter {
     position: relative;
-    z-index: 2; /* Ensure text is above the gradient */
-    color: #f3f3f3; /* Initial text color is white */
-    background: linear-gradient(45deg, silver, gray, silver); /* Apply gradient */
-    background-clip: text; /* Apply the gradient to the text */
-    -webkit-background-clip: text; /* Webkit for compatibility with Safari */
+    z-index: 2;
+    color: #f3f3f3;
+    background: linear-gradient(45deg, silver, gray, silver);
+    background-clip: text;
+    -webkit-background-clip: text;
     display: inline-block;
-    background-position: 100%; /* Start with the gradient off to the right */
-    transition: background-position 1s ease; /* Smooth transition for background position */
+    background-position: 100%;
+    transition: background-position 1s ease;
 }
 
 .button .text-letter-space {

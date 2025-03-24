@@ -39,14 +39,14 @@ export default function Button({
                     key={index}
                     className="text-letter"
                     initial={{ color: 'white' }}
-                    animate={{
-                        color: isHovered || isActive ? 'transparent' : 'white',
-                        backgroundImage: isHovered || isActive
-                            ? 'linear-gradient(30deg, rgb(94, 94, 94) 30%, rgb(172, 172, 172) 50%, rgb(94, 94, 94) 70%)'
-                            : 'none',  // Default to none, preventing background animation issues
-                        backgroundClip: 'text',
-                        WebkitBackgroundClip: 'text', // For Safari compatibility
-                    }}
+                    // animate={{
+                    //     color: isHovered || isActive ? 'transparent' : 'white',
+                    //     backgroundImage: isHovered || isActive
+                    //         ? 'linear-gradient(30deg, rgb(94, 94, 94) 30%, rgb(172, 172, 172) 50%, rgb(94, 94, 94) 70%)'
+                    //         : 'none',  // Default to none, preventing background animation issues
+                    //     backgroundClip: 'text',
+                    //     WebkitBackgroundClip: 'text', // For Safari compatibility
+                    // }}
                     transition={{
                         duration: 0.1,
                         ease: 'easeInOut',

@@ -86,7 +86,7 @@ export default function Orders() {
                                             <p>
                                                 <strong>Address:</strong> {address}
                                             </p>
-                                            <h5>Items:</h5>
+                                            <strong>Items:</strong>
                                             {orderData.items && orderData.items.length > 0 ? (
                                                 <ul>
                                                     {orderData.items.map((item, i) => (

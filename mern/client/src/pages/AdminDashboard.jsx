@@ -1,9 +1,8 @@
 // src/pages/AdminDashboard.jsx
 import React, { useState, useEffect, useContext } from "react";
-import { Accordion, Button, Spinner, Alert, Form } from "react-bootstrap";
+import { Accordion, Spinner, Alert, Form } from "react-bootstrap";
 import { AuthContext } from "../store/AuthContext.jsx";
-
-//TODO: maybe separate all 4 admin navigation elements into their own pages
+import Button from "../components/UI/Button.jsx";
 
 function AdminDashboard() {
     const { token } = useContext(AuthContext);
@@ -11,18 +10,34 @@ function AdminDashboard() {
 
     return (
         <div className="admin-dashboard container my-4">
-            <h2>Admin Dashboard</h2>
-            <div className="admin-menu mb-4">
-                <Button variant="primary" onClick={() => setActiveTab("users")}>
+            <h2 className="text-center">DASHBOARD</h2>
+            <div className="admin-menu mb-4 text-center">
+                <Button
+                    variant="primary"
+                    onClick={() => setActiveTab("users")}
+                    isActive={activeTab === "users"}
+                >
                     Users
                 </Button>{" "}
-                <Button variant="primary" onClick={() => setActiveTab("orders")}>
+                <Button
+                    variant="primary"
+                    onClick={() => setActiveTab("orders")}
+                    isActive={activeTab === "orders"}
+                >
                     Orders
                 </Button>{" "}
-                <Button variant="primary" onClick={() => setActiveTab("shapes")}>
+                <Button
+                    variant="primary"
+                    onClick={() => setActiveTab("shapes")}
+                    isActive={activeTab === "shapes"}
+                >
                     Product Shapes
                 </Button>{" "}
-                <Button variant="primary" onClick={() => setActiveTab("materials")}>
+                <Button
+                    variant="primary"
+                    onClick={() => setActiveTab("materials")}
+                    isActive={activeTab === "materials"}
+                >
                     Product Materials
                 </Button>
             </div>
@@ -861,7 +876,7 @@ function AdminProductMaterials({ token }) {
             {materials.length === 0 ? (
                 <p>No materials available.</p>
             ) : (
-                <ul>
+                <ul className="admin-materials-ul">
                     {materials.map((material) => (
                         <li key={material._id}>
                             {editingMaterialId === material._id ? (

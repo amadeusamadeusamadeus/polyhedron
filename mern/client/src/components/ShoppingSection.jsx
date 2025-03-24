@@ -41,28 +41,26 @@ export default function ShoppingSection({
     }
 
     return (
-            <div>
-                <div className="model-menus">
-
-
-                    <div className="variation-menu">
-                        {variations && variations.length > 0 ? (
-                            <MaterialMenu
-                                variations={variations}
-                                config={config}
-                                onMaterialSelect={onSelectVariation}
-                            />
-                        ) : (
-                            <p>No variations available</p>
-                        )}
-                    </div>
-                    <div className="shape-menu-section">
-                        <ShapeMenu shapes={shapes} onShapeChange={onShapeChange}/>
-                    </div>
+        <div>
+            <div className="model-menus">
+                <div className="variation-menu">
+                    {variations && variations.length > 0 ? (
+                        <MaterialMenu
+                            variations={variations}
+                            config={config}
+                            onMaterialSelect={onSelectVariation}
+                        />
+                    ) : (
+                        <p>No variations available</p>
+                    )}
                 </div>
-                <div className="purchase-menu text-wrap">
-                    <div className="selected-material text-wrap">
-                        <p>
+                <div className="shape-menu-section">
+                    <ShapeMenu shapes={shapes} onShapeChange={onShapeChange}/>
+                </div>
+            </div>
+            <div className="purchase-menu text-wrap">
+                <div className="selected-material text-wrap">
+                    <p>
                         Currently selected material:{" "}
                         {selectedMaterial ? selectedMaterial.name : "None"}
                     </p>
@@ -75,17 +73,17 @@ export default function ShoppingSection({
                             : "Not available"}
                     </p>
                 </div>
-                </div>
-                <div>
-                    <Button  disableActive={true} onClick={handleAddItemToCart}>Add to Cart</Button>
-                    <Button  disableActive={true} onClick={handleShowCart}>
-                        Cart ({totalCartItems})
-                    </Button>
-                    {/*<Button>*/}
-                    {/*    Exit*/}
-                    {/*</Button>*/}
-
-                </div>
             </div>
+            <div>
+                <Button disableActive={true} onClick={handleAddItemToCart}>Add to Cart</Button>
+                <Button disableActive={true} onClick={handleShowCart}>
+                    Cart ({totalCartItems})
+                </Button>
+                {/*<Button>*/}
+                {/*    Exit*/}
+                {/*</Button>*/}
+
+            </div>
+        </div>
     );
 }

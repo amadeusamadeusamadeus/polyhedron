@@ -6,10 +6,9 @@ export default function ScrollDownIndicator() {
     const [hideIndicator, setHideIndicator] = useState(false);
 
     useEffect(() => {
-        const view4Element = document.getElementById("view4");
-        if (!view4Element) return;
+        const view3Element = document.getElementById("view3");
+        if (!view3Element) return;
 
-        // Observer will hide the indicator once 30% of #view4 is visible.
         const observer = new IntersectionObserver(
             (entries, obs) => {
                 entries.forEach((entry) => {
@@ -21,7 +20,7 @@ export default function ScrollDownIndicator() {
             },
             { root: null, threshold: 0.5 }
         );
-        observer.observe(view4Element);
+        observer.observe(view3Element);
         return () => observer.disconnect();
     }, []);
 

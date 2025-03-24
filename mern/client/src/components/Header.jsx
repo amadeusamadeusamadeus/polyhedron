@@ -59,7 +59,7 @@ function Header() {
 
     function AdminDashboardLink() {
         if (authCtx.isAuthenticated && authCtx.user?.role === "admin") {
-            return <NavLink to="/admin-dashboard" className="nav-link active">Admin Dashboard</NavLink>;
+            return <NavLink to="/admin-dashboard" className="nav-link">ADMIN DASHBOARD</NavLink>;
         }
         return null;
     }
@@ -112,10 +112,10 @@ function Header() {
                                         {authCtx.isAuthenticated ? (
                                             authCtx.user.role === "admin" ? (
                                                 <>
-                                                    <NavLink to="/" className="nav-link">Home</NavLink>
+                                                    <NavLink to="/" className="nav-link">HOME</NavLink>
                                                     <AdminDashboardLink />
-                                                    <Button className="nav-link active" onClick={handleLogout}>
-                                                        Logout
+                                                    <Button className="nav-link" whileHoverScale={0} onClick={handleLogout}>
+                                                        LOGOUT
                                                     </Button>
                                                 </>
                                             ) : (
@@ -138,7 +138,7 @@ function Header() {
                                             <>
                                                 <LoginForm />
                                                 <NavLink to="/" className="nav-link">Home</NavLink>
-                                                <NavLink to="/signup" className="nav-link">Create New Account</NavLink>
+                                                <NavLink to="/signup" className="nav-link">CREATE NEW ACCOUNT</NavLink>
                                             </>
                                         )}
                                     </Nav>

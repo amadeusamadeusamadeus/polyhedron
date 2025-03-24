@@ -12,6 +12,8 @@
     --bs-accordion-active-color: darkgrey !important;
     --bs-accordion-active-bg: darkgrey !important;
 
+    /*--bs-accordion-btn-active-icon: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23052c65' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e);*/
+
 }
 
 @font-face {
@@ -46,8 +48,6 @@ body {
     /*background-image: url("../public/pattern_bg.png");*/
     /*background-size: cover;*/
     /*background-position: center;*/
-
-
 }
 
 body * {
@@ -69,10 +69,14 @@ body * {
     top: 0;
     left: 0;
     width: 100%;
+    /*border-bottom-left-radius: 8px;*/
+    /*border-bottom-right-radius: 8px;*/
     transform: none !important;
     /*background-color: var(--primary-bg-color);*/
     transition: transform 0.3s ease-in-out;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 3px 20px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
+    /*0 3px 20px 0 rgba(0, 0, 0, 0.3),*/
+    /*inset 0 -5px 2px rgba(255, 255, 255, 0.2);*/
 }
 
 .site-header.hidden {
@@ -117,14 +121,6 @@ body * {
     visibility: hidden;
 }
 
-/*.text-button {*/
-/*    font: inherit;*/
-/*    cursor: pointer;*/
-/*    background-color: transparent;*/
-/*    border: none;*/
-/*    color: #000000;*/
-/*}*/
-
 .navbar-toggler {
     border: none !important;
 }
@@ -134,7 +130,6 @@ body * {
     outline: none !important;
     box-shadow: none !important;
 }
-
 
 dialog:not([open]) {
     display: none;
@@ -151,7 +146,6 @@ dialog:not([open]) {
     width: 100%;
     height: 100%;
     pointer-events: none;
-
 }
 
 .section {
@@ -201,8 +195,9 @@ div.jumbo-content {
 div.pitch-content {
     margin-top: 15%;
 }
+
 .pitch-section-wrapper {
-    position: relative; /* or static */
+    position: relative;
     overflow: hidden;
     /*max-width: 100vw;*/
     /*overflow: visible;*/
@@ -224,9 +219,6 @@ h2 {
     font-family: 'Elianto-Regular', sans-serif;
     /*text-align: center;*/
 }
-/*.offcanvas-menu-items {*/
-/*    border: 2px solid darkgrey;*/
-/*}*/
 
 .accordion-body {
     word-break: break-word;
@@ -247,12 +239,12 @@ h2 {
     background-color: black !important;
     color: var(--primary-bg-color) !important;
     box-shadow: inset 0 calc(-1 * 2) 0 var(--secondary-bg-color) !important;
-
 }
 
 h5 {
     font-family: "Roboto Light", sans-serif;
 }
+
 .scroll-down-overlay {
     position: absolute;
     bottom: 20%;
@@ -264,7 +256,7 @@ h5 {
 }
 
 .title-chrome {
-    background: linear-gradient(30deg, rgba(34,34,34,1) 27%, rgba(139,139,139,1) 51%, rgba(33,33,33,1) 66%);
+    background: linear-gradient(30deg, rgba(34, 34, 34, 1) 27%, rgba(139, 139, 139, 1) 51%, rgba(33, 33, 33, 1) 66%);
     background-clip: text;
     color: transparent;
 }
@@ -299,7 +291,7 @@ h5 {
     background: var(--primary-bg-color);
 }
 
-.offcanvas.offcanvas-end.show  {
+.offcanvas.offcanvas-end.show {
     background: var(--primary-bg-color);
 }
 
@@ -309,20 +301,23 @@ h5 {
 
 .nav-link {
     display: block;
-    width: 100%;  /* Makes the nav link take full width */
+    width: 100%; /* Makes the nav link take full width */
     padding: 10px 0; /* Add padding for the top and bottom of the buttons */
-    text-align: center;  /* Center the text */
-    background-color: var(--primary-bg-color);  /* Black background */
-    color: black;  /* White text */
+    text-align: center; /* Center the text */
+    background-color: var(--primary-bg-color); /* Black background */
+    color: black; /* White text */
     border: 2px solid transparent; /* Invisible border */
-    border-radius: 2px;  /* Optional: rounded corners */
-    font-size: 16px;  /* Adjust the font size as needed */
-    text-decoration: none;  /* Remove underline from links */
+    border-radius: 2px; /* Optional: rounded corners */
+    font-size: 16px; /* Adjust the font size as needed */
+    text-decoration: none; /* Remove underline from links */
     transition: all 0.3s ease-in-out; /* Smooth transition for hover effects */
     pointer-events: auto;
     gap: 0.2rem;
     margin: 2px 0 2px 0;
     /*font-family: Elianto-Regular, sans-serif;*/
+    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5),*/
+    /*0 3px 20px 0 rgba(0, 0, 0, 0.3),*/
+    /*inset 0 -5px 2px rgba(255, 255, 255, 0.2);*/
 
 }
 
@@ -330,6 +325,9 @@ h5 {
 .nav-link.active {
     background-color: var(--secondary-bg-color);
     color: white !important;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3), /* Outer bottom shadow */ 3px 0 20px 0 rgba(0, 0, 0, 0.3); /* Outer right shadow */
+    /*inset 0 -5px 2px rgba(255, 255, 255, 0.2), !* Inner bottom shadow *!*/
+    /*inset 5px 0 5px rgba(255, 255, 255, 0.2); !* Inner right shadow *!*/
 }
 
 .nav-link.active {
@@ -338,12 +336,11 @@ h5 {
 }
 
 
-
 .viewer-container.offcanvas-open {
     pointer-events: none;
 }
 
-/*CUSTOMISER SETTINGS*/
+/*CUSTOMISE SETTINGS*/
 
 .customise-controls {
     display: flex;
@@ -366,11 +363,25 @@ h5 {
 }
 
 .material-menu {
-    display:flex;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     padding: 0;
+    margin-bottom: 2px;
     align-items: center;
     justify-content: center;
     word-break: break-word;
+    background: var(--secondary-bg-color);
+    border-radius: 2px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3), /* Outer bottom shadow */ 3px 0 20px 0 rgba(0, 0, 0, 0.3), /* Outer right shadow */ inset 0 -5px 2px rgba(255, 255, 255, 0.2), /* Inner bottom shadow */ inset 5px 0 5px rgba(255, 255, 255, 0.2); /* Inner right shadow */
+
+}
+
+.variation-options {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .exit-mode-button {
@@ -379,6 +390,8 @@ h5 {
     right: 10%;
     z-index: 102;
 }
+
+/*LOGIN FORM*/
 
 .login-form {
     max-width: 500px;
@@ -402,24 +415,24 @@ div.login-form {
 }
 
 .login-form input {
-    width: 100%; /* Make input fields fill the available width */
+    width: 100%;
     padding: 10px;
     margin-bottom: 1rem;
     box-sizing: border-box;
 }
-/* The form fields should stack vertically */
+
 .login-form {
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centers content vertically */
-    align-items: center; /* Centers content horizontally */
-    width: 100%; /* Make the form fill the container's width */
-    height: 100%; /* Make the form fill the container's height */
-    box-sizing: border-box; /* Ensure padding is included in the width/height calculations */
-    padding: 20px; /* Optional padding around the form */
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 20px;
 }
 
-/* Style the error message */
+
 .login-form .error {
     color: red;
     text-align: center;
@@ -453,27 +466,30 @@ div.login-form {
 }
 
 /* CHECKOUT SETTINGS */
+
+
 .checkout-page-container {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center horizontally */
-    justify-content: center; /* Center vertically */
-    min-height: 100vh; /* Full height */
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    width: 100%
 }
 
 .checkout-page-container form {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center items horizontally */
-    justify-content: center; /* Center items vertically */
-    max-width: 600px; /* Maximum width for the form */
+    align-items: center;
+    justify-content: center;
+    max-width: 600px;
     width: 100%;
 }
 
 .checkout-page-container h2 {
     font-size: 2rem;
-    text-align: center; /* Center the title */
-    margin-bottom: 1.5rem; /* Add spacing below the title */
+    text-align: center;
+    margin-bottom: 1.5rem;
 }
 
 .checkout-page-container .control-row {
@@ -484,12 +500,19 @@ div.login-form {
     gap: 0.5rem;
 }
 
-.checkout-page-container .control {
+.checkout-page-container fieldset {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center inputs and controls horizontally */
-    width: 100%; /* Ensure the control takes up the full width */
+    width: 100%;
 }
+
+.checkout-page-container .control, .control-with-image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
 
 .checkout-page-container label {
     font-size: 1rem;
@@ -506,11 +529,10 @@ div.login-form {
     font-size: 1rem;
     margin-bottom: 1rem;
     border: 1px solid #000000;
-    background: #f3f3f3;
+    background: #fffdfd;
     border-radius: 2px;
 }
 
-/* Center the submit buttons */
 .checkout-page-container .modal-actions {
     display: flex;
     justify-content: center;
@@ -518,104 +540,123 @@ div.login-form {
     margin-top: 2rem;
 }
 
-/*.checkout-page-container button {*/
-/*    padding: 0.75rem 1.5rem;*/
-/*    font-size: 1rem;*/
-/*    background-color: #2d2d2d;*/
-/*    color: #fff;*/
-/*    border: none;*/
-/*    border-radius: 4px;*/
-/*    cursor: pointer;*/
-/*    transition: background-color 0.3s ease;*/
-/*}*/
+.checkout-page-container .total-amount {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 1.2rem;
+    margin-top: auto; /* Makes sure it stays at the bottom */
+    padding: 10px 0;
+    border-top: 2px solid #ddd; /* Optional: adds a line above the total amount */
+}
 
 .checkout-page-container button:hover {
     background-color: #444;
 }
 
+.checkout-page-container ul {
+    display: flex;
+    justify-content: space-evenly;
+    list-style: none;
+    gap: 1rem;
+    width: 100%;
+    border: 1px solid var(--secondary-bg-color);
+}
+
+.checkout-page-container ul li img {
+    height: 40px;
+}
+
+.control-with-image {
+    position: relative;
+    width: 100%;
+}
+
+.control-with-image input {
+    width: 100%;
+    padding-right: 50px;
+}
+
+.input-image {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    /*height: auto;*/
+    pointer-events: none;
+}
+
 /*USER SETTINGS*/
 
-.user-settings {
-    background-color: var(--primary-bg-color); /* Use the same background as checkout */
-    padding: 1rem;
+.user-settings-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    min-height: 100vh;
+    max-width: 600px;
     margin: 0 auto;
-    max-width: 1200px; /* You can adjust the max-width if needed */
+}
+
+.user-settings-container h2 {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.user-settings-container .control {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+.user-settings-container .control-row {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.user-settings-container Input {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #000000;
+    background: #ffffff;
+    border-radius: 2px;
+}
+
+.user-settings-container label {
+    font-size: 1rem;
+    background: #f3f3f3;
+    margin-bottom: -0.5rem !important;
+    /*text-align: center;*/
+    display: inline-block;
+    z-index: 100;
+    position: relative;
+}
+
+.user-settings-container .btn-danger{
+    background: #833b3b;
 }
 
 
-/*.model-menus {*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    justify-content: center;*/
-/*    align-items: center;*/
-/*}*/
+/*ADMIN DASHBOARD SETTINGS*/
+.admin-materials-ul {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    align-content: flex-start;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    margin: 1rem 0;
+    gap: 0.5rem;
+}
 
-
-
-/*.webgi-viewer-container {*/
-/*    position: fixed;*/
-/*    top: 0;*/
-/*    left: 0;*/
-/*    width: 100vw;*/
-/*    height: 100vh;*/
-/*    z-index: 0;*/
-/*    opacity: 1;*/
-/*    transition: opacity 0.5s;*/
-/*}*/
-
-/*!* Custom style for when the mode is "customise" *!*/
-/*.webgi-viewer-container.customise-mode {*/
-/*    position: absolute;*/
-/*    top: 20vh; !* Adjust this value to move the viewer higher *!*/
-/*    left: 0;*/
-/*    width: 100vw;*/
-/*    height: 100vh;*/
-/*    z-index: 0;*/
-/*    opacity: 1;*/
-/*    transition: opacity 0.5s;*/
-/*}*/
-
-
-/*.paper-card {*/
-/*    display: inline-block;*/
-/*    align-self: flex-start;*/
-/*    background: #fff url('../../client/public/card_bg_gray.jpg') repeat;*/
-/*    background-size: cover;*/
-/*    box-shadow: -1px -1px 0 rgba(248, 246, 246, 0.1),*/
-/*    3px 3px 6px rgba(0, 0, 0, 0.6);*/
-/*    padding: 1rem;*/
-/*}*/
-
-/*.embossed-text {*/
-/*    color: #ccc;*/
-/*    text-shadow:*/
-/*            2px 2px 3px rgba(0, 0, 0, 0.6),    !* Dark shadow on bottom-right *!*/
-/*            -2px -2px 3px rgba(255, 255, 255, 0.1); !* Light shadow on top-left *!*/
-/*}*/
-
-/*MODAL SETTINGS*/
-
-/*.modal {*/
-/*    position: fixed;*/
-/*    top: 50%;*/
-/*    left: 50%;*/
-/*    transform: translate(-50%, -50%);*/
-/*    z-index: 10000;*/
-/*    background-color: var(--primary-bg-color);*/
-/*    border-radius: 6px;*/
-/*    border: none;*/
-/*    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);*/
-/*    padding: 1rem;*/
-/*    width: 80%;*/
-/*    height: 80%;*/
-/*    max-width: 40rem;*/
-/*}*/
-
-
-/*.modal::backdrop {*/
-/*    background-color: rgba(0, 0, 0, 0.55);*/
-/*}*/
-
+/*CART CONTENT*/
 
 .cart-content {
     width: 100%;
@@ -629,10 +670,9 @@ div.login-form {
 }
 
 .cart-content h2 {
-    text-align: center; /* Center the heading */
+    text-align: center;
     font-size: 2rem;
     margin: 1rem 0;
-    /*color: #333; !* Dark color for the heading *!*/
 }
 
 .cart-items {
@@ -646,25 +686,20 @@ div.login-form {
 
 .cart-item {
     display: flex;
-    justify-content: space-between; /* Distribute items across the cart */
+    justify-content: space-between;
     padding: 10px 0;
-    /*border-top: 2px solid #e1e1e1; !* Light grey line on top of each item *!*/
-    border-bottom: 2px solid #e1e1e1; /* Light grey line on bottom of each item */
+    border-bottom: 2px solid #e1e1e1;
 }
 
-/*.cart-item:first-child {*/
-/*    border-top: none; !* No top border on the first item *!*/
-/*}*/
-
 .cart-item:last-child {
-    border-bottom: none; /* No bottom border on the last item */
+    border-bottom: none;
 }
 
 .item-details {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center; /* Space the item name and price */
-    width: 100%; /* Ensure the items are aligned properly */
+    justify-content: center;
+    width: 100%;
     gap: 0.5rem;
 }
 
@@ -686,13 +721,6 @@ div.login-form {
     text-align: center;
 }
 
-/* Optional: Add hover effect to items */
-/*.cart-item:hover {*/
-/*    background-color: #f9f9f9;*/
-/*    cursor: pointer; !* Indicate that the item is interactive *!*/
-/*}*/
-
-
 .cart-item-actions button {
     cursor: pointer;
     font-size: 1rem;
@@ -706,20 +734,24 @@ div.login-form {
     justify-content: center;
     align-items: center;
 }
+
 .cart-item-actions {
     display: flex;
     gap: 1rem;
     align-items: center;
 }
+
 .cart-item p {
     margin: 0;
 }
+
 .cart-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin: 0.5rem 0;
 }
+
 .cart-total {
     display: flex;
     justify-content: flex-end;
@@ -728,6 +760,7 @@ div.login-form {
     font-weight: bold;
     color: var(--secondary-bg-color);
 }
+
 /*.cart h2 {*/
 /*    margin: 1rem 0;*/
 /*}*/
@@ -743,14 +776,6 @@ div.login-form {
     gap: 1rem;
     margin-top: 1rem;
 }
-/*.modal-actions .text-button {*/
-/*    color: #1d1a16;*/
-/*}*/
-/*.modal-actions .button:hover,*/
-/*.modal-actions .button:active {*/
-/*    color: #bf0707;*/
-/*}*/
-
 
 @media (max-width: 600px) {
     .site-header {

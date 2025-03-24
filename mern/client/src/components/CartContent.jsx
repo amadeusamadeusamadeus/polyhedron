@@ -43,10 +43,10 @@ export default function CartContent({onClose, onCheckout, showActions = true}) {
                 </>
             )}
             {showActions && (
-                <div className="cart-actions">
+                <div className="cart-actions d-flex justify-content-center align-items-center ">
                     {onClose && <Button onClick={onClose} textOnly>Close</Button>}
                     {cartCtx.items.length > 0 && onCheckout && (
-                        <Button onClick={onCheckout}>Go to Checkout</Button>
+                        <Button className="text-center" onClick={onCheckout}>Go to Checkout</Button>
                     )}
                 </div>
             )}

@@ -1,12 +1,9 @@
 // src/components/MaterialMenu.jsx
 import React from "react";
-import Button from "./UI/Button.jsx";
 
 export default function MaterialMenu({ variations, config, onMaterialSelect }) {
     async function evaluateClick(material) {
-        // Notify the parent about the selection.
         onMaterialSelect(material);
-        // Apply the material variation to the 3D model if config is available.
         if (config && config.variations && material.uuid) {
             try {
                 await config.applyVariation(config.variations[0], material.uuid);
@@ -16,7 +13,7 @@ export default function MaterialMenu({ variations, config, onMaterialSelect }) {
             }
         }
     }
-//TODO: set the default material to something
+
     return (
         <div className="material-menu">
             {variations.map((variation) => (

@@ -6,8 +6,6 @@ import Button from "../src/components/UI/Button.jsx";
 import UserProgressContext from "../src/store/UserProgressContext.jsx";
 import CartItem from "../src/components/CartItem.jsx";
 
-//TODO: create an X button to close
-
 export default function Cart_old() {
     const cartCtx = useContext(CartContext);
     const userProgressCtx = useContext(UserProgressContext);

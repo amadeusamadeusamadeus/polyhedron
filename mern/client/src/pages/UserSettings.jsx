@@ -3,6 +3,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../store/AuthContext.jsx";
 import { isEmail, isNotEmpty } from "../utility/validation.js";
 import { useInput } from "../hooks/useInput.js";
+import Input from "../components/Input";
+import Button from "../components/UI/Button.jsx";
 
 export default function UserSettings() {
     const { token, user, isAuthenticated, logout } = useContext(AuthContext);
@@ -204,7 +206,7 @@ export default function UserSettings() {
     }
 
     return (
-        <div className="user-settings container my-4">
+        <div className="user-settings-container my-4">
             {profile && (
                 <>
                     {/* Details Update Form */}
@@ -221,11 +223,11 @@ export default function UserSettings() {
                             </div>
                         )}
                         <form onSubmit={handleDetailsSubmit} className="row g-3">
-                            <div className="">
-                                <label htmlFor="email" className="form-label text-start">
+                            <div className="control-row">
+                                <label htmlFor="email" className="form-label user-settings-label">
                                     Email
                                 </label>
-                                <input
+                                <Input
                                     type="email"
                                     id="email"
                                     name="email"
@@ -242,11 +244,11 @@ export default function UserSettings() {
                                 )}
                             </div>
 
-                            <div className="col-md-6">
-                                <label htmlFor="first-name" className="form-label">
+                            <div className="control-row col-md-6">
+                                <label htmlFor="first-name" className="form-label user-settings-label">
                                     First Name
                                 </label>
-                                <input
+                                <Input
                                     type="text"
                                     id="first-name"
                                     name="first-name"
@@ -263,11 +265,11 @@ export default function UserSettings() {
                                 )}
                             </div>
 
-                            <div className="col-md-6">
-                                <label htmlFor="last-name" className="form-label">
+                            <div className="control-row col-md-6">
+                                <label htmlFor="last-name" className="form-label user-settings-label">
                                     Last Name
                                 </label>
-                                <input
+                                <Input
                                     type="text"
                                     id="last-name"
                                     name="last-name"
@@ -284,11 +286,11 @@ export default function UserSettings() {
                                 )}
                             </div>
 
-                            <div className="col-md-6">
-                                <label htmlFor="street" className="form-label text-start">
+                            <div className="control-row col-md-6">
+                                <label htmlFor="street" className="form-label user-settings-label">
                                     Street
                                 </label>
-                                <input
+                                <Input
                                     type="text"
                                     id="street"
                                     name="street"
@@ -305,11 +307,11 @@ export default function UserSettings() {
                                 )}
                             </div>
 
-                            <div className="col-md-1">
-                                <label htmlFor="street-number" className="form-label text-start">
-                                    Number
+                            <div className="control-row col-md-1">
+                                <label htmlFor="street-number" className="form-label user-settings-label">
+                                    #
                                 </label>
-                                <input
+                                <Input
                                     type="text"
                                     id="street-number"
                                     name="street-number"
@@ -326,11 +328,11 @@ export default function UserSettings() {
                                 )}
                             </div>
 
-                            <div className="col-md-3">
-                                <label htmlFor="city" className="form-label">
+                            <div className="control-row col-md-3">
+                                <label htmlFor="city" className="form-label user-settings-label">
                                     City
                                 </label>
-                                <input
+                                <Input
                                     type="text"
                                     id="city"
                                     name="city"
@@ -347,11 +349,11 @@ export default function UserSettings() {
                                 )}
                             </div>
 
-                            <div className="col-md-2">
-                                <label htmlFor="postalCode" className="form-label">
-                                    Postal Code
+                            <div className="control-row col-md-2">
+                                <label htmlFor="postalCode" className="form-label user-settings-label">
+                                    Zip Code
                                 </label>
-                                <input
+                                <Input
                                     type="text"
                                     id="postalCode"
                                     name="postalCode"
@@ -369,9 +371,9 @@ export default function UserSettings() {
                             </div>
 
                             <div className="">
-                                <button type="submit" className="btn btn-primary" disabled={detailsLoading}>
+                                <Button type="submit" className="" disabled={detailsLoading}>
                                     {detailsLoading ? "Updating..." : "Update Details"}
-                                </button>
+                                </Button>
                             </div>
                         </form>
                     </section>
@@ -390,8 +392,8 @@ export default function UserSettings() {
                             </div>
                         )}
                         <form onSubmit={handlePasswordSubmit} className="row g-3">
-                            <div className="col-md-4">
-                                <label htmlFor="old-password" className="form-label">
+                            <div className="control-row col-md-4">
+                                <label htmlFor="old-password" className="form-label user-settings-label">
                                     Old Password
                                 </label>
                                 <input
@@ -411,8 +413,8 @@ export default function UserSettings() {
                                 )}
                             </div>
 
-                            <div className="col-md-4">
-                                <label htmlFor="new-password" className="form-label">
+                            <div className="control-row col-md-4">
+                            <label htmlFor="new-password" className="form-label user-settings-label">
                                     New Password
                                 </label>
                                 <input
@@ -432,8 +434,8 @@ export default function UserSettings() {
                                 )}
                             </div>
 
-                            <div className="col-md-4">
-                                <label htmlFor="confirm-password" className="form-label">
+                            <div className="control-row col-md-4">
+                                <label htmlFor="confirm-password" className="form-label user-settings-label">
                                     Confirm Password
                                 </label>
                                 <input
@@ -448,15 +450,15 @@ export default function UserSettings() {
                                 />
                                 {confirmPasswordInput.hasError && (
                                     <div className="invalid-feedback">
-                                        Please confirm your new password.
+                                        Confirm your new password.
                                     </div>
                                 )}
                             </div>
 
                             <div className="col-12">
-                                <button type="submit" className="btn btn-primary" disabled={passwordLoading}>
+                                <Button type="submit" className="" disabled={passwordLoading}>
                                     {passwordLoading ? "Updating..." : "Change Password"}
-                                </button>
+                                </Button>
                             </div>
                         </form>
                     </section>
@@ -464,9 +466,9 @@ export default function UserSettings() {
                     {/* Account Deletion */}
                     <section className="account-deletion mb-5">
                         <h3>Delete Account</h3>
-                        <button onClick={handleDeleteAccount} className="btn btn-danger">
+                        <Button onClick={handleDeleteAccount} className="btn-danger">
                             Delete Account
-                        </button>
+                        </Button>
                     </section>
                 </>
             )}

@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useRef} from "react";
-import {getShapes, getMaterials} from "../api/fetch.jsx";
+import React, { useState, useEffect, useRef } from "react";
+import { getShapes, getMaterials } from "../api/fetch.jsx";
 import Jumbotron from "../components/Jumbotron.jsx";
 import WebgiViewer from "../components/WebgiViewer.jsx";
 import PitchSection from "../components/PitchSection.jsx";
@@ -9,8 +9,8 @@ import Checkout from "../components/Checkout.jsx";
 import CartModal from "../components/CartModal.jsx";
 import gsap from "gsap";
 import LoadingScreen from "../components/LoadingScreen.jsx";
-import {useLocation} from "react-router-dom"
-import Button from "../components/UI/Button.jsx"
+import { useLocation } from "react-router-dom";
+import Button from "../components/UI/Button.jsx";
 import "../index.css";
 import ScrollDownIndicator from "../components/ScrollDownIndicator.jsx";
 
@@ -34,14 +34,11 @@ export default function Home() {
     const [selectedMaterial, setSelectedMaterial] = useState(null);
 
     const viewerContainerRef = useRef(null);
-
     const location = useLocation();
-
     const [progress, setProgress] = useState(0);
     const minLoadingTime = 2000;
 
     useEffect(() => {
-
         async function fetchProductData() {
             try {
                 const shapesData = await getShapes();
@@ -57,7 +54,6 @@ export default function Home() {
                 console.error("Error fetching product data:", error);
             }
         }
-
         fetchProductData();
     }, []);
 
@@ -72,11 +68,11 @@ export default function Home() {
         return () => clearInterval(interval);
     }, [isLoading, loadingStart]);
 
-
     const handleShapeChange = (shape) => {
         console.log("Shape changed to:", shape);
         setModelUrl(shape.modelUrl);
         setSelectedShape(shape);
+        setDbMaterials([]);
     };
 
     const handleSelectVariation = (material) => {
@@ -84,7 +80,7 @@ export default function Home() {
         setSelectedMaterial(material);
     };
 
-    // When entering customize mode, record current scroll and switch modes.
+    // When entering customise mode, record current scroll and switch modes.
     const handleCustomise = () => {
         const currentPos = window.scrollY || document.documentElement.scrollTop;
         setSavedScrollPos(currentPos);
@@ -93,7 +89,7 @@ export default function Home() {
             duration: 0.5,
             onComplete: () => {
                 setMode("customise");
-                gsap.to(viewerContainerRef.current, {opacity: 1, duration: 0.5});
+                gsap.to(viewerContainerRef.current, { opacity: 1, duration: 0.5 });
             },
         });
         document.body.style.overflow = "hidden";
@@ -105,12 +101,19 @@ export default function Home() {
             duration: 0.5,
             onComplete: () => {
                 setMode("scroll");
-                gsap.to(viewerContainerRef.current, {opacity: 1, duration: 0.5});
-                window.scrollTo({top: savedScrollPos, behavior: "auto"});
+                gsap.to(viewerContainerRef.current, { opacity: 1, duration: 0.5 });
+                window.scrollTo({ top: savedScrollPos, behavior: "auto" });
             },
         });
         document.body.style.overflow = "auto";
     };
+
+    useEffect(() => {
+        const viewerContainer = document.querySelector("#webgi-canvas-container");
+        viewerContainer.style.display = "none";
+        viewerContainer.offsetHeight;
+        viewerContainer.style.display = "block";
+    }, []);
 
     const viewerContainerStyle =
         mode === "scroll"
@@ -137,7 +140,7 @@ export default function Home() {
 
     return (
         <>
-            <LoadingScreen isLoading={isLoading} progress={progress}/>
+            <LoadingScreen isLoading={isLoading} progress={progress} />
             <ScrollDownIndicator />
             <div ref={viewerContainerRef} style={viewerContainerStyle}>
                 <WebgiViewer
@@ -156,24 +159,25 @@ export default function Home() {
                             setIsLoading(false);
                         }, remaining);
                     }}
+                    selectedMaterial={selectedMaterial}
                 />
             </div>
 
             {mode === "scroll" && (
                 <>
-                    <section id="view2" className="section">
+                    <section id="view1" className="section">
                         <div className="jumbotron-section-wrapper">
-                            <Jumbotron/>
+                            <Jumbotron />
+                        </div>
+                    </section>
+                    <section id="view2" className="section">
+                        <div className="pitch-section-wrapper">
+                            <PitchSection />
                         </div>
                     </section>
                     <section id="view3" className="section">
-                        <div className="pitch-section-wrapper">
-                            <PitchSection/>
-                        </div>
-                    </section>
-                    <section id="view4" className="section">
                         <div className="preview-section-wrapper">
-                            <PreviewSection onCustomise={handleCustomise}/>
+                            <PreviewSection onCustomise={handleCustomise} />
                         </div>
                     </section>
                 </>
@@ -190,17 +194,14 @@ export default function Home() {
                         shapes={dbShapes}
                         onShapeChange={handleShapeChange}
                     />
-                    <Button
-                        className="exit-mode-button"
-                        onClick={handleExitCustomise}
-                    >
+                    <Button className="exit-mode-button" onClick={handleExitCustomise}>
                         <img src={"cross.svg"} alt="exit-button" />
                     </Button>
                 </div>
             )}
 
-            <CartModal/>
-            <Checkout/>
+            <CartModal />
+            <Checkout />
         </>
     );
 }
