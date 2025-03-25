@@ -137,7 +137,8 @@ function Header() {
                                         ) : (
                                             <>
                                                 <LoginForm />
-                                                <NavLink to="/" className="nav-link">Home</NavLink>
+                                                <hr />
+                                                <NavLink to="/" className="nav-link">HOME</NavLink>
                                                 <NavLink to="/signup" className="nav-link">CREATE NEW ACCOUNT</NavLink>
                                             </>
                                         )}

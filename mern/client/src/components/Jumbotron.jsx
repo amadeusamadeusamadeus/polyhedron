@@ -57,7 +57,7 @@ export default function Jumbotron() {
           </p>
         </span>
                 <hr className="line w-50 embossed-text" />
-                <Button onClick={handleStartNow}
+                <Button className="front-page-button" onClick={handleStartNow}
                         disableActive={true}
                         whileHoverScale={1.05}
                 >EXPLORE</Button>

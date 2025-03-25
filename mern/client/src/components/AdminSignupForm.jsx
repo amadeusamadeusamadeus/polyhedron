@@ -1,6 +1,6 @@
 // src/components/AdminSignupForm.jsx
-import React, { useState } from "react";
-import { Form, useNavigate } from "react-router-dom";
+import React, {useState} from "react";
+import {Form, useNavigate} from "react-router-dom";
 
 export default function AdminSignupForm() {
     const navigate = useNavigate();
@@ -15,7 +15,7 @@ export default function AdminSignupForm() {
     });
 
     function handleChange(e) {
-        setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+        setFormData((prev) => ({...prev, [e.target.name]: e.target.value}));
     }
 
     async function handleSubmit(e) {
@@ -27,7 +27,7 @@ export default function AdminSignupForm() {
         try {
             const response = await fetch("http://localhost:5050/admin/signup", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(formData)
             });
 
@@ -50,43 +50,45 @@ export default function AdminSignupForm() {
     }
 
     return (
-        <Form onSubmit={handleSubmit}>
-            <h2>Admin Signup</h2>
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            {success && <p style={{ color: "green" }}>{success}</p>}
-            <div>
-                <label>Email</label>
-                <input
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <div>
-                <label>Password</label>
-                <input
-                    name="password"
-                    type="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <div>
-                <label>Secret Key</label>
-                <input
-                    name="secret"
-                    type="text"
-                    value={formData.secret}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <button type="submit" className="button">
-                {isSubmitting ? "Submitting..." : "Sign Up as Admin"}
-            </button>
-        </Form>
+        <div className="admin-signup">
+            <Form onSubmit={handleSubmit}>
+                <h2>ADMIN SIGNUP</h2>
+                {error && <p style={{color: "red"}}>{error}</p>}
+                {success && <p style={{color: "green"}}>{success}</p>}
+                <div>
+                    <label>Email</label>
+                    <input
+                        name="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div>
+                    <label>Password</label>
+                    <input
+                        name="password"
+                        type="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div>
+                    <label>Secret Key</label>
+                    <input
+                        name="secret"
+                        type="text"
+                        value={formData.secret}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <button type="submit" className="button">
+                    {isSubmitting ? "Submitting..." : "Sign Up as Admin"}
+                </button>
+            </Form>
+        </div>
     );
 }

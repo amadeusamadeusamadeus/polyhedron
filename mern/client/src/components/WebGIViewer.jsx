@@ -8,7 +8,6 @@ import {
     CanvasSnipperPlugin,
     MaterialConfiguratorPlugin,
     ScrollableCameraViewPlugin,
-    InteractionPromptPlugin,
 } from "webgi";
 import { ensureMaterialInDb } from "../api/materialService";
 
@@ -28,8 +27,8 @@ export default function WebgiViewer({
     const viewerRef = useRef(null);
     const configRef = useRef(null);
     const scrollRef = useRef(null);
-    const interactionRef = useRef(null);
     const location = useLocation();
+    // Consider "/" and "/home" as home.
     const isHomePage = location.pathname === "/" || location.pathname === "/home";
     const [isLoaded, setIsLoaded] = useState(false);
 
@@ -97,11 +96,9 @@ export default function WebgiViewer({
             await addBasePlugins(viewer);
             await viewer.addPlugin(FileTransferPlugin);
             await viewer.addPlugin(CanvasSnipperPlugin);
-            // Pre-add InteractionPromptPlugin (will be toggled by mode)
-            await viewer.addPlugin(InteractionPromptPlugin);
 
-            // Always add the scroll plugin on initialization only if on the home page.
-            if (isHomePage) {
+            // Only add the scroll plugin if we are on the home page and in "scroll" mode.
+            if (isHomePage && mode === "scroll") {
                 const scrollPlugin = await viewer.addPlugin(ScrollableCameraViewPlugin);
                 scrollRef.current = scrollPlugin;
             }
@@ -132,17 +129,19 @@ export default function WebgiViewer({
                 viewerRef.current = null;
             }
         };
-    }, [modelUrl, isHomePage, onVariationChange, setVariations, setConfig, dbShape]);
+    }, [modelUrl, isHomePage, onVariationChange, setVariations, setConfig, dbShape, mode]);
 
     // Update viewer plugins and camera controls when mode changes.
     useEffect(() => {
         if (!viewerRef.current) return;
         const viewer = viewerRef.current;
 
-        // Ensure that if we are not on the home page, the scroll plugin is removed.
-        if (!isHomePage && scrollRef.current) {
-            viewer.removePlugin(scrollRef.current);
-            scrollRef.current = null;
+        // Remove the scroll plugin if mode isn't "scroll" or not on home page.
+        if (mode !== "scroll" || !isHomePage) {
+            if (scrollRef.current) {
+                viewer.removePlugin(scrollRef.current);
+                scrollRef.current = null;
+            }
         }
 
         if (mode === "scroll" && isHomePage) {
@@ -154,36 +153,20 @@ export default function WebgiViewer({
                 }
                 scrollRef.current.enabled = true;
             })();
-            // Disable the interaction plugin if it exists.
-            if (interactionRef.current) {
-                interactionRef.current.enabled = false;
-            }
-            // Disable camera controls and pointer events for scroll mode.
+
+
+            // Disable camera controls and pointer events in scroll mode.
             viewer.scene.activeCamera.controls.enabled = false;
             if (canvasRef.current) {
                 canvasRef.current.style.pointerEvents = "none";
             }
         } else if (mode === "customise") {
-            // Remove the scroll plugin entirely to prevent it from searching the document.
-            if (scrollRef.current) {
-                viewer.removePlugin(scrollRef.current);
-                scrollRef.current = null;
-            }
-            // Enable camera controls and pointer events for customise mode.
+            // In customise mode, ensure camera controls and pointer events are enabled.
             viewer.scene.activeCamera.controls.enabled = true;
             if (canvasRef.current) {
                 canvasRef.current.style.pointerEvents = "auto";
             }
             // Ensure the interaction plugin is enabled.
-            (async () => {
-                if (!interactionRef.current) {
-                    const interactionPlugin = await viewer.addPlugin(InteractionPromptPlugin);
-                    interactionRef.current = interactionPlugin;
-                    interactionPlugin.enabled = true;
-                } else {
-                    interactionRef.current.enabled = true;
-                }
-            })();
         }
     }, [mode, isHomePage]);
 

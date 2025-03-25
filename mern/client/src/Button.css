@@ -4,7 +4,6 @@
     position: relative;
     padding: 10px 10px;
     font-size: 16px;
-    font-weight: bold;
     color: #f3f3f3;
     width: auto;
     background-color: #151515;
@@ -22,6 +21,7 @@
     inset 0 -5px 2px rgba(255, 255, 255, 0.2), /* Inner bottom shadow */
     inset 5px 0 5px rgba(255, 255, 255, 0.2); /* Inner right shadow */
     /*font-family: "Roboto Light", sans-serif;*/
+
 }
 
 .gradient {
@@ -70,5 +70,17 @@
 .exit-mode-button img {
     width: 20px;
     height: 20px;
+}
+
+.front-page-button {
+    width: 50%;
+    min-width: 25%;
+    justify-content: center;
+}
+
+@media (max-width: 600px) {
+    .front-page-button {
+        width: 100%;
+    }
 }
 

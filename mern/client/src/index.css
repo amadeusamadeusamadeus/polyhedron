@@ -95,6 +95,7 @@ body * {
 
 .main-content {
     padding-top: 120px;
+    width: 100%;
 }
 
 /*.navbar-toggler-icon {*/
@@ -348,21 +349,60 @@ h5 {
     /*justify-content: center;*/
     /*align-items: center;*/
     position: fixed;
-    width: auto;
+    width: 100%;
     bottom: 1%;
     z-index: 101;
     text-align: center;
+}
 
+.model-menus {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
+    align-content: center;
+    /*background: var(--secondary-bg-color);*/
+    /*border-radius: 2px;*/
 }
 
 .shape-menu {
+    width: 100%;
     display: flex;
     padding: 0;
+    color: var(--primary-bg-color);
     align-items: center;
     justify-content: center;
+    word-break: break-word;
+    flex-wrap: wrap;
+    /*box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3);*/
+}
+
+.menu-div {
+    width: 100%
+}
+
+.shape-menu-section {
+    width: 100%;
+}
+
+.shape-menu button {
+    border: 0;
+}
+
+.shape-menu button:active {
+    border: 1px solid var(--secondary-bg-color) !important;
+
+}
+
+.shape-icons {
+    height: 50px;
+    width: 50px;
+    border: 0;
 }
 
 .material-menu {
+    width: 100%;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -371,9 +411,7 @@ h5 {
     align-items: center;
     justify-content: center;
     word-break: break-word;
-    background: var(--secondary-bg-color);
-    border-radius: 2px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3), /* Outer bottom shadow */ 3px 0 20px 0 rgba(0, 0, 0, 0.3), /* Outer right shadow */ inset 0 -5px 2px rgba(255, 255, 255, 0.2), /* Inner bottom shadow */ inset 5px 0 5px rgba(255, 255, 255, 0.2); /* Inner right shadow */
+    /*box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3), !* Outer bottom shadow *! 0 0 20px 0 rgba(0, 0, 0, 0.3), !* Outer right shadow *! inset 0 -5px 2px rgba(255, 255, 255, 0.2), !* Inner bottom shadow *! inset 0 0 5px rgba(255, 255, 255, 0.2); !* Inner right shadow *!*/
 
 }
 
@@ -397,6 +435,7 @@ h5 {
     max-width: 500px;
     margin: 0 auto;
     padding: 0;
+    font-size: 16px;
 }
 
 div.login-form {
@@ -409,7 +448,6 @@ div.login-form {
 }
 
 .login-form label {
-    font-size: 1rem;
     background: #f3f3f3;
     text-align: left;
 }
@@ -466,8 +504,6 @@ div.login-form {
 }
 
 /* CHECKOUT SETTINGS */
-
-
 .checkout-page-container {
     display: flex;
     flex-direction: column;
@@ -612,6 +648,7 @@ div.login-form {
     align-items: center;
     width: 100%;
 }
+
 .user-settings-container .control-row {
     display: flex;
     justify-content: center;
@@ -639,7 +676,7 @@ div.login-form {
     position: relative;
 }
 
-.user-settings-container .btn-danger{
+.user-settings-container .btn-danger {
     background: #833b3b;
 }
 
@@ -654,6 +691,17 @@ div.login-form {
     flex-wrap: wrap;
     margin: 1rem 0;
     gap: 0.5rem;
+    list-style: none;
+}
+
+.admin-shapes-ul {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    align-content: flex-start;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    list-style: none;
 }
 
 /*CART CONTENT*/
@@ -777,6 +825,61 @@ div.login-form {
     margin-top: 1rem;
 }
 
+.admin-signup {
+    display: flex;
+    justify-content: center;
+}
+
+.admin-signup label {
+    font-size: 1rem;
+    background: #f3f3f3;
+    margin-bottom: -0.3rem;
+    text-align: left;
+    display: inline-block;
+    z-index: 1;
+}
+
+.admin-signup input {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    margin-bottom: 1rem !important;
+    border: 1px solid #000000;
+    background: #fffdfd;
+    border-radius: 2px;
+}
+
+
+.control .is-invalid + .invalid-feedback {
+    display: block !important;
+}
+
+
+.signup-page {
+    display: flex;
+    justify-content: center;
+}
+
+.signup-page label {
+    font-size: 1rem;
+    background: #f3f3f3;
+    margin-bottom: -0.5rem !important;
+    text-align: left;
+    display: inline-block;
+    z-index: 1;
+    position: relative;
+
+}
+
+.signup-page input {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #000000;
+    background: #fffdfd;
+    border-radius: 2px;
+}
 @media (max-width: 600px) {
     .site-header {
         max-width: 100%;
@@ -791,5 +894,11 @@ div.login-form {
     padding: 0 0;
 }
 
+/*@media (min-width: 600px) {*/
+/*    .model-menus {*/
+/*        flex-direction: column;*/
+/*        align-items: flex-start;*/
+/*    }*/
+/*}*/
 
 

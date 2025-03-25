@@ -52,7 +52,7 @@ export default function PreviewSection({ onCustomise }) {
                         every angle and add it to your personal cart!
                     </p>
                     <hr className="line w-50 mx-auto"/>
-                    <Button className="button"
+                    <Button className="front-page-button"
                             disableActive={true}
                             onClick={onCustomise}>
                         CUSTOMIZE

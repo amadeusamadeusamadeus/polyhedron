@@ -60,16 +60,13 @@ export default function PitchSection({ onCustomise }) {
             className="pitch-section wrapper row"
             style={{ opacity: opacitySpring, x: xSpring }}
         >
-            <div className="pitch-content paper-card col-6 offset-6 align-content-top text-end">
+            <div className="pitch-content col-6 offset-6 align-content-top text-end">
                 <h2 className="title-chrome pitch-title ">TRY IT BELOW</h2>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, architecto autem cumque debitis
-                    dignissimos distinctio dolores esse est ex, labore libero nisi perferendis quae sunt, suscipit ullam
-                    veritatis! Ad animi aspernatur beatae delectus dignissimos dolor doloremque ea esse et id illo iste
-                    mollitia necessitatibus nemo quasi quis sed, ullam, voluptatem
+                    All our precious metals have been ethically sourced and are guaranteed to satisfy the highest metallurgy production standards in the industry. Scroll down to create your own set of dice!
                 </p>
                 <hr className="line w-50 ms-auto" />
-                <Button onClick={handleExplore}>TRY NOW</Button>
+                <Button className="front-page-button" onClick={handleExplore}>TRY NOW</Button>
             </div>
         </motion.div>
     );

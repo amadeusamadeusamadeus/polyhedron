@@ -43,14 +43,15 @@ router.get("/:id", async (req, res) => {
  */
 router.post("/", async (req, res) => {
     try {
-        const { name, modelUrl, basePrice } = req.body;
-        if (!name || !modelUrl || basePrice === undefined) {
+        const { name, modelUrl, basePrice, icon } = req.body;
+        if (!name || !modelUrl || !icon || basePrice === undefined) {
             return res.status(400).json({ error: "Missing required fields" });
         }
         const newShape = {
             name,
             modelUrl,
             basePrice: parseFloat(basePrice),
+            icon,
         };
         const result = await db.collection("products.shapes").insertOne(newShape);
         newShape._id = result.insertedId;
@@ -68,10 +69,10 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
     try {
         const shapeId = req.params.id;
-        const { name, modelUrl, basePrice } = req.body;
+        const { name, modelUrl, basePrice, icon } = req.body;
         const updateResult = await db.collection("products.shapes").updateOne(
             { _id: new ObjectId(shapeId) },
-            { $set: { name, modelUrl, basePrice: parseFloat(basePrice) } }
+            { $set: { name, modelUrl, basePrice: parseFloat(basePrice), icon } }
         );
         if (updateResult.modifiedCount === 0) {
             return res.status(404).json({ error: "Shape not found or nothing updated" });

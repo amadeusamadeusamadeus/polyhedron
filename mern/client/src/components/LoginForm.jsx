@@ -31,6 +31,7 @@ export default function LoginForm({onLoginSuccess}) {
     async function handleSubmit(event) {
         event.preventDefault();
 
+
         if (emailHasError || passwordHasError) {
             setErrorMessage("Please fix the errors in the form.");
             return;
@@ -126,7 +127,7 @@ export default function LoginForm({onLoginSuccess}) {
                     </div>
                     {errorMessage && <p className="error">{errorMessage}</p>}
                     <div className="form-actions">
-                        <Button disableActive={false} whileHoverScale={0} className="button fs-6 text-center" type="submit">Login</Button>
+                        <Button disableActive={false} whileHoverScale={0} className="button fs-6 text-center justify-content-center" type="submit">Login</Button>
                         {/*<Button disableActive={false} className="button fs-6" type="reset">Reset</Button>*/}
                     </div>
                 </form>

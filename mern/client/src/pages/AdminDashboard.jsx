@@ -507,7 +507,7 @@ function AdminOrders({ token }) {
                                                         <ul>
                                                             {orderData.items.map((item, i) => (
                                                                 <li key={i}>
-                                                                    {item.quantity} x {item.shape} Material: {item.material} – Unit Price: $
+                                                                    {item.quantity} x {item.shape} Material: {item.material} – Unit Price: €
                                                                     {item.unitPrice !== undefined ? item.unitPrice.toFixed(2) : "0.00"}
                                                                 </li>
                                                             ))}
@@ -516,7 +516,7 @@ function AdminOrders({ token }) {
                                                         <p>No items found in this order.</p>
                                                     )}
                                                     <p>
-                                                        <strong>Total Price:</strong> $
+                                                        <strong>Total Price:</strong> €
                                                         {orderData.totalPrice !== undefined ? orderData.totalPrice.toFixed(2) : "0.00"}
                                                     </p>
                                                     <p>
@@ -579,6 +579,7 @@ function AdminProductShapes({ token }) {
             name: shape.name,
             modelUrl: shape.modelUrl,
             basePrice: shape.basePrice,
+            icon: shape.icon
         });
     };
 
@@ -617,6 +618,7 @@ function AdminProductShapes({ token }) {
             name: e.target.name.value,
             modelUrl: e.target.modelUrl.value,
             basePrice: parseFloat(e.target.basePrice.value),
+            icon: e.target.icon.value
         };
         fetch("http://localhost:5050/shapes", {
             method: "POST",
@@ -658,7 +660,12 @@ function AdminProductShapes({ token }) {
                     <Form.Label>Base Price</Form.Label>
                     <Form.Control type="number" step="0.01" name="basePrice" required />
                 </Form.Group>
-                <Button type="submit" variant="success">
+                <Form.Group className="mb-2" controlId="shapeIcon">
+                    <Form.Label>Icon</Form.Label>
+                    <Form.Control type="text" name="icon" required />
+                </Form.Group>
+
+                <Button type="button" variant="success">
                     Add Shape
                 </Button>
             </Form>
@@ -667,7 +674,7 @@ function AdminProductShapes({ token }) {
             {shapes.length === 0 ? (
                 <p>No shapes available.</p>
             ) : (
-                <ul>
+                <ul className="admin-shapes-ul">
                     {shapes.map((shape) => (
                         <li key={shape._id}>
                             {editingShapeId === shape._id ? (
@@ -684,7 +691,8 @@ function AdminProductShapes({ token }) {
                                         type="text"
                                         value={editShapeForm.modelUrl}
                                         onChange={(e) =>
-                                            setEditShapeForm({ ...editShapeForm, modelUrl: e.target.value })
+                                            setEditShapeForm({
+                                                ...editShapeForm, modelUrl: e.target.value })
                                         }
                                         className="me-2"
                                     />
@@ -700,16 +708,26 @@ function AdminProductShapes({ token }) {
                                         }
                                         className="me-2"
                                     />
-                                    <Button variant="success" onClick={() => saveShape(shape._id)} className="me-2">
+                                    <Form.Control
+                                        type="text"
+                                        value={editShapeForm.icon}
+                                        onChange={(e) =>
+                                            setEditShapeForm({
+                                                ...editShapeForm,
+                                                icon: e.target.value})
+                                        }
+                                        className="me-2"
+                                    />
+                                    <Button type="button" variant="success" onClick={() => saveShape(shape._id)} className="me-2">
                                         Save
                                     </Button>
-                                    <Button variant="secondary" onClick={cancelEditing}>
+                                    <Button type="button" variant="secondary" onClick={cancelEditing}>
                                         Cancel
                                     </Button>
                                 </Form>
                             ) : (
                                 <div>
-                                    {shape.name} - ${parseFloat(shape.basePrice).toFixed(2)}
+                                    {shape.name} - € {parseFloat(shape.basePrice).toFixed(2)}
                                     <Button variant="primary" size="sm" onClick={() => startEditing(shape)} className="ms-2">
                                         Edit
                                     </Button>
@@ -867,7 +885,7 @@ function AdminProductMaterials({ token }) {
                     <Form.Label>Icon URL</Form.Label>
                     <Form.Control type="text" name="icon" required />
                 </Form.Group>
-                <Button type="submit" variant="success">
+                <Button type="button" variant="success">
                     Add Material
                 </Button>
             </Form>
@@ -914,20 +932,20 @@ function AdminProductMaterials({ token }) {
                                         }
                                         className="me-2"
                                     />
-                                    <Button variant="success" onClick={() => saveMaterial(material._id)} className="me-2">
+                                    <Button type="button" variant="success" onClick={() => saveMaterial(material._id)} className="me-2">
                                         Save
                                     </Button>
-                                    <Button variant="secondary" onClick={cancelEditing}>
+                                    <Button type="button" variant="secondary" onClick={cancelEditing}>
                                         Cancel
                                     </Button>
                                 </Form>
                             ) : (
                                 <div>
                                     {material.name} (Modifier: {material.priceModifier})
-                                    <Button variant="primary" size="sm" onClick={() => startEditing(material)} className="ms-2">
+                                    <Button type="button" variant="primary" size="sm" onClick={() => startEditing(material)} className="ms-2">
                                         Edit
                                     </Button>
-                                    <Button variant="danger" size="sm" onClick={() => handleDeleteMaterial(material._id)} className="ms-2">
+                                    <Button type="button" variant="danger" size="sm" onClick={() => handleDeleteMaterial(material._id)} className="ms-2">
                                         Delete
                                     </Button>
                                 </div>

@@ -19,6 +19,10 @@ export default function ShoppingSection({
     const cartContext = useContext(CartContext);
     const userProgressCtx = useContext(UserProgressContext);
 
+    const formatMaterialName = (name) => {
+        return name.split("_polished")[0];
+    };
+
     const totalCartItems = cartContext.items.reduce(
         (total, item) => total + item.quantity,
         0
@@ -41,7 +45,7 @@ export default function ShoppingSection({
     }
 
     return (
-        <div>
+        <div className="menu-div">
             <div className="model-menus">
                 <div className="variation-menu">
                     {variations && variations.length > 0 ? (
@@ -62,7 +66,7 @@ export default function ShoppingSection({
                 <div className="selected-material text-wrap">
                     <p>
                         Currently selected material:{" "}
-                        {selectedMaterial ? selectedMaterial.name : "None"}
+                        {selectedMaterial ? formatMaterialName(selectedMaterial.name) : "None"}
                     </p>
                 </div>
                 <div>
@@ -79,9 +83,6 @@ export default function ShoppingSection({
                 <Button disableActive={true} onClick={handleShowCart}>
                     Cart ({totalCartItems})
                 </Button>
-                {/*<Button>*/}
-                {/*    Exit*/}
-                {/*</Button>*/}
 
             </div>
         </div>
