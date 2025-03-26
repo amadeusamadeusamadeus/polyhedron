@@ -24,6 +24,10 @@ export default function ScrollDownIndicator() {
         return () => observer.disconnect();
     }, []);
 
+    if (hideIndicator) {
+        return null;
+    }
+
 
     const variants = {
         visible: { opacity: 1, y: 0, transition: { delay: 3.8, duration: 0.2, ease: "easeOut" } },

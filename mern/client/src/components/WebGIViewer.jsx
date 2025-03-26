@@ -97,7 +97,6 @@ export default function WebgiViewer({
             await viewer.addPlugin(FileTransferPlugin);
             await viewer.addPlugin(CanvasSnipperPlugin);
 
-            // Only add the scroll plugin if we are on the home page and in "scroll" mode.
             if (isHomePage && mode === "scroll") {
                 const scrollPlugin = await viewer.addPlugin(ScrollableCameraViewPlugin);
                 scrollRef.current = scrollPlugin;
@@ -117,7 +116,6 @@ export default function WebgiViewer({
             // Set initial camera controls based on mode.
             viewer.scene.activeCamera.controls.enabled = mode !== "scroll";
 
-            // Call onViewerLoaded callback.
             if (onViewerLoaded) onViewerLoaded();
             setIsLoaded(true);
         }
@@ -131,12 +129,10 @@ export default function WebgiViewer({
         };
     }, [modelUrl, isHomePage, onVariationChange, setVariations, setConfig, dbShape, mode]);
 
-    // Update viewer plugins and camera controls when mode changes.
     useEffect(() => {
         if (!viewerRef.current) return;
         const viewer = viewerRef.current;
 
-        // Remove the scroll plugin if mode isn't "scroll" or not on home page.
         if (mode !== "scroll" || !isHomePage) {
             if (scrollRef.current) {
                 viewer.removePlugin(scrollRef.current);
@@ -145,7 +141,7 @@ export default function WebgiViewer({
         }
 
         if (mode === "scroll" && isHomePage) {
-            // (Re)Add the scroll plugin if not present.
+
             (async () => {
                 if (!scrollRef.current) {
                     const scrollPlugin = await viewer.addPlugin(ScrollableCameraViewPlugin);

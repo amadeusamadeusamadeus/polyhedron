@@ -70,6 +70,7 @@
 .exit-mode-button img {
     width: 20px;
     height: 20px;
+    pointer-events: auto;
 }
 
 .front-page-button {

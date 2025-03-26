@@ -286,7 +286,7 @@ export default function UserSettings() {
                                 )}
                             </div>
 
-                            <div className="control-row col-md-6">
+                            <div className="control-row col-md-5">
                                 <label htmlFor="street" className="form-label user-settings-label">
                                     Street
                                 </label>
@@ -307,7 +307,7 @@ export default function UserSettings() {
                                 )}
                             </div>
 
-                            <div className="control-row col-md-1">
+                            <div className="control-row col-md-2">
                                 <label htmlFor="street-number" className="form-label user-settings-label">
                                     #
                                 </label>

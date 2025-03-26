@@ -117,4 +117,34 @@ router.delete("/:id", checkAuth, async (req, res) => {
     }
 });
 
+router.put("/:id", checkAuth, async (req, res) => {
+    try {
+        const { email, role } = req.token;
+        // Expect full order data in req.body.order
+        const order = req.body.orderData;
+        if (!order) {
+            return res.status(400).send("Order data is required.");
+        }
+        // For non-admins, ensure the customer email matches
+        if (role !== "admin" && (!order.customer || order.customer.email !== email)) {
+            return res.status(403).send("Not authorized to update this order.");
+        }
+        const query = { _id: new ObjectId(req.params.id) };
+        if (role !== "admin") {
+            query["orderData.customer.email"] = email;
+        }
+        const updateDoc = { $set: { orderData: order } };
+        const result = await db.collection("orders").updateOne(query, updateDoc);
+        if (result.matchedCount === 0) {
+            return res.status(404).send("Order not found.");
+        }
+        // Even if modifiedCount is 0, the order exists—return the current order.
+        const updatedOrder = await db.collection("orders").findOne({ _id: new ObjectId(req.params.id) });
+        res.status(200).json(updatedOrder);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error updating order");
+    }
+});
+
 export default router;

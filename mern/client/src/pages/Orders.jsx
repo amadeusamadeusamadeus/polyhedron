@@ -91,7 +91,7 @@ export default function Orders() {
                                                 <ul>
                                                     {orderData.items.map((item, i) => (
                                                         <li key={i} className="order-list">
-                                                            {item.quantity} x {item.shape} Material: {item.material} – Unit Price: €
+                                                            {item.quantity} x {item.shape} Material: {item.material.split("_polished")[0]} – Unit Price: €
                                                             {item.unitPrice !== undefined ? item.unitPrice.toFixed(2) : "0.00"}
                                                         </li>
                                                     ))}

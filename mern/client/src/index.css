@@ -4,15 +4,14 @@
     /*max-width: 1280px;*/
     margin: 0 auto;
     padding: 0 2rem;
-    /*text-align: center;*/
     --primary-bg-color: #f3f3f3;
     --secondary-bg-color: #151515;
     background-color: transparent;
-    /*adjust font sizes*/
     --bs-accordion-active-color: darkgrey !important;
     --bs-accordion-active-bg: darkgrey !important;
 
-    /*--bs-accordion-btn-active-icon: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23052c65' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e);*/
+    --bs-accordion-btn-active-icon: url("../public/icons/caret-up-fill.svg") !important;
+    --bs-accordion-btn-icon: url("../public/icons/caret-up.svg") !important;
 
 }
 
@@ -49,6 +48,20 @@ body {
     /*background-size: cover;*/
     /*background-position: center;*/
 }
+
+.accordion-button:not(.collapsed)::after {
+    color: white;
+    --bs-accordion-btn-active-icon: url("../public/icons/caret-up-fill.svg") !important;
+}
+
+.accordion-button::after {
+    --bs-accordion-btn-icon: url("../public/icons/caret-up.svg") !important;
+}
+
+.Toastify__toast-container {
+    z-index: 99999 !important;
+}
+
 
 body * {
     /*z-index: -1;*/
@@ -179,6 +192,8 @@ dialog:not([open]) {
 #webgi-canvas {
     z-index: 100;
     display: block;
+    cursor: grab;
+
 }
 
 div.jumbo-content {
@@ -345,11 +360,11 @@ h5 {
 
 .customise-controls {
     display: flex;
-    /*flex-direction: row;*/
-    /*justify-content: center;*/
-    /*align-items: center;*/
+    justify-content: center;
+    align-items: center;
     position: fixed;
-    width: 100%;
+    left: 2rem;
+    right: 2rem;
     bottom: 1%;
     z-index: 101;
     text-align: center;
@@ -472,7 +487,7 @@ div.login-form {
 
 
 .login-form .error {
-    color: red;
+    color: var(--bs-form-invalid-color);
     text-align: center;
     margin-bottom: 20px;
     max-width: 100%; /* Ensure error doesn't exceed the form's width */
@@ -548,6 +563,13 @@ div.login-form {
     align-items: center;
     width: 100%;
 }
+
+/*#card-number {*/
+/*    background-image: url("assets/icons/payment/generic.svg");*/
+/*    background-repeat: no-repeat;*/
+/*    background-position: right calc(.375em + 1875rem) center;*/
+/*    background-size: calc(.75em + .375rem) calc(.75em + .375rem);*/
+/*}*/
 
 
 .checkout-page-container label {
@@ -860,6 +882,12 @@ div.login-form {
     justify-content: center;
 }
 
+.signup-page .form-actions {
+    display: flex;
+    justify-content: center;
+
+}
+
 .signup-page label {
     font-size: 1rem;
     background: #f3f3f3;
@@ -880,6 +908,11 @@ div.login-form {
     background: #fffdfd;
     border-radius: 2px;
 }
+
+.control-error {
+    color: var(--bs-form-invalid-color);
+}
+
 @media (max-width: 600px) {
     .site-header {
         max-width: 100%;
@@ -901,4 +934,42 @@ div.login-form {
 /*    }*/
 /*}*/
 
+@media (min-width: 600px) {
+    .variation-menu {
+        display: flex;
+        flex-direction: row-reverse;
+        pointer-events: auto;
+    }
 
+
+
+    .variation-menu {
+        flex-direction: column-reverse;
+        pointer-events: auto;
+    }
+
+    .shape-menu {
+        flex-direction: column-reverse;
+        align-content: flex-start;
+        pointer-events: auto;
+    }
+
+    .model-menus {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        width: 10%;
+        pointer-events: auto;
+    }
+
+    .menu-item {
+        pointer-events: none;
+    }
+
+    .customise-controls {
+        pointer-events: none;
+    }
+
+    .shopping-actions {
+        pointer-events: auto;
+    }
+}

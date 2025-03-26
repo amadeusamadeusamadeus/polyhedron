@@ -136,7 +136,7 @@ function Header() {
                                             )
                                         ) : (
                                             <>
-                                                <LoginForm />
+                                                <LoginForm onLoginSuccess={handleNav}/>
                                                 <hr />
                                                 <NavLink to="/" className="nav-link">HOME</NavLink>
                                                 <NavLink to="/signup" className="nav-link">CREATE NEW ACCOUNT</NavLink>

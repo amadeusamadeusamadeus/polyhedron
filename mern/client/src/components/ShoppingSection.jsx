@@ -78,9 +78,9 @@ export default function ShoppingSection({
                     </p>
                 </div>
             </div>
-            <div>
-                <Button disableActive={true} onClick={handleAddItemToCart}>Add to Cart</Button>
-                <Button disableActive={true} onClick={handleShowCart}>
+            <div className="shopping-actions">
+                <Button disableActive={true} whileHoverScale={0} onClick={handleAddItemToCart}>Add to Cart</Button>
+                <Button disableActive={true} whileHoverScale={0} onClick={handleShowCart}>
                     Cart ({totalCartItems})
                 </Button>
 

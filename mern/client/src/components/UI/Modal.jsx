@@ -6,9 +6,9 @@ export default function Modal({ children, open, className = "", onClose }) {
     if (!open) return null;
 
     const modalVariants = {
-        hidden: { opacity: 0, y: "100%" },  // Initially, it's off the screen
-        visible: { opacity: 1, y: 0 },      // Fully visible at the center
-        exit: { opacity: 0, y: "100%" },    // Exit animation: goes back to the bottom
+        hidden: { opacity: 0, y: "100%" },
+        visible: { opacity: 1, y: 0 },
+        exit: { opacity: 0, y: "100%" },
     };
 
     return (

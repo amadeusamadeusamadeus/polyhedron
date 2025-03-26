@@ -16,6 +16,7 @@ import visa from "../assets/icons/payment/visa.svg"
 import applepay from "../assets/icons/payment/apple-pay.svg"
 import card from "../assets/icons/payment/generic.svg"
 import code from "../assets/icons/payment/code.svg"
+import { toast } from "react-toastify";
 
 export default function Checkout({ isModal = true, onClose = () => {} }) {
     const cartCtx = useContext(cartContext);
@@ -194,7 +195,6 @@ export default function Checkout({ isModal = true, onClose = () => {} }) {
             },
         };
 
-        // Structure items data.
         const itemsData = cartCtx.items.map((item) => ({
             shape: item.shapeName,
             material: item.name,
@@ -240,6 +240,7 @@ export default function Checkout({ isModal = true, onClose = () => {} }) {
                 resetSecurityCode();
                 cartCtx.clearCart();
                 if (isModal) userProgressCtx.hideCheckout();
+                toast.success("Your order was submitted successfully!");
             })
             .catch((error) => {
                 console.error("There was a problem with the fetch operation:", error);

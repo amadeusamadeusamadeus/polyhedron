@@ -16,6 +16,7 @@ import {action as LogoutAction} from "./pages/Logout.js";
 import RequireAdmin from "./components/RequireAdmin.jsx";
 import CartPage from "./pages/CartPage.jsx";
 import CheckoutPage from "./pages/CheckoutPage.jsx";
+import { ToastContainer } from "react-toastify";
 
 
 
@@ -54,6 +55,7 @@ function App() {
             <UserProgressContextProvider>
                 <CartContextProvider>
                     <RouterProvider router={router}/>
+                    <ToastContainer position="top-right" autoClose={5000}  containerStyle={{ zIndex: 99999 }}/>
                 </CartContextProvider>
             </UserProgressContextProvider>
         </AuthContextProvider>

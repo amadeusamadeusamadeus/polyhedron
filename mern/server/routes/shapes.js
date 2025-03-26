@@ -41,6 +41,7 @@ router.get("/:id", async (req, res) => {
  * POST /shapes
  * Add a new product shape.
  */
+
 router.post("/", async (req, res) => {
     try {
         const { name, modelUrl, basePrice, icon } = req.body;

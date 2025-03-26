@@ -1,6 +1,8 @@
 // src/pages/AdminDashboard.jsx
 import React, { useState, useEffect, useContext } from "react";
 import { Accordion, Spinner, Alert, Form } from "react-bootstrap";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../store/AuthContext.jsx";
 import Button from "../components/UI/Button.jsx";
 
@@ -47,6 +49,8 @@ function AdminDashboard() {
                 {activeTab === "shapes" && <AdminProductShapes token={token} />}
                 {activeTab === "materials" && <AdminProductMaterials token={token} />}
             </div>
+            {/* Render the ToastContainer so toasts will appear */}
+            <ToastContainer position="top-right" autoClose={5000} />
         </div>
     );
 }
@@ -76,6 +80,7 @@ function AdminUsers({ token }) {
             .catch((err) => {
                 setError(err.message);
                 setLoading(false);
+                toast.error("Error fetching users: " + err.message);
             });
     };
 
@@ -120,9 +125,10 @@ function AdminUsers({ token }) {
                     prev.map((user) => (user._id === userId ? updatedUser : user))
                 );
                 setEditingUserId(null);
+                toast.success("User updated successfully!");
             })
             .catch((err) => {
-                alert("Error updating user: " + err.message);
+                toast.error("Error updating user: " + err.message);
             });
     };
 
@@ -230,13 +236,14 @@ function AdminUsers({ token }) {
                                             </Form.Select>
                                         </Form.Group>
                                         <Button
+                                            type="button"
                                             variant="success"
                                             onClick={() => saveUser(user._id)}
                                             className="me-2"
                                         >
                                             Save
                                         </Button>
-                                        <Button variant="secondary" onClick={cancelEditing}>
+                                        <Button type="button" variant="secondary" onClick={cancelEditing}>
                                             Cancel
                                         </Button>
                                     </Form>
@@ -302,6 +309,7 @@ function AdminOrders({ token }) {
             .catch((err) => {
                 setError(err.message);
                 setLoading(false);
+                toast.error("Error fetching orders: " + err.message);
             });
     };
 
@@ -330,7 +338,8 @@ function AdminOrders({ token }) {
         setOrderEditForm({});
     };
 
-    const saveOrder = (orderId) => {
+    const saveOrder = (e, orderId) => {
+        e.preventDefault();
         const originalOrder = orders.find((order) => order._id === orderId);
         const updatedOrderData = {
             ...originalOrder.orderData,
@@ -355,7 +364,7 @@ function AdminOrders({ token }) {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({ orderData: updatedOrderData }),
+            body: JSON.stringify({ order: updatedOrderData }),
         })
             .then((res) => {
                 if (!res.ok) throw new Error("Failed to update order");
@@ -366,9 +375,10 @@ function AdminOrders({ token }) {
                     prev.map((order) => (order._id === orderId ? updatedOrder : order))
                 );
                 setEditingOrderId(null);
+                toast.success("Order updated successfully!");
             })
             .catch((err) => {
-                alert("Error updating order: " + err.message);
+                toast.error("Error updating order: " + err.message);
             });
     };
 
@@ -398,7 +408,7 @@ function AdminOrders({ token }) {
                                 </Accordion.Header>
                                 <Accordion.Body>
                                     {editingOrderId === order._id ? (
-                                        <Form>
+                                        <Form onSubmit={(e) => saveOrder(e, order._id)}>
                                             <Form.Group className="mb-2">
                                                 <Form.Label>Status</Form.Label>
                                                 <Form.Select
@@ -485,10 +495,10 @@ function AdminOrders({ token }) {
                                                     }
                                                 />
                                             </Form.Group>
-                                            <Button variant="success" onClick={() => saveOrder(order._id)} className="me-2">
+                                            <Button type="submit" variant="success" className="me-2">
                                                 Save
                                             </Button>
-                                            <Button variant="secondary" onClick={cancelEditing}>
+                                            <Button type="button" variant="secondary" onClick={cancelEditing}>
                                                 Cancel
                                             </Button>
                                         </Form>
@@ -566,6 +576,7 @@ function AdminProductShapes({ token }) {
             .catch((err) => {
                 setError(err.message);
                 setLoading(false);
+                toast.error("Error fetching shapes: " + err.message);
             });
     };
 
@@ -579,7 +590,7 @@ function AdminProductShapes({ token }) {
             name: shape.name,
             modelUrl: shape.modelUrl,
             basePrice: shape.basePrice,
-            icon: shape.icon
+            icon: shape.icon,
         });
     };
 
@@ -588,7 +599,8 @@ function AdminProductShapes({ token }) {
         setEditShapeForm({});
     };
 
-    const saveShape = (shapeId) => {
+    const saveShape = (e, shapeId) => {
+        e.preventDefault();
         fetch(`http://localhost:5050/shapes/${shapeId}`, {
             method: "PUT",
             headers: {
@@ -606,9 +618,10 @@ function AdminProductShapes({ token }) {
                     prev.map((shape) => (shape._id === shapeId ? updatedShape : shape))
                 );
                 setEditingShapeId(null);
+                toast.success("Shape updated successfully!");
             })
             .catch((err) => {
-                alert("Error updating shape: " + err.message);
+                toast.error("Error updating shape: " + err.message);
             });
     };
 
@@ -618,7 +631,7 @@ function AdminProductShapes({ token }) {
             name: e.target.name.value,
             modelUrl: e.target.modelUrl.value,
             basePrice: parseFloat(e.target.basePrice.value),
-            icon: e.target.icon.value
+            icon: e.target.icon.value,
         };
         fetch("http://localhost:5050/shapes", {
             method: "POST",
@@ -635,9 +648,10 @@ function AdminProductShapes({ token }) {
             .then((newShape) => {
                 setShapes((prev) => [...prev, newShape]);
                 e.target.reset();
+                toast.success("Shape added successfully!");
             })
             .catch((err) => {
-                alert("Error adding shape: " + err.message);
+                toast.error("Error adding shape: " + err.message);
             });
     };
 
@@ -647,7 +661,7 @@ function AdminProductShapes({ token }) {
     return (
         <div>
             <h3>Product Shapes</h3>
-            <Form onSubmit={handleAddShape}>
+            <Form onSubmit={handleAddShape} action="">
                 <Form.Group className="mb-2" controlId="shapeName">
                     <Form.Label>Name</Form.Label>
                     <Form.Control type="text" name="name" required />
@@ -664,8 +678,7 @@ function AdminProductShapes({ token }) {
                     <Form.Label>Icon</Form.Label>
                     <Form.Control type="text" name="icon" required />
                 </Form.Group>
-
-                <Button type="button" variant="success">
+                <Button type="submit" variant="success">
                     Add Shape
                 </Button>
             </Form>
@@ -678,7 +691,7 @@ function AdminProductShapes({ token }) {
                     {shapes.map((shape) => (
                         <li key={shape._id}>
                             {editingShapeId === shape._id ? (
-                                <Form>
+                                <Form onSubmit={(e) => saveShape(e, shape._id)}>
                                     <Form.Control
                                         type="text"
                                         value={editShapeForm.name}
@@ -691,8 +704,7 @@ function AdminProductShapes({ token }) {
                                         type="text"
                                         value={editShapeForm.modelUrl}
                                         onChange={(e) =>
-                                            setEditShapeForm({
-                                                ...editShapeForm, modelUrl: e.target.value })
+                                            setEditShapeForm({ ...editShapeForm, modelUrl: e.target.value })
                                         }
                                         className="me-2"
                                     />
@@ -714,11 +726,12 @@ function AdminProductShapes({ token }) {
                                         onChange={(e) =>
                                             setEditShapeForm({
                                                 ...editShapeForm,
-                                                icon: e.target.value})
+                                                icon: e.target.value,
+                                            })
                                         }
                                         className="me-2"
                                     />
-                                    <Button type="button" variant="success" onClick={() => saveShape(shape._id)} className="me-2">
+                                    <Button type="submit" variant="success" className="me-2">
                                         Save
                                     </Button>
                                     <Button type="button" variant="secondary" onClick={cancelEditing}>
@@ -728,7 +741,12 @@ function AdminProductShapes({ token }) {
                             ) : (
                                 <div>
                                     {shape.name} - € {parseFloat(shape.basePrice).toFixed(2)}
-                                    <Button variant="primary" size="sm" onClick={() => startEditing(shape)} className="ms-2">
+                                    <Button
+                                        variant="primary"
+                                        size="sm"
+                                        onClick={() => startEditing(shape)}
+                                        className="ms-2"
+                                    >
                                         Edit
                                     </Button>
                                 </div>
@@ -766,6 +784,7 @@ function AdminProductMaterials({ token }) {
             .catch((err) => {
                 setError(err.message);
                 setLoading(false);
+                toast.error("Error fetching materials: " + err.message);
             });
     };
 
@@ -788,7 +807,8 @@ function AdminProductMaterials({ token }) {
         setEditMaterialForm({});
     };
 
-    const saveMaterial = (materialId) => {
+    const saveMaterial = (e, materialId) => {
+        e.preventDefault();
         fetch(`http://localhost:5050/materials/${materialId}`, {
             method: "PUT",
             headers: {
@@ -806,9 +826,10 @@ function AdminProductMaterials({ token }) {
                     prev.map((mat) => (mat._id === materialId ? updatedMaterial : mat))
                 );
                 setEditingMaterialId(null);
+                toast.success("Material updated successfully!");
             })
             .catch((err) => {
-                alert("Error updating material: " + err.message);
+                toast.error("Error updating material: " + err.message);
             });
     };
 
@@ -835,9 +856,10 @@ function AdminProductMaterials({ token }) {
             .then((newMaterial) => {
                 setMaterials((prev) => [...prev, newMaterial]);
                 e.target.reset();
+                toast.success("Material added successfully!");
             })
             .catch((err) => {
-                alert("Error adding material: " + err.message);
+                toast.error("Error adding material: " + err.message);
             });
     };
 
@@ -856,9 +878,10 @@ function AdminProductMaterials({ token }) {
             })
             .then(() => {
                 setMaterials((prev) => prev.filter((mat) => mat._id !== materialId));
+                toast.success("Material deleted successfully!");
             })
             .catch((err) => {
-                alert("Error deleting material: " + err.message);
+                toast.error("Error deleting material: " + err.message);
             });
     };
 
@@ -868,7 +891,7 @@ function AdminProductMaterials({ token }) {
     return (
         <div>
             <h3>Product Materials</h3>
-            <Form onSubmit={handleAddMaterial}>
+            <Form onSubmit={handleAddMaterial} action="">
                 <Form.Group className="mb-2" controlId="materialUuid">
                     <Form.Label>UUID</Form.Label>
                     <Form.Control type="text" name="uuid" required />
@@ -885,7 +908,7 @@ function AdminProductMaterials({ token }) {
                     <Form.Label>Icon URL</Form.Label>
                     <Form.Control type="text" name="icon" required />
                 </Form.Group>
-                <Button type="button" variant="success">
+                <Button type="submit" variant="success">
                     Add Material
                 </Button>
             </Form>
@@ -898,7 +921,7 @@ function AdminProductMaterials({ token }) {
                     {materials.map((material) => (
                         <li key={material._id}>
                             {editingMaterialId === material._id ? (
-                                <Form>
+                                <Form onSubmit={(e) => saveMaterial(e, material._id)}>
                                     <Form.Control
                                         type="text"
                                         value={editMaterialForm.uuid}
@@ -932,7 +955,7 @@ function AdminProductMaterials({ token }) {
                                         }
                                         className="me-2"
                                     />
-                                    <Button type="button" variant="success" onClick={() => saveMaterial(material._id)} className="me-2">
+                                    <Button type="submit" variant="success" className="me-2">
                                         Save
                                     </Button>
                                     <Button type="button" variant="secondary" onClick={cancelEditing}>
@@ -942,10 +965,22 @@ function AdminProductMaterials({ token }) {
                             ) : (
                                 <div>
                                     {material.name} (Modifier: {material.priceModifier})
-                                    <Button type="button" variant="primary" size="sm" onClick={() => startEditing(material)} className="ms-2">
+                                    <Button
+                                        type="button"
+                                        variant="primary"
+                                        size="sm"
+                                        onClick={() => startEditing(material)}
+                                        className="ms-2"
+                                    >
                                         Edit
                                     </Button>
-                                    <Button type="button" variant="danger" size="sm" onClick={() => handleDeleteMaterial(material._id)} className="ms-2">
+                                    <Button
+                                        type="button"
+                                        variant="danger"
+                                        size="sm"
+                                        onClick={() => handleDeleteMaterial(material._id)}
+                                        className="ms-2"
+                                    >
                                         Delete
                                     </Button>
                                 </div>
