@@ -447,14 +447,24 @@ h5 {
 /*LOGIN FORM*/
 
 .login-form {
-    max-width: 500px;
+    max-width: 600px;
     margin: 0 auto;
-    padding: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     font-size: 16px;
+    box-sizing: border-box;
 }
 
 div.login-form {
     padding: 0;
+    width: 100%;
+}
+
+.login-form form {
+    width: 100%;
 }
 
 /* Center the h2 */
@@ -462,14 +472,34 @@ div.login-form {
     text-align: center;
 }
 
-.login-form label {
-    background: #f3f3f3;
-    text-align: left;
+.login-form .control {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.login-form input {
+.login-form .form-fields {
     width: 100%;
-    padding: 10px;
+}
+
+
+.login-form .form-fields label,
+.login-form .control label {
+    font-size: 1rem;
+    background: #f3f3f3;
+    margin-bottom: -0.5rem !important;
+    display: inline-block;
+    z-index: 100;
+}
+
+.login-form input,
+.login-form Input {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #000000;
+    background: #ffffff;
+    border-radius: 2px;
     margin-bottom: 1rem;
     box-sizing: border-box;
 }
@@ -676,10 +706,9 @@ div.login-form {
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
 }
 
-.user-settings-container Input {
+.user-settings-container Input, .user-settings-container input {
     width: 100%;
     padding: 0.5rem;
     font-size: 1rem;
@@ -691,7 +720,7 @@ div.login-form {
 .user-settings-container label {
     font-size: 1rem;
     background: #f3f3f3;
-    margin-bottom: -0.5rem !important;
+    margin-bottom: -0.3rem !important;
     /*text-align: center;*/
     display: inline-block;
     z-index: 100;
@@ -876,6 +905,9 @@ div.login-form {
     display: block !important;
 }
 
+.signup-page h2 {
+    margin-bottom: 25px;
+}
 
 .signup-page {
     display: flex;
@@ -885,21 +917,27 @@ div.login-form {
 .signup-page .form-actions {
     display: flex;
     justify-content: center;
-
+    margin-top: 20px;
 }
 
-.signup-page label {
-    font-size: 1rem;
+.signup-page .control {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.signup-page .control label {
+    font-size: 1rem !important;
     background: #f3f3f3;
     margin-bottom: -0.5rem !important;
-    text-align: left;
     display: inline-block;
-    z-index: 1;
+    z-index: 100;
     position: relative;
-
+    width: 10%;
 }
 
-.signup-page input {
+.signup-page .control input {
     width: 100%;
     padding: 0.5rem;
     font-size: 1rem;

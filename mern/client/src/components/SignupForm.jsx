@@ -1,15 +1,14 @@
 // src/components/SignupForm.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Input from "./Input";
 import Button from "./UI/Button.jsx";
 import { isEmail, isNotEmpty, hasMinLength } from "../utility/validation.js";
 import { useInput } from "../hooks/useInput.js";
+import { toast } from "react-toastify";
 
 export default function SignupForm() {
     const navigate = useNavigate();
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [feedbackMessage, setFeedbackMessage] = useState("");
 
     // Using useInput for each field with appropriate validators
     const emailInput = useInput("", isEmail);
@@ -31,20 +30,19 @@ export default function SignupForm() {
     async function handleSubmit(event) {
         event.preventDefault();
         setIsSubmitting(true);
-        setFeedbackMessage("");
 
         if (emailInput.hasError) {
-            setFeedbackMessage("Please enter a valid email address.");
+            toast.error("Please enter a valid email address.");
             setIsSubmitting(false);
             return;
         }
         if (passwordInput.hasError) {
-            setFeedbackMessage("Password must be at least 6 characters long.");
+            toast.error("Password must be at least 6 characters long.");
             setIsSubmitting(false);
             return;
         }
         if (confirmPasswordInput.value !== passwordInput.value) {
-            setFeedbackMessage("Passwords do not match.");
+            toast.error("Passwords do not match.");
             setIsSubmitting(false);
             return;
         }
@@ -56,12 +54,11 @@ export default function SignupForm() {
             cityInput.hasError ||
             postalCodeInput.hasError
         ) {
-            setFeedbackMessage("Please fill in all required fields.");
+            toast.error("Please fill in all required fields.");
             setIsSubmitting(false);
             return;
         }
 
-        // Build signup data payload
         const signupData = {
             email: emailInput.value,
             password: passwordInput.value,
@@ -85,7 +82,8 @@ export default function SignupForm() {
             }
             const data = await response.json();
             console.log("Signup successful:", data);
-            setFeedbackMessage("Signup successful! Please log in now via the menu.");
+            toast.success("Signup successful! Please log in now via the menu.");
+
             emailInput.reset();
             passwordInput.reset();
             confirmPasswordInput.reset();
@@ -97,21 +95,20 @@ export default function SignupForm() {
             postalCodeInput.reset();
         } catch (error) {
             console.error("Error during signup:", error);
-            setFeedbackMessage("Error during signup. Please try again.");
+            toast.error("Error during signup. Please try again.");
         } finally {
             setIsSubmitting(false);
         }
     }
 
     return (
-        <div className="signup-page">
+        <div className="container mt-5">
             <form onSubmit={handleSubmit}>
-                <h2 className="title-chrome">CREATE NEW ACCOUNT</h2>
-
+                <h2 className="text-center mb-4">CREATE NEW ACCOUNT</h2>
 
                 {/* Email */}
-                <div className="control">
-                    <label htmlFor="email">Email</label>
+                <div className="mb-3">
+                    <label htmlFor="email" className="form-label">Email</label>
                     <input
                         id="email"
                         type="email"
@@ -129,10 +126,10 @@ export default function SignupForm() {
                     )}
                 </div>
 
-                {/* Password and Confirm Password */}
-                <div className="control-row">
-                    <div className="control">
-                        <label htmlFor="password">Password</label>
+                {/* Passwords */}
+                <div className="row">
+                    <div className="col-md-6 mb-3">
+                        <label htmlFor="password" className="form-label">Password</label>
                         <input
                             id="password"
                             type="password"
@@ -150,8 +147,8 @@ export default function SignupForm() {
                             </div>
                         )}
                     </div>
-                    <div className="control">
-                        <label htmlFor="confirm-password">Confirm Password</label>
+                    <div className="col-md-6 mb-3">
+                        <label htmlFor="confirm-password" className="form-label">Confirm Password</label>
                         <input
                             id="confirm-password"
                             type="password"
@@ -171,10 +168,10 @@ export default function SignupForm() {
                     </div>
                 </div>
 
-                {/* First Name and Last Name */}
-                <div className="control-row">
-                    <div className="control">
-                        <label htmlFor="first-name">First Name</label>
+                {/* Name Fields */}
+                <div className="row">
+                    <div className="col-md-6 mb-3">
+                        <label htmlFor="first-name" className="form-label">First Name</label>
                         <input
                             id="first-name"
                             type="text"
@@ -189,8 +186,8 @@ export default function SignupForm() {
                             <div className="invalid-feedback">First name is required.</div>
                         )}
                     </div>
-                    <div className="control">
-                        <label htmlFor="last-name">Last Name</label>
+                    <div className="col-md-6 mb-3">
+                        <label htmlFor="last-name" className="form-label">Last Name</label>
                         <input
                             id="last-name"
                             type="text"
@@ -207,10 +204,10 @@ export default function SignupForm() {
                     </div>
                 </div>
 
-                {/* Address Fields */}
-                <div className="control-row">
-                    <div className="control">
-                        <label htmlFor="street">Street</label>
+                {/* Address */}
+                <div className="row">
+                    <div className="col-md-6 mb-3">
+                        <label htmlFor="street" className="form-label">Street</label>
                         <input
                             id="street"
                             type="text"
@@ -225,9 +222,9 @@ export default function SignupForm() {
                             <div className="invalid-feedback">Street is required.</div>
                         )}
                     </div>
-                    <div className="control">
-                        <label htmlFor="street-number">Number</label>
-                        <Input
+                    <div className="col-md-6 mb-3">
+                        <label htmlFor="street-number" className="form-label">Number</label>
+                        <input
                             id="street-number"
                             type="text"
                             name="street-number"
@@ -241,8 +238,10 @@ export default function SignupForm() {
                             <div className="invalid-feedback">Street number is required.</div>
                         )}
                     </div>
-                    <div className="control">
-                        <label htmlFor="city">City</label>
+                </div>
+                <div className="row">
+                    <div className="col-md-6 mb-3">
+                        <label htmlFor="city" className="form-label">City</label>
                         <input
                             id="city"
                             type="text"
@@ -257,8 +256,8 @@ export default function SignupForm() {
                             <div className="invalid-feedback">City is required.</div>
                         )}
                     </div>
-                    <div className="control">
-                        <label htmlFor="postalCode">Postal Code</label>
+                    <div className="col-md-6 mb-3">
+                        <label htmlFor="postalCode" className="form-label">Postal Code</label>
                         <input
                             id="postalCode"
                             type="text"
@@ -274,16 +273,16 @@ export default function SignupForm() {
                         )}
                     </div>
                 </div>
-                {feedbackMessage && <p className="feedback">{feedbackMessage}</p>}
+
                 {/* Form Actions */}
-                <p className="form-actions">
-                    <Button type="button" onClick={handleCancel} className="button button-flat">
+                <div className="d-flex justify-content-center">
+                    <Button type="button" onClick={handleCancel} className="btn btn-secondary">
                         Cancel
                     </Button>
-                    <Button type="submit" className="button" disabled={isSubmitting}>
+                    <Button type="submit" className="btn btn-primary" disabled={isSubmitting}>
                         {isSubmitting ? "Submitting..." : "Sign up"}
                     </Button>
-                </p>
+                </div>
             </form>
         </div>
     );

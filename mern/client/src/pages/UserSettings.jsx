@@ -5,6 +5,7 @@ import { isEmail, isNotEmpty } from "../utility/validation.js";
 import { useInput } from "../hooks/useInput.js";
 import Input from "../components/Input";
 import Button from "../components/UI/Button.jsx";
+import { toast } from "react-toastify";
 
 export default function UserSettings() {
     const { token, user, isAuthenticated, logout } = useContext(AuthContext);
@@ -119,7 +120,7 @@ export default function UserSettings() {
             })
             .then((data) => {
                 setProfile(data);
-                setDetailsSuccess("User details updated successfully.");
+                toast.success("User details updated successfully.");
                 setDetailsLoading(false);
             })
             .catch((err) => {
@@ -159,7 +160,8 @@ export default function UserSettings() {
                 return response.json();
             })
             .then(() => {
-                setPasswordSuccess("Password updated successfully.");
+                // setPasswordSuccess("Password updated successfully.");
+                toast.success("Password updated successfully.")
                 oldPasswordInput.reset("");
                 newPasswordInput.reset("");
                 confirmPasswordInput.reset("");
@@ -193,11 +195,13 @@ export default function UserSettings() {
                 return response.json();
             })
             .then(() => {
-                alert("Your account has been deleted.");
+                // alert("Your account has been deleted.");
+                toast.error("Account deleted successfully.");
                 if (logout) logout();
             })
             .catch((err) => {
-                alert(`Error deleting account: ${err.message}`);
+                // alert(`Error deleting account: ${err.message}`);
+                toast.error(`Error deleting account: ${err.message}`)
             });
     };
 
