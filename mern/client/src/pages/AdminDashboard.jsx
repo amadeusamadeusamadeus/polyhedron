@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Accordion, Spinner, Alert, Form } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { AuthContext } from "../store/AuthContext.jsx";
+import { AuthContext } from "../contexts/AuthContext.jsx";
 import Button from "../components/UI/Button.jsx";
 
 function AdminDashboard() {
@@ -49,7 +49,6 @@ function AdminDashboard() {
                 {activeTab === "shapes" && <AdminProductShapes token={token} />}
                 {activeTab === "materials" && <AdminProductMaterials token={token} />}
             </div>
-            {/* Render the ToastContainer so toasts will appear */}
             <ToastContainer position="top-right" autoClose={5000} />
         </div>
     );
@@ -107,7 +106,8 @@ function AdminUsers({ token }) {
         setEditForm({});
     };
 
-    const saveUser = (userId) => {
+    const saveUser = (e, userId) => {
+       e.preventDefault();
         fetch(`http://localhost:5050/users/profile/${userId}`, {
             method: "PUT",
             headers: {
@@ -149,7 +149,7 @@ function AdminUsers({ token }) {
                             </Accordion.Header>
                             <Accordion.Body>
                                 {editingUserId === user._id ? (
-                                    <Form>
+                                    <Form onSubmit={(e) => e.preventDefault()}>
                                         <Form.Group className="mb-2">
                                             <Form.Label>Email</Form.Label>
                                             <Form.Control
@@ -238,7 +238,7 @@ function AdminUsers({ token }) {
                                         <Button
                                             type="button"
                                             variant="success"
-                                            onClick={() => saveUser(user._id)}
+                                            onClick={(e) => saveUser(user._id)}
                                             className="me-2"
                                         >
                                             Save
@@ -289,7 +289,7 @@ function AdminOrders({ token }) {
     const [orderEditForm, setOrderEditForm] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const orderStatusOptions = ["Ordered", "In Delivery", "Delivered", "Cancelled"];
+    const orderStatusOptions = ["Ordered", "In Delivery", "Delivered", "Cancelled", "Paid"];
 
     const fetchOrders = () => {
         fetch("http://localhost:5050/orders", {
@@ -364,7 +364,7 @@ function AdminOrders({ token }) {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({ order: updatedOrderData }),
+            body: JSON.stringify({ orderData: updatedOrderData }),
         })
             .then((res) => {
                 if (!res.ok) throw new Error("Failed to update order");
@@ -655,6 +655,46 @@ function AdminProductShapes({ token }) {
             });
     };
 
+    const [uploadFiles, setUploadFiles] = useState({ modelFile: null, iconFile: null });
+    const [uploading, setUploading] = useState(false);
+
+    const handleFileChange = (e) => {
+        setUploadFiles({
+            ...uploadFiles,
+            [e.target.name]: e.target.files[0]
+        });
+    };
+
+    const handleFileUpload = (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        if (uploadFiles.modelFile) formData.append("modelFile", uploadFiles.modelFile);
+        if (uploadFiles.iconFile) formData.append("iconFile", uploadFiles.iconFile);
+        setUploading(true);
+
+        fetch("http://localhost:5050/upload/shapes", {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}` // if needed for auth
+            },
+            body: formData
+        })
+            .then((res) => {
+                if (!res.ok) throw new Error("File upload failed");
+                return res.json();
+            })
+            .then((data) => {
+                toast.success("Files uploaded successfully!");
+                console.log("Uploaded URLs:", data);
+
+                setUploadFiles({ modelFile: null, iconFile: null });
+            })
+            .catch((err) => {
+                toast.error("Error uploading files: " + err.message);
+            })
+            .finally(() => setUploading(false));
+    };
+
     if (loading) return <Spinner animation="border" />;
     if (error) return <Alert variant="danger">{error}</Alert>;
 
@@ -664,25 +704,49 @@ function AdminProductShapes({ token }) {
             <Form onSubmit={handleAddShape} action="">
                 <Form.Group className="mb-2" controlId="shapeName">
                     <Form.Label>Name</Form.Label>
-                    <Form.Control type="text" name="name" required />
+                    <Form.Control type="text" name="name" required/>
                 </Form.Group>
                 <Form.Group className="mb-2" controlId="shapeModelUrl">
                     <Form.Label>Model URL</Form.Label>
-                    <Form.Control type="text" name="modelUrl" required />
+                    <Form.Control type="text" name="modelUrl" required/>
                 </Form.Group>
                 <Form.Group className="mb-2" controlId="shapeBasePrice">
                     <Form.Label>Base Price</Form.Label>
-                    <Form.Control type="number" step="0.01" name="basePrice" required />
+                    <Form.Control type="number" step="0.01" name="basePrice" required/>
                 </Form.Group>
                 <Form.Group className="mb-2" controlId="shapeIcon">
                     <Form.Label>Icon</Form.Label>
-                    <Form.Control type="text" name="icon" required />
+                    <Form.Control type="text" name="icon" required/>
                 </Form.Group>
+
                 <Button type="submit" variant="success">
                     Add Shape
                 </Button>
             </Form>
-            <hr />
+            <hr/>
+            <h4>Upload Files for Shape</h4>
+            <Form onSubmit={handleFileUpload}>
+                <Form.Group className="mb-2">
+                    <Form.Label>Upload Model File</Form.Label>
+                    <Form.Control
+                        type="file"
+                        name="modelFile"
+                        onChange={handleFileChange}
+                    />
+                </Form.Group>
+                <Form.Group className="mb-2">
+                    <Form.Label>Upload Icon File</Form.Label>
+                    <Form.Control
+                        type="file"
+                        name="iconFile"
+                        onChange={handleFileChange}
+                    />
+                </Form.Group>
+                <Button type="submit" variant="success" disabled={uploading}>
+                    {uploading ? "Uploading..." : "Upload Files"}
+                </Button>
+            </Form>
+            <hr/>
             <h4>Existing Shapes</h4>
             {shapes.length === 0 ? (
                 <p>No shapes available.</p>
@@ -696,7 +760,7 @@ function AdminProductShapes({ token }) {
                                         type="text"
                                         value={editShapeForm.name}
                                         onChange={(e) =>
-                                            setEditShapeForm({ ...editShapeForm, name: e.target.value })
+                                            setEditShapeForm({...editShapeForm, name: e.target.value})
                                         }
                                         className="me-2"
                                     />
@@ -704,7 +768,7 @@ function AdminProductShapes({ token }) {
                                         type="text"
                                         value={editShapeForm.modelUrl}
                                         onChange={(e) =>
-                                            setEditShapeForm({ ...editShapeForm, modelUrl: e.target.value })
+                                            setEditShapeForm({...editShapeForm, modelUrl: e.target.value})
                                         }
                                         className="me-2"
                                     />
@@ -759,7 +823,7 @@ function AdminProductShapes({ token }) {
     );
 }
 
-function AdminProductMaterials({ token }) {
+function AdminProductMaterials({token}) {
     const [materials, setMaterials] = useState([]);
     const [editingMaterialId, setEditingMaterialId] = useState(null);
     const [editMaterialForm, setEditMaterialForm] = useState({});

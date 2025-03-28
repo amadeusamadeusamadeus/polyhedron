@@ -1,14 +1,14 @@
 // src/components/Checkout.jsx
 import React, { useContext, useEffect, useState } from "react";
 import Modal from "./UI/Modal.jsx";
-import cartContext from "../store/CartContext.jsx";
+import cartContext from "../contexts/CartContext.jsx";
 import Button from "./UI/Button.jsx";
-import UserProgressContext from "../store/UserProgressContext.jsx";
+import UserProgressContext from "../contexts/UserProgressContext.jsx";
 import Input from "./Input.jsx";
 import { useInput } from "../hooks/useInput.js";
 import { isEmail, isNotEmpty } from "../utility/validation.js";
 import { getAuthToken } from "../utility/auth.js";
-import { AuthContext } from "../store/AuthContext.jsx";
+import { AuthContext } from "../contexts/AuthContext.jsx";
 import mastercard from "../assets/icons/payment/mastercard.svg"
 import amex from "../assets/icons/payment/amex.svg"
 import paypal from "../assets/icons/payment/paypal.svg"

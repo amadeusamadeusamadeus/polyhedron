@@ -28,11 +28,9 @@ export default function WebgiViewer({
     const configRef = useRef(null);
     const scrollRef = useRef(null);
     const location = useLocation();
-    // Consider "/" and "/home" as home.
     const isHomePage = location.pathname === "/" || location.pathname === "/home";
     const [isLoaded, setIsLoaded] = useState(false);
 
-    // Keep the latest dbMaterials in a ref.
     const dbMaterialsRef = useRef(dbMaterials);
     useEffect(() => {
         dbMaterialsRef.current = dbMaterials;
@@ -78,11 +76,11 @@ export default function WebgiViewer({
         setVariations(updatedVariations);
     };
 
-    // Initialize the viewer when the model changes.
+    // Initialize the viewer
     useEffect(() => {
         async function setupViewer() {
             if (!canvasRef.current) return;
-            // Dispose previous viewer instance if it exists.
+
             if (viewerRef.current) {
                 viewerRef.current.dispose();
                 viewerRef.current = null;
@@ -91,7 +89,7 @@ export default function WebgiViewer({
 
             const viewer = new ViewerApp({ canvas: canvasRef.current });
             viewerRef.current = viewer;
-
+            //Add plugins
             await viewer.addPlugin(AssetManagerPlugin);
             await addBasePlugins(viewer);
             await viewer.addPlugin(FileTransferPlugin);
@@ -113,8 +111,8 @@ export default function WebgiViewer({
             await updateVariations(configPlugin);
             setConfig(configPlugin);
 
-            // Set initial camera controls based on mode.
-            viewer.scene.activeCamera.controls.enabled = mode !== "scroll";
+            // // Set initial camera controls based on mode.
+            // viewer.scene.activeCamera.controls.enabled = mode !== "scroll";
 
             if (onViewerLoaded) onViewerLoaded();
             setIsLoaded(true);

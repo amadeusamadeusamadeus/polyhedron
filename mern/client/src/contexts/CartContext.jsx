@@ -1,4 +1,4 @@
-// src/store/CartContext.jsx
+// src/contexts/CartContext.jsx
 import { createContext, useReducer } from "react";
 
 const CartContext = createContext({

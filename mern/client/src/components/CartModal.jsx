@@ -3,8 +3,8 @@ import React, { useContext, useState } from "react";
 import Modal from "./UI/Modal.jsx";
 import CartContent from "./CartContent.jsx";
 import LoginModal from "./LoginModal.jsx";
-import UserProgressContext from "../store/UserProgressContext.jsx";
-import { AuthContext } from "../store/AuthContext.jsx";
+import UserProgressContext from "../contexts/UserProgressContext.jsx";
+import { AuthContext } from "../contexts/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
 import Button from "./UI/Button.jsx";
 

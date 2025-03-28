@@ -3,7 +3,7 @@ import React, {useState, useContext} from "react";
 import Input from "./Input";
 import {isEmail, isNotEmpty, hasMinLength} from "../utility/validation.js";
 import {useInput} from "../hooks/useInput.js";
-import {AuthContext} from "../store/AuthContext.jsx";
+import {AuthContext} from "../contexts/AuthContext.jsx";
 import {useNavigate} from "react-router-dom";
 import Button from "./UI/Button.jsx";
 

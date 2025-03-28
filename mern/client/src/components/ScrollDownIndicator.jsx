@@ -3,8 +3,11 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 export default function ScrollDownIndicator() {
+
+    //State informs whether to hide the indicator or not
     const [hideIndicator, setHideIndicator] = useState(false);
 
+    //Effect to turn it off/make it disappear once the user scrolled all the way down
     useEffect(() => {
         const view3Element = document.getElementById("view3");
         if (!view3Element) return;
@@ -28,12 +31,13 @@ export default function ScrollDownIndicator() {
         return null;
     }
 
-
+    //Animation specifications for each state
     const variants = {
         visible: { opacity: 1, y: 0, transition: { delay: 3.8, duration: 0.2, ease: "easeOut" } },
         hidden: { opacity: 0, y: 0, transition: { duration: 0.2, ease: "easeOut" } }
     };
 
+    //Return the actual element with the set animations and styles
     return (
         <motion.div
             initial="hidden"

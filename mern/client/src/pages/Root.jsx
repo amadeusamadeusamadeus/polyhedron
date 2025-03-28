@@ -10,9 +10,6 @@ export default function RootLayout() {
     return (
         <>
             <Header/>
-            {/*<div className="mt-0 my-1">*/}
-            {/*    <hr className="line"/>*/}
-            {/*</div>*/}
             <div className="main-content">
                 <Outlet/>
             </div>

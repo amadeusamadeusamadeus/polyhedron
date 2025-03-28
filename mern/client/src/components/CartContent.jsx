@@ -1,6 +1,6 @@
 // src/components/CartContent.jsx
 import React, {useContext, useEffect} from "react";
-import CartContext from "../store/CartContext.jsx";
+import CartContext from "../contexts/CartContext.jsx";
 import CartItem from "./CartItem.jsx";
 import Button from "./UI/Button.jsx";
 

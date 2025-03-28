@@ -7,12 +7,14 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import LoginForm from './LoginForm.jsx';
 import Button from "./UI/Button.jsx";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
-import { AuthContext } from "../store/AuthContext.jsx";
+import { AuthContext } from "../contexts/AuthContext.jsx";
+import CartContext from "../contexts/CartContext.jsx";
 
 function Header() {
     const authCtx = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
+    const { clearCart } = useContext(CartContext);
 
     // State to control the visibility of the header
     const [showOffcanvas, setShowOffcanvas] = useState(false);
@@ -50,7 +52,9 @@ function Header() {
     const handleLogout = () => {
         authCtx.logout();
         setShowOffcanvas(false);
+        clearCart();
         navigate("/");
+
     };
 
     function handleNav() {

@@ -777,6 +777,7 @@ div.login-form {
 .cart-items {
     display: flex;
     flex-direction: column;
+    text-align: left;
     /*background: var(--secondary-bg-color)*/
     border-top: 2px solid #e1e1e1;
     /*border-bottom: 2px solid var(--secondary-bg-color);*/
@@ -787,6 +788,7 @@ div.login-form {
     display: flex;
     justify-content: space-between;
     padding: 10px 0;
+    text-align: left;
     border-bottom: 2px solid #e1e1e1;
 }
 

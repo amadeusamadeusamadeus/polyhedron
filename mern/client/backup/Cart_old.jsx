@@ -1,9 +1,9 @@
 // src/components/Cart_old.jsx
 import Modal from "../src/components/UI/Modal.jsx";
 import { useContext, useEffect } from "react";
-import CartContext from "../src/store/CartContext.jsx";
+import CartContext from "../src/contexts/CartContext.jsx";
 import Button from "../src/components/UI/Button.jsx";
-import UserProgressContext from "../src/store/UserProgressContext.jsx";
+import UserProgressContext from "../src/contexts/UserProgressContext.jsx";
 import CartItem from "../src/components/CartItem.jsx";
 
 export default function Cart_old() {

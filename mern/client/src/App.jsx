@@ -2,9 +2,9 @@
 import React from "react";
 import "./index.css"
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import {CartContextProvider} from "./store/CartContext.jsx";
-import {UserProgressContextProvider} from "./store/UserProgressContext.jsx";
-import {AuthContextProvider} from "./store/AuthContext.jsx";
+import {CartContextProvider} from "./contexts/CartContext.jsx";
+import {UserProgressContextProvider} from "./contexts/UserProgressContext.jsx";
+import {AuthContextProvider} from "./contexts/AuthContext.jsx";
 import RootLayout from "./pages/Root.jsx";
 import Home from "./pages/Home.jsx";
 import Signup from "./pages/Signup.jsx";
@@ -18,20 +18,12 @@ import CartPage from "./pages/CartPage.jsx";
 import CheckoutPage from "./pages/CheckoutPage.jsx";
 import { ToastContainer } from "react-toastify";
 
-
-
-
-
 const router = createBrowserRouter([
     {
         path: "/",
         element: <RootLayout/>,
         children: [
-            {index: true, element:
-
-                    <Home/>
-
-            },
+            {index: true, element: <Home/>},
             {path: "orders", element: <Orders/>},
             {path: "signup", element: <Signup/>},
             {path: "settings", element: <UserSettings/>},

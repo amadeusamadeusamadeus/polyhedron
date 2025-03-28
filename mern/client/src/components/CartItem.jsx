@@ -9,11 +9,14 @@ export default function CartItem({
                                      onIncrease,
                                      onDecrease,
                                  }) {
+
+    const displayName = name.split("_polished")[0];
+
     return (
         <li className="cart-item">
             <div className="item-details">
                 <span className="item-name">Shape: {shapeName}</span>
-                <span className="item-material">Material: {name}</span>
+                <span className="item-material">Material: {displayName}</span>
                 <span className="item-quantity">Quantity: {quantity}</span>
                 <span className="item-price">Unit price: € {price.toFixed(2)}</span>
             </div>

@@ -1,6 +1,6 @@
 // src/components/UserSettings.jsx
 import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../store/AuthContext.jsx";
+import { AuthContext } from "../contexts/AuthContext.jsx";
 import { isEmail, isNotEmpty } from "../utility/validation.js";
 import { useInput } from "../hooks/useInput.js";
 import Input from "../components/Input";

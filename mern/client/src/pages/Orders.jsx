@@ -1,7 +1,7 @@
 // src/pages/Orders.jsx
 import React, { useContext, useEffect, useState } from "react";
 import { Accordion, Spinner, Alert } from "react-bootstrap";
-import { AuthContext } from "../store/AuthContext.jsx";
+import { AuthContext } from "../contexts/AuthContext.jsx";
 import "../index.css";
 
 export default function Orders() {

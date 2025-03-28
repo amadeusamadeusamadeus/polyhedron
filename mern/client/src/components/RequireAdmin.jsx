@@ -1,7 +1,7 @@
 // src/components/RequireAdmin.jsx
 import React, { useContext } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { AuthContext } from "../store/AuthContext.jsx";
+import { AuthContext } from "../contexts/AuthContext.jsx";
 
 export default function RequireAdmin({ children }) {
     const { isAuthenticated, user } = useContext(AuthContext);

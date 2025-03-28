@@ -3,8 +3,8 @@ import React, {useContext} from "react";
 import MaterialMenu from "./MaterialMenu";
 import ShapeMenu from "./ShapeMenu"; // New import for the ShapeMenu component
 import Button from "./UI/Button.jsx";
-import CartContext from "../store/CartContext.jsx";
-import UserProgressContext from "../store/UserProgressContext.jsx";
+import CartContext from "../contexts/CartContext.jsx";
+import UserProgressContext from "../contexts/UserProgressContext.jsx";
 import Navbar from "react-bootstrap/Navbar";
 
 export default function ShoppingSection({
