@@ -69,6 +69,9 @@ export default function Home() {
     }, [isLoading, loadingStart]);
 
     const handleShapeChange = (shape) => {
+        const currentPos = window.scrollY || document.documentElement.scrollTop;
+        setSavedScrollPos(currentPos);
+
         console.log("Shape changed to:", shape);
         setModelUrl(shape.modelUrl);
         setSelectedShape(shape);
@@ -84,6 +87,7 @@ export default function Home() {
     const handleCustomise = () => {
         const currentPos = window.scrollY || document.documentElement.scrollTop;
         setSavedScrollPos(currentPos);
+
         gsap.to(viewerContainerRef.current, {
             opacity: 0,
             duration: 0.5,
@@ -101,8 +105,9 @@ export default function Home() {
             duration: 0.5,
             onComplete: () => {
                 setMode("scroll");
-                gsap.to(viewerContainerRef.current, { opacity: 1, duration: 0.5 });
+                // Restore the saved scroll position so that the animation state is preserved.
                 window.scrollTo({ top: savedScrollPos, behavior: "auto" });
+                gsap.to(viewerContainerRef.current, { opacity: 1, duration: 0.5 });
             },
         });
         document.body.style.overflow = "auto";
@@ -156,6 +161,9 @@ export default function Home() {
                         const elapsed = Date.now() - loadingStart;
                         const remaining = Math.max(0, minLoadingTime - elapsed);
                         setTimeout(() => {
+                            if (mode === "scroll" && savedScrollPos) {
+                                window.scrollTo({ top: savedScrollPos, behavior: "auto" });
+                            }
                             setIsLoading(false);
                         }, remaining);
                     }}
