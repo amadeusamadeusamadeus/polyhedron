@@ -4,10 +4,6 @@ import db from "../db/connection.js";
 
 const router = express.Router();
 
-/**
- * GET /users
- * Retrieve all users (without sensitive fields like passwords).
- */
 router.get("/", async (req, res) => {
     try {
         const users = await db.collection("users").find({}).toArray();

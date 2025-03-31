@@ -97,7 +97,7 @@ function AdminUsers({ token }) {
             streetNumber: user.streetNumber || "",
             postalCode: user.postalCode || "",
             city: user.city || "",
-            role: user.role,
+            role: user.role || "",
         });
     };
 
@@ -107,7 +107,6 @@ function AdminUsers({ token }) {
     };
 
     const saveUser = (e, userId) => {
-       e.preventDefault();
         fetch(`http://localhost:5050/users/profile/${userId}`, {
             method: "PUT",
             headers: {
@@ -238,7 +237,7 @@ function AdminUsers({ token }) {
                                         <Button
                                             type="button"
                                             variant="success"
-                                            onClick={(e) => saveUser(user._id)}
+                                            onClick={(e) => saveUser(e, user._id)}
                                             className="me-2"
                                         >
                                             Save

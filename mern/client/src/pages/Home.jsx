@@ -76,7 +76,7 @@ export default function Home() {
     };
 
     const handleSelectVariation = (material) => {
-        console.log("User selected material:", material);
+        console.log("Selected material:", material);
         setSelectedMaterial(material);
     };
 

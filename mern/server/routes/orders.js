@@ -59,7 +59,6 @@ router.post("/", checkAuth, async (req, res) => {
             return res.status(400).send("Customer email is invalid.");
         }
         // Ensure the order's customer email matches the authenticated user's email
-        // (unless the user is admin, though typically only regular users create orders)
         if (req.token.role !== "admin" && order.customer.email !== req.token.email) {
             return res.status(403).send("Not authorized to create this order.");
         }
@@ -120,7 +119,6 @@ router.delete("/:id", checkAuth, async (req, res) => {
 router.put("/:id", checkAuth, async (req, res) => {
     try {
         const { email, role } = req.token;
-        // Expect full order data in req.body.order
         const order = req.body.orderData;
         if (!order) {
             return res.status(400).send("Order data is required.");

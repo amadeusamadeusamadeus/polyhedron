@@ -20,10 +20,12 @@ app.use(express.json());
 app.use("/orders", orders);
 app.use("/materials", materials);
 app.use("/shapes", shapes);
+
 app.use("/users/login", login);
 app.use("/users/signup", signup);
 app.use("/users", users);
 app.use("/users/profile", profile);
+
 app.use("/admin/signup", adminSignup);
 app.use("/upload/shapes", shapeUploads)
 

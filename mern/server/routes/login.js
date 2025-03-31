@@ -6,7 +6,6 @@ import pkg from "jsonwebtoken"; // Import the CommonJS module as default
 const { sign } = pkg;
 import { compare } from "bcryptjs";
 
-// Ensure you have your secret key in your environment variables.
 const KEY = process.env.KEY;
 
 // Helper function to create a JSON Web Token.
@@ -21,7 +20,7 @@ async function isValidPassword(plaintextPassword, hashedPassword) {
 
 const router = express.Router();
 
-// POST /login: Authenticate a user and return a JSON Web Token.
+// Authenticate a user and return a JSON Web Token.
 router.post("/", async (req, res, next) => {
     try {
         const { email, password } = req.body;

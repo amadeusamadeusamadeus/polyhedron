@@ -8,8 +8,8 @@ const router = express.Router();
 const modelPath = path.join(process.cwd(), "..", "client", "public");
 const iconPath = path.join(process.cwd(), "..", "client", "public", "icons");
 
-console.log("Model Path:", modelPath);
-console.log("Icon Path:", iconPath);
+// console.log("Model Path:", modelPath);
+// console.log("Icon Path:", iconPath);
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
