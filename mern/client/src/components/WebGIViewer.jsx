@@ -12,7 +12,7 @@ import {
 import { ensureMaterialInDb } from "../api/materialService";
 
 export default function WebgiViewer({
-                                        mode, // "scroll" or "customise"
+                                        mode,
                                         modelUrl,
                                         onVariationChange,
                                         setVariations,
@@ -31,7 +31,6 @@ export default function WebgiViewer({
     const isHomePage = location.pathname === "/" || location.pathname === "/home";
     const [isLoaded, setIsLoaded] = useState(false);
 
-    // Keep a ref of the latest dbMaterials for use in updateVariations.
     const dbMaterialsRef = useRef(dbMaterials);
     useEffect(() => {
         dbMaterialsRef.current = dbMaterials;
@@ -78,8 +77,7 @@ export default function WebgiViewer({
         setVariations(updatedVariations);
     };
 
-    // --- Initialization Effect ---
-    // Runs once when critical props (like modelUrl) change.
+    //Initialise the viewer
     useEffect(() => {
         async function setupViewer() {
             if (!canvasRef.current) return;
@@ -94,13 +92,12 @@ export default function WebgiViewer({
             const viewer = new ViewerApp({ canvas: canvasRef.current });
             viewerRef.current = viewer;
 
-            // Add base plugins.
+            // Add plugins.
             await viewer.addPlugin(AssetManagerPlugin);
             await addBasePlugins(viewer);
             await viewer.addPlugin(FileTransferPlugin);
             await viewer.addPlugin(CanvasSnipperPlugin);
 
-            // Always add the material configurator plugin.
             const configPlugin = await viewer.addPlugin(MaterialConfiguratorPlugin);
             configRef.current = configPlugin;
             configPlugin.onVariationChange = (selectedVariation) => {
@@ -146,7 +143,7 @@ export default function WebgiViewer({
     }, [modelUrl, isHomePage, onVariationChange, setVariations, setConfig, dbShape]);
 
     // --- Mode-Specific Effect ---
-    // Handles transitions between scroll and customise modes without reinitialising the viewer.
+    // Handles transitions between scroll and customise modes
     useEffect(() => {
         if (!viewerRef.current || !isLoaded) return;
         const viewer = viewerRef.current;

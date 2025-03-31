@@ -9,7 +9,6 @@
     background-color: transparent;
     --bs-accordion-active-color: darkgrey !important;
     --bs-accordion-active-bg: darkgrey !important;
-
     --bs-accordion-btn-active-icon: url("../public/icons/caret-up-fill.svg") !important;
     --bs-accordion-btn-icon: url("../public/icons/caret-up.svg") !important;
 
@@ -956,7 +955,6 @@ div.login-form {
 @media (max-width: 600px) {
     .site-header {
         max-width: 100%;
-        /* Reset any transforms that might be applied unintentionally */
         transform: none !important;
         /*padding: 0; !* Use a smaller padding *!*/
     }
@@ -967,12 +965,6 @@ div.login-form {
     padding: 0 0;
 }
 
-/*@media (min-width: 600px) {*/
-/*    .model-menus {*/
-/*        flex-direction: column;*/
-/*        align-items: flex-start;*/
-/*    }*/
-/*}*/
 
 @media (min-width: 600px) {
     .variation-menu {
